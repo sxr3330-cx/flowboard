@@ -19,29 +19,116 @@
 }
 html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;overflow:hidden}
 
+/* ── NEW COLOR SCHEME ── */
+:root{
+  --bg:#02030a;--s1:#070b14;--s2:#0d1220;--s3:#131a2e;
+  --b1:rgba(100,150,255,0.08);--b2:rgba(100,150,255,0.14);--b3:rgba(100,150,255,0.22);
+  --t1:#e8eeff;--t2:#6b82b0;--t3:#2e3d5c;
+  --acc:#00d4ff;--acc2:rgba(0,212,255,0.1);--acc3:rgba(0,212,255,0.06);
+  --acc-warm:#ff6b35;--acc-warm2:rgba(255,107,53,0.1);
+  --aff:#4facfe;--aff2:rgba(79,172,254,0.1);
+  --neg:#ff6b9d;--neg2:rgba(255,107,157,0.1);
+  --ld:#b47aff;--ld2:rgba(180,122,255,0.1);
+  --grn:#00e5a0;--amb:#ffd93d;--orn:#ff6b35;
+  --glow:rgba(0,212,255,0.15);
+}
+
 /* ── LANDING ── */
-#landing{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
-canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
-.land-inner{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px;padding:40px;max-width:520px}
-.land-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600}
-.logo-mark{width:28px;height:28px;background:var(--acc);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-mark svg{width:15px;height:15px}
-.land-h{font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-2.5px;line-height:1.04}
-.land-h em{font-style:normal;color:var(--acc)}
-.land-sub{font-size:16px;color:var(--t2);line-height:1.65;font-weight:300}
-.land-actions{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
-.btn-acc{padding:14px 32px;border-radius:9px;background:var(--acc);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:opacity .15s;letter-spacing:-.2px}
-.btn-acc:hover{opacity:.87}
-.btn-acc:disabled{opacity:.4;cursor:not-allowed}
-.btn-ghost{padding:13px 28px;border-radius:9px;background:transparent;color:var(--t2);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .15s}
-.btn-ghost:hover{color:var(--t1);border-color:var(--b3)}
-.land-row{display:flex;gap:10px;width:100%}
-.land-row .btn-acc,.land-row .btn-ghost{flex:1}
-.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 24px;border-radius:9px;background:var(--s2);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:var(--t1);transition:all .15s;width:100%}
-.google-btn:hover{border-color:var(--b3);background:var(--s3)}
-.google-btn svg{width:18px;height:18px;flex-shrink:0}
-.land-or{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:10px;width:100%}
-.land-or::before,.land-or::after{content:'';flex:1;height:1px;background:var(--b1)}
+#landing{position:fixed;inset:0;background:var(--bg);z-index:999;overflow:hidden;display:flex;flex-direction:column}
+#globe-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.land-noise{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+.land-grid{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 80%)}
+
+/* NAV */
+#land-nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid var(--b1);backdrop-filter:blur(20px)}
+.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;text-decoration:none}
+.ln-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--acc),rgba(0,212,255,0.4));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.ln-logo-mark svg{width:16px;height:16px}
+.ln-links{display:flex;gap:32px;align-items:center}
+.ln-link{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;font-weight:400}
+.ln-link:hover{color:var(--t1)}
+.ln-cta{padding:9px 22px;border-radius:8px;background:var(--acc);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:all .2s;letter-spacing:-.2px}
+.ln-cta:hover{box-shadow:0 0 24px rgba(0,212,255,0.5);transform:translateY(-1px)}
+.ln-signin{padding:9px 18px;border-radius:8px;background:transparent;color:var(--t2);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;transition:all .2s}
+.ln-signin:hover{color:var(--t1);border-color:var(--b3)}
+
+/* HERO */
+#land-hero{position:relative;z-index:5;flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:0 40px;gap:0}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:12px;color:var(--acc);font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .8s ease both}
+.hero-live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:livepulse 2s infinite}
+@keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,0.4)}50%{box-shadow:0 0 0 5px rgba(0,229,160,0)}}
+.hero-h{font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1.0;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .8s .1s ease both}
+.hero-h .line2{display:block;background:linear-gradient(90deg,var(--acc),#4facfe,var(--ld));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--t2);max-width:480px;line-height:1.65;font-weight:300;margin-bottom:40px;animation:fadeUp .8s .2s ease both}
+.hero-btns{display:flex;gap:12px;animation:fadeUp .8s .3s ease both;margin-bottom:60px}
+.h-btn-primary{padding:15px 32px;border-radius:10px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:all .2s;letter-spacing:-.2px;box-shadow:0 0 40px rgba(0,212,255,0.25)}
+.h-btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(0,212,255,0.4)}
+.h-btn-google{padding:14px 24px;border-radius:10px;background:rgba(255,255,255,0.04);color:var(--t1);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
+.h-btn-google:hover{border-color:var(--b3);background:rgba(255,255,255,0.07);transform:translateY(-1px)}
+.h-btn-google svg{width:18px;height:18px;flex-shrink:0}
+
+/* STATS */
+.hero-stats{display:flex;gap:48px;animation:fadeUp .8s .4s ease both;padding-top:32px;border-top:1px solid var(--b1)}
+.h-stat-num{font-size:28px;font-weight:700;color:var(--acc);letter-spacing:-1px;font-family:'JetBrains Mono',monospace}
+.h-stat-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+
+/* FEATURES SECTION */
+#land-features{position:relative;z-index:5;padding:80px 48px;background:linear-gradient(to bottom,transparent,rgba(7,11,20,0.95));border-top:1px solid var(--b1)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:40px auto 0}
+.feat-card{padding:28px;border-radius:16px;border:1px solid var(--b1);background:rgba(7,11,20,0.8);backdrop-filter:blur(20px);transition:all .25s;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,var(--acc3),transparent 60%);opacity:0;transition:opacity .3s}
+.feat-card:hover{border-color:var(--b2);transform:translateY(-3px)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{font-size:24px;margin-bottom:14px;display:block}
+.feat-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:8px;letter-spacing:-.2px}
+.feat-desc{font-size:13px;color:var(--t2);line-height:1.65}
+.section-eyebrow{font-size:11px;color:var(--acc);text-transform:uppercase;letter-spacing:2px;font-weight:600;text-align:center}
+.section-title{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-1.5px;text-align:center;margin-top:10px;margin-bottom:8px}
+.section-sub{font-size:15px;color:var(--t2);text-align:center;max-width:480px;margin:0 auto;line-height:1.6}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── ACCOUNT PAGE ── */
+#account-page{display:none;position:fixed;inset:0;background:var(--bg);z-index:998;overflow-y:auto}
+#account-page.open{display:block}
+.acc-nav{display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid var(--b1);position:sticky;top:0;background:rgba(2,3,10,0.9);backdrop-filter:blur(20px);z-index:10}
+.acc-nav-logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--t1);cursor:pointer}
+.acc-nav-right{display:flex;gap:10px;align-items:center}
+.acc-user{display:flex;align-items:center;gap:10px}
+.acc-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--b2)}
+.acc-avatar-pl{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#4facfe);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#000;border:2px solid var(--b2)}
+.acc-name{font-size:14px;font-weight:500;color:var(--t1)}
+.acc-email{font-size:12px;color:var(--t2)}
+.acc-hero{padding:60px 48px 40px;max-width:1100px;margin:0 auto}
+.acc-hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+.acc-greeting{font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-2px;line-height:1.1}
+.acc-greeting span{background:linear-gradient(90deg,var(--acc),#4facfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.acc-section-title{font-size:18px;font-weight:600;letter-spacing:-.3px;margin-bottom:16px;color:var(--t1);display:flex;align-items:center;gap:10px}
+.acc-section-title .cnt{font-size:12px;background:var(--acc2);color:var(--acc);padding:2px 8px;border-radius:4px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.acc-rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:40px}
+.acc-room-card{padding:22px;border-radius:14px;border:1px solid var(--b1);background:var(--s1);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.acc-room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--acc),#4facfe);opacity:0;transition:opacity .2s}
+.acc-room-card:hover{border-color:var(--b2);background:var(--s2);transform:translateY(-2px)}
+.acc-room-card:hover::before{opacity:1}
+.acc-room-code{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--acc);font-weight:700;letter-spacing:1px;margin-bottom:8px}
+.acc-room-name{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px;letter-spacing:-.2px}
+.acc-room-meta{font-size:12px;color:var(--t3)}
+.acc-room-evt{font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:10px;display:inline-block}
+.acc-new-room{padding:22px;border-radius:14px;border:1px dashed var(--b2);background:transparent;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:130px;font-family:'Inter',sans-serif}
+.acc-new-room:hover{border-color:var(--acc);background:var(--acc3)}
+.acc-new-icon{font-size:28px;color:var(--t3);transition:color .2s}
+.acc-new-room:hover .acc-new-icon{color:var(--acc)}
+.acc-new-lbl{font-size:13px;color:var(--t3);transition:color .2s}
+.acc-new-room:hover .acc-new-lbl{color:var(--acc)}
+.acc-sign-out{padding:8px 18px;border-radius:7px;background:transparent;color:var(--t2);border:1px solid var(--b1);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;transition:all .2s}
+.acc-sign-out:hover{border-color:var(--neg);color:var(--neg);background:var(--neg2)}
+.acc-empty{padding:40px;text-align:center;color:var(--t3);font-size:14px;grid-column:1/-1}
+.acc-stats-row{display:flex;gap:12px;margin-bottom:40px;flex-wrap:wrap}
+.acc-stat{flex:1;min-width:160px;padding:18px 22px;border-radius:12px;border:1px solid var(--b1);background:var(--s1)}
+.acc-stat-n{font-size:28px;font-weight:700;color:var(--acc);font-family:'JetBrains Mono',monospace;letter-spacing:-1px}
+.acc-stat-l{font-size:12px;color:var(--t2);margin-top:3px;text-transform:uppercase;letter-spacing:1px}
+
+/* ── JOIN MODAL ── */
 
 /* join modal */
 #join-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(16px)}
@@ -314,30 +401,101 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
-
 <!-- LANDING -->
 <div id="landing">
-  <div class="land-inner">
-    <div class="land-logo">
-      <div class="logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  <canvas id="globe-canvas"></canvas>
+  <div class="land-noise"></div>
+  <div class="land-grid"></div>
+
+  <nav id="land-nav">
+    <a class="ln-logo" href="#">
+      <div class="ln-logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       Flowboard
+    </a>
+    <div class="ln-links">
+      <a class="ln-link" href="#land-features" onclick="scrollFeat()">Features</a>
+      <a class="ln-link" href="#" onclick="openJoin('policy');return false">Policy</a>
+      <a class="ln-link" href="#" onclick="openJoin('ld');return false">LD</a>
     </div>
-    <div class="land-h">Flow debate rounds<br><em>live, together.</em></div>
-    <div class="land-sub">Policy and LD flowing with sheets per position, a live speech doc, card search, and real-time sync for your whole team.</div>
-    <div class="land-actions">
-      <div class="land-row">
-        <button class="btn-acc" onclick="openJoin('policy')">Start Policy Room</button>
-        <button class="btn-ghost" onclick="openJoin('ld')">Lincoln-Douglas</button>
-      </div>
-      <div class="land-or">optional</div>
-      <button class="google-btn" onclick="doGoogle()">
+    <div style="display:flex;gap:8px">
+      <button class="ln-signin" id="ln-signin-btn" onclick="doGoogle()">Sign In</button>
+      <button class="ln-cta" onclick="openJoin('policy')">Start Flowing →</button>
+    </div>
+  </nav>
+
+  <div id="land-hero">
+    <div class="hero-eyebrow"><div class="hero-live-dot"></div>Live multiplayer · Real-time sync · Policy & LD</div>
+    <h1 class="hero-h">
+      Flow rounds.<br>
+      <span class="line2">Win arguments.</span>
+    </h1>
+    <p class="hero-sub">The first debate platform built for speed — shared flows, live speech docs, card search, and real-time sync across your entire team.</p>
+    <div class="hero-btns">
+      <button class="h-btn-primary" onclick="openJoin('policy')">Start a Room →</button>
+      <button class="h-btn-google" onclick="doGoogle()">
         <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Sign in with Google (save your flows)
+        Sign in with Google
       </button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="h-stat-num" id="hs-rooms">—</div><div class="h-stat-lbl">Active Rooms</div></div>
+      <div><div class="h-stat-num" id="hs-args">—</div><div class="h-stat-lbl">Args Flowed</div></div>
+      <div><div class="h-stat-num">25k+</div><div class="h-stat-lbl">Cards Indexed</div></div>
+      <div><div class="h-stat-num">2</div><div class="h-stat-lbl">Events</div></div>
+    </div>
+  </div>
+
+  <div id="land-features">
+    <div class="section-eyebrow">Built for the round</div>
+    <div class="section-title">Everything you need to win</div>
+    <div class="section-sub">Purpose-built for competitive policy and LD debate. No bloat.</div>
+    <div class="feat-grid">
+      <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change instantly. Firebase-powered sub-second latency across any device.</div></div>
+      <div class="feat-card"><span class="feat-icon">📄</span><div class="feat-title">Flow Sheets</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Each starts at the right speech automatically.</div></div>
+      <div class="feat-card"><span class="feat-icon">🔍</span><div class="feat-title">Card Search</div><div class="feat-desc">25,000+ indexed cards from HSPolicy 25-26 with full formatting — bold, underline, and highlights preserved.</div></div>
+      <div class="feat-card"><span class="feat-icon">↩</span><div class="feat-title">Respond System</div><div class="feat-desc">Click respond on any arg and a linked response box opens in the next speech column automatically.</div></div>
+      <div class="feat-card"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any arg to add it to your speech instantly.</div></div>
+      <div class="feat-card"><span class="feat-icon">⊠</span><div class="feat-title">Kick Positions</div><div class="feat-desc">Kick an entire flow (Cap K, Politics DA) with one click — crosses out the whole sheet for both partners.</div></div>
     </div>
   </div>
 </div>
+
+<!-- ACCOUNT PAGE -->
+<div id="account-page">
+  <nav class="acc-nav">
+    <div class="acc-nav-logo" onclick="closeAccountPage()">
+      <div class="ln-logo-mark" style="width:26px;height:26px;border-radius:7px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      Flowboard
+    </div>
+    <div class="acc-nav-right">
+      <div class="acc-user">
+        <div id="acc-avatar-wrap"></div>
+        <div>
+          <div class="acc-name" id="acc-name"></div>
+          <div class="acc-email" id="acc-email"></div>
+        </div>
+      </div>
+      <button class="acc-sign-out" onclick="doSignOut()">Sign out</button>
+    </div>
+  </nav>
+  <div class="acc-hero">
+    <div class="acc-hero-top">
+      <div class="acc-greeting">Welcome back,<br><span id="acc-greeting-name">debater</span></div>
+      <button class="h-btn-primary" onclick="closeAccountPage();openJoin('policy')" style="font-size:14px;padding:13px 24px">+ New Room</button>
+    </div>
+
+    <div class="acc-stats-row" id="acc-stats-row">
+      <div class="acc-stat"><div class="acc-stat-n" id="acc-stat-rooms">0</div><div class="acc-stat-l">Rooms Flowed</div></div>
+      <div class="acc-stat"><div class="acc-stat-n" id="acc-stat-flows">0</div><div class="acc-stat-l">Flow Sheets Created</div></div>
+    </div>
+
+    <div class="acc-section-title">Recent Rooms <span class="cnt" id="acc-rooms-cnt">0</span></div>
+    <div class="acc-rooms-grid" id="acc-rooms-grid">
+      <div class="acc-empty">Loading your rooms…</div>
+    </div>
+  </div>
+</div>
+
 
 <!-- JOIN MODAL -->
 <div id="join-modal">
@@ -392,7 +550,7 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
         <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         Card Search
       </button>
-      <button class="sb-btn" id="profile-btn" onclick="handleProfile()">
+      <button class="sb-btn" id="profile-btn" onclick="me?openAccountPage():doGoogle()">
         <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 14c0-2.761 2.239-4 5-4s5 1.239 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span id="profile-lbl">Sign In</span>
       </button>
@@ -617,21 +775,126 @@ function getNextSpeech(sid){const i=spList.findIndex(s=>s.id===sid);return i>=0&
 function getFlowTypeInfo(side,type){const g=side==='neg'?FLOW_TYPES.neg:evt==='ld'?(side==='ld_neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff):FLOW_TYPES.aff;return g?.find(x=>x.t===type)||{t:type,l:type,c:'#888',start:spList[0]?.id}}
 
 // ── AUTH ─────────────────────────────────────────────────────────────────
-onAuthStateChanged(auth,user=>{me=user;updateProfileUI()});
+onAuthStateChanged(auth,user=>{
+  me=user;
+  if(user){
+    // Update nav sign-in button to show account
+    const btn=document.getElementById('ln-signin-btn');
+    if(btn){
+      btn.textContent=user.displayName?.split(' ')[0]||'Account';
+      btn.onclick=openAccountPage;
+    }
+    // If we're on the landing page, show account page
+    if(document.getElementById('landing').style.display!=='none'&&document.getElementById('app').style.display==='none'){
+      openAccountPage();
+    }
+  } else {
+    const btn=document.getElementById('ln-signin-btn');
+    if(btn){btn.textContent='Sign In';btn.onclick=doGoogle;}
+  }
+  updateProfileUI();
+});
 
 window.doGoogle=async function(){
-  try{await signInWithPopup(auth,new GoogleAuthProvider());toast('Signed in!')}
-  catch(e){toast('Sign-in error: '+e.message)}
+  try{
+    const result=await signInWithPopup(auth,new GoogleAuthProvider());
+    // Will trigger onAuthStateChanged which opens account page
+  }catch(e){
+    if(e.code==='auth/popup-blocked')toast('Popup blocked — allow popups for this site');
+    else if(e.code==='auth/unauthorized-domain')toast('Add your domain to Firebase Auth → Authorized Domains');
+    else toast('Sign-in error: '+e.message);
+  }
 };
-window.handleProfile=function(){
-  if(me){if(confirm('Sign out?'))signOut(auth).then(()=>{toast('Signed out');updateProfileUI()})}
-  else doGoogle()
+
+window.doSignOut=function(){
+  signOut(auth).then(()=>{
+    closeAccountPage();
+    toast('Signed out');
+  });
 };
+
+window.openAccountPage=function(){
+  if(!me)return;
+  document.getElementById('account-page').classList.add('open');
+  renderAccountPage();
+};
+
+window.closeAccountPage=function(){
+  document.getElementById('account-page').classList.remove('open');
+};
+
 function updateProfileUI(){
+  // Sidebar profile button
   const lbl=document.getElementById('profile-lbl');
-  if(me)lbl.textContent=me.displayName?.split(' ')[0]||'Profile';
-  else lbl.textContent='Sign In';
+  if(lbl){if(me)lbl.textContent=me.displayName?.split(' ')[0]||'Profile';else lbl.textContent='Sign In';}
 }
+
+async function renderAccountPage(){
+  if(!me)return;
+  // Avatar
+  const wrap=document.getElementById('acc-avatar-wrap');
+  if(me.photoURL)wrap.innerHTML=`<img src="${me.photoURL}" class="acc-avatar">`;
+  else{const initials=(me.displayName||'?').split(' ').map(w=>w[0]).join('').slice(0,2);wrap.innerHTML=`<div class="acc-avatar-pl">${initials}</div>`;}
+  document.getElementById('acc-name').textContent=me.displayName||me.email||'User';
+  document.getElementById('acc-email').textContent=me.email||'';
+  const firstName=me.displayName?.split(' ')[0]||'there';
+  document.getElementById('acc-greeting-name').textContent=firstName;
+
+  // Load rooms this user has been in (stored in DB per user)
+  const userRoomsRef=ref(db,`users/${me.uid}/rooms`);
+  onValue(userRoomsRef,snap=>{
+    const rooms=snap.val()||{};
+    const roomList=Object.values(rooms).sort((a,b)=>(b.lastVisit||0)-(a.lastVisit||0));
+    document.getElementById('acc-rooms-cnt').textContent=roomList.length;
+    document.getElementById('acc-stat-rooms').textContent=roomList.length;
+    // Count flows
+    let totalFlows=0;roomList.forEach(r=>totalFlows+=(r.flowCount||0));
+    document.getElementById('acc-stat-flows').textContent=totalFlows;
+    renderRoomCards(roomList);
+  },{onlyOnce:true});
+}
+
+function renderRoomCards(rooms){
+  const grid=document.getElementById('acc-rooms-grid');
+  grid.innerHTML='';
+  if(!rooms.length){
+    grid.innerHTML='<div class="acc-empty">No rooms yet — start flowing!</div>';
+    const newBtn=document.createElement('div');newBtn.className='acc-new-room';
+    newBtn.innerHTML=`<div class="acc-new-icon">+</div><div class="acc-new-lbl">Start a new room</div>`;
+    newBtn.onclick=()=>{closeAccountPage();openJoin('policy')};
+    grid.appendChild(newBtn);return;
+  }
+  rooms.slice(0,8).forEach(r=>{
+    const card=document.createElement('div');card.className='acc-room-card';
+    const evt=r.event||'policy';
+    const evtChipStyle=evt==='policy'?'background:var(--aff2);color:var(--aff)':'background:var(--ld2);color:var(--ld)';
+    card.innerHTML=`
+      <div class="acc-room-code"># ${r.code||'???'}</div>
+      <div class="acc-room-name">${esc(r.name||r.code||'Unnamed Room')}</div>
+      <div class="acc-room-meta">${r.lastVisit?new Date(r.lastVisit).toLocaleDateString():'Recently'}</div>
+      <span class="acc-room-evt" style="${evtChipStyle}">${evt.toUpperCase()}</span>`;
+    card.onclick=()=>{closeAccountPage();openJoinWithCode(r.code,r.event||'policy')};
+    grid.appendChild(card);
+  });
+  const newBtn=document.createElement('div');newBtn.className='acc-new-room';
+  newBtn.innerHTML=`<div class="acc-new-icon">+</div><div class="acc-new-lbl">New room</div>`;
+  newBtn.onclick=()=>{closeAccountPage();openJoin('policy')};
+  grid.appendChild(newBtn);
+}
+
+// Save room visit to user profile
+function saveRoomToProfile(code,event,name){
+  if(!me)return;
+  const roomRef=ref(db,`users/${me.uid}/rooms/${code}`);
+  set(roomRef,{code,event,name:name||code,lastVisit:Date.now(),flowCount:Object.keys(flows).length});
+}
+
+window.openJoinWithCode=function(code,evt){
+  openJoin(evt||'policy');
+  setTimeout(()=>{document.getElementById('jm-code').value=code;},100);
+};
+
+window.scrollFeat=function(){document.getElementById('land-features')?.scrollIntoView({behavior:'smooth'})};
 
 // ── LANDING / JOIN ────────────────────────────────────────────────────────
 let joinEvt='policy';
@@ -670,13 +933,21 @@ function initRoom(){
     renderPresence();
   });
 
-  // Flows index
+  // Flows index (includes kicked state)
   onValue(ref(db,rk('flows-index')),snap=>{
-    flows=snap.val()||{};
+    const remote=snap.val()||{};
+    // Merge kicked state for flows that are already loaded
+    Object.entries(remote).forEach(([id,f])=>{
+      if(flows[id])flows[id].kicked=f.kicked||false;
+    });
+    flows=remote;
     renderFlowTabs();
     if(!curFlow){
       const ids=Object.values(flows).sort((a,b)=>(a.order||0)-(b.order||0)).map(f=>f.id);
       if(ids.length)switchFlow(ids[0]);
+    } else {
+      // Re-render cols if kicked state of current flow changed
+      renderCols();
     }
   });
 
@@ -689,8 +960,11 @@ function initRoom(){
   setSS('sync','connecting…');
   document.getElementById('join-modal').classList.remove('open');
   document.getElementById('landing').style.display='none';
+  document.getElementById('account-page').classList.remove('open');
   document.getElementById('app').classList.add('open');
   syncHdrScroll();
+  // Save room to user profile
+  if(me)saveRoomToProfile(rc,evt,rc);
 
   // Restore speech content on input
   let spDebounce=null;
@@ -705,9 +979,19 @@ function renderFlowTabs(){
   const sorted=Object.values(flows).sort((a,b)=>(a.order||0)-(b.order||0));
   el.innerHTML='';
   sorted.forEach(f=>{
+    const isKicked=!!f.kicked;
     const div=document.createElement('div');
-    div.className='flow-tab'+(f.id===curFlow?' active':'');
-    div.innerHTML=`<div class="flow-tab-dot" style="background:${f.color||'#888'}"></div><div class="flow-tab-name">${esc(f.name)}</div><div class="flow-tab-cnt" id="ftc-${f.id}"></div><button class="flow-tab-del" onclick="event.stopPropagation();delFlow('${f.id}')">✕</button>`;
+    div.className='flow-tab'+(f.id===curFlow?' active':'')+(isKicked?' kicked-tab':'');
+    div.style.cssText=isKicked?'opacity:0.45;text-decoration:line-through':'';
+    div.innerHTML=`
+      <div class="flow-tab-dot" style="background:${isKicked?'#555':f.color||'#888'}"></div>
+      <div class="flow-tab-name">${esc(f.name)}</div>
+      <div style="display:flex;gap:3px;flex-shrink:0;opacity:0;transition:opacity .15s" class="flow-tab-actions">
+        <button title="${isKicked?'Unkick':'Kick this flow'}" onclick="event.stopPropagation();kickFlow('${f.id}')" style="background:none;border:none;color:${isKicked?'var(--neg)':'var(--t3)'};cursor:pointer;font-size:11px;padding:2px 4px;border-radius:3px;font-weight:700" title="Kick flow">⊠</button>
+        <button onclick="event.stopPropagation();delFlow('${f.id}')" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:11px;padding:2px 4px;border-radius:3px">✕</button>
+      </div>`;
+    div.addEventListener('mouseenter',()=>div.querySelector('.flow-tab-actions').style.opacity='1');
+    div.addEventListener('mouseleave',()=>div.querySelector('.flow-tab-actions').style.opacity='0');
     div.onclick=()=>switchFlow(f.id);
     el.appendChild(div);
   });
@@ -758,8 +1042,18 @@ function switchFlow(fid){
 window.delFlow=function(fid){
   if(!confirm('Delete this flow and all its arguments?'))return;
   remove(ref(db,rk('flows-index',fid)));
-  remove(ref(db,frk()));
+  remove(ref(db,`rooms/${rc}/flows/${fid}`));
   if(curFlow===fid){curFlow=null;args={};renderCols();}
+};
+
+window.kickFlow=function(fid){
+  const f=flows[fid];if(!f)return;
+  const nowKicked=!f.kicked;
+  flows[fid].kicked=nowKicked;
+  update(ref(db,rk('flows-index',fid)),{kicked:nowKicked});
+  renderFlowTabs();
+  if(curFlow===fid)renderCols(); // re-render current flow to show/hide kick banner
+  toast(nowKicked?`"${f.name}" kicked — flow crossed out`:`"${f.name}" unkicked`);
 };
 
 document.getElementById('sheet-title').addEventListener('input',e=>{
@@ -910,9 +1204,38 @@ function buildCol(s,scrollTop){
 
   if(evt==='ld'&&(s.id==='ac'||s.id==='nc'))col.appendChild(buildVC(s.id));
 
-  // args for this speech
-  const sArgs=Object.values(args).filter(a=>a.speechId===s.id&&!a.responseToId);
-  sArgs.forEach(a=>col.appendChild(buildArgCard(a,s)));
+  // All args for this speech — non-responses first, then responses grouped under their parent
+  const sArgs=Object.values(args).filter(a=>a.speechId===s.id);
+  const topArgs=sArgs.filter(a=>!a.responseToId);
+  const respArgs=sArgs.filter(a=>a.responseToId);
+
+  // Check if this flow is kicked
+  const f=flows[curFlow];
+  if(f?.kicked){
+    const kickBanner=document.createElement('div');
+    kickBanner.style.cssText='margin:6px 6px 0;padding:8px 12px;border-radius:8px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);font-size:11px;color:var(--neg);font-family:JetBrains Mono,monospace;font-weight:600;letter-spacing:0.5px;text-transform:uppercase';
+    kickBanner.textContent='⊠ Flow Kicked';
+    col.appendChild(kickBanner);
+  }
+
+  topArgs.forEach(a=>{
+    const card=buildArgCard(a,s,f?.kicked);
+    col.appendChild(card);
+    // Show any responses to this arg that belong in THIS column
+    respArgs.filter(r=>r.responseToId===a.id).forEach(ra=>{
+      const rCard=buildArgCard(ra,s,f?.kicked);
+      rCard.style.marginLeft='16px';
+      rCard.style.borderLeft='3px solid rgba(96,165,250,0.4)';
+      col.appendChild(rCard);
+    });
+  });
+  // Any orphan responses (parent arg may be in a different flow)
+  respArgs.filter(r=>!topArgs.find(a=>a.id===r.responseToId)).forEach(ra=>{
+    const rCard=buildArgCard(ra,s,f?.kicked);
+    rCard.style.marginLeft='16px';
+    rCard.style.borderLeft='3px solid rgba(96,165,250,0.4)';
+    col.appendChild(rCard);
+  });
 
   const addBtn=document.createElement('button');
   addBtn.className='add-arg-btn';addBtn.innerHTML='<span style="font-size:16px">+</span> Add argument';
@@ -949,24 +1272,23 @@ function buildVC(side){
   return w;
 }
 
-function buildArgCard(a,s){
+function buildArgCard(a,s,flowKicked){
   const div=document.createElement('div');
   let cls='arg-card';
   if(a.status==='ext')cls+=' ext';
   if(a.status==='drop')cls+=' dropped';
-  if(a.status==='kick')cls+=' kicked';
+  if(flowKicked)cls+=' kicked';
   if(a.responseToId)cls+=' resp-card';
   div.className=cls;div.dataset.id=a.id;
 
   let badge='';
   if(a.status==='ext')badge=`<span class="ac-status st-ext">EXT</span>`;
   else if(a.status==='drop')badge=`<span class="ac-status st-drop">DROPPED</span>`;
-  else if(a.status==='kick')badge=`<span class="ac-status st-kick">KICK</span>`;
 
   const isNeg=s.side==='neg'||s.side==='ld-neg';
   const main=document.createElement('div');main.className='ac-main';
   main.innerHTML=`
-    <div class="ac-label" contenteditable="true" data-ph="Argument / tag…" spellcheck="false">${esc(a.label||'')}</div>
+    <div class="ac-label" contenteditable="true" data-ph="${a.responseToId?'Response…':'Argument / tag…'}" spellcheck="false">${esc(a.label||'')}</div>
     <div class="ac-cite" contenteditable="true" spellcheck="false">${esc(a.cite||'')}</div>
     ${badge}
     <div class="ac-actions">
@@ -974,24 +1296,15 @@ function buildArgCard(a,s){
       <button class="ac-btn drop" title="Mark Dropped" onclick="event.stopPropagation();toggleSt('${a.id}','drop')">✗</button>
       <button class="ac-btn resp" title="Add Response in Next Speech" onclick="event.stopPropagation();addResp('${a.id}','${s.id}')">↩</button>
       <button class="ac-btn cross" title="Cross-Apply" onclick="event.stopPropagation();openCross('${a.id}')">⇄</button>
-      ${isNeg?`<button class="ac-btn kick" title="Kick" onclick="event.stopPropagation();toggleSt('${a.id}','kick')">⊠</button>`:''}
       <button class="ac-btn del" title="Delete" onclick="event.stopPropagation();delArg('${a.id}')">✕</button>
     </div>`;
 
   const lbl=main.querySelector('.ac-label');
   const cite=main.querySelector('.ac-cite');
 
-  // TYPING FIX: write directly, NEVER call render inside these handlers
-  lbl.addEventListener('input',()=>{
-    if(args[a.id])args[a.id].label=lbl.textContent;
-    wad(a.id);
-  });
+  lbl.addEventListener('input',()=>{if(args[a.id])args[a.id].label=lbl.textContent;wad(a.id)});
   lbl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();lbl.blur()}});
-
-  cite.addEventListener('input',()=>{
-    if(args[a.id])args[a.id].cite=cite.textContent;
-    wad(a.id);
-  });
+  cite.addEventListener('input',()=>{if(args[a.id])args[a.id].cite=cite.textContent;wad(a.id)});
   cite.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault()});
 
   if(flowAccess){
@@ -1001,7 +1314,6 @@ function buildArgCard(a,s){
 
   div.appendChild(main);
 
-  // Notes (expand on click)
   const hasN=a.notes&&a.notes.trim();
   const nw=document.createElement('div');nw.className='ac-notes-area';
   nw.style.display=hasN||a._exp?'block':'none';
@@ -1018,7 +1330,6 @@ function buildArgCard(a,s){
     if(args[a.id]?._exp)setTimeout(()=>ta.focus(),50);
   });
 
-  // Cross links
   if(a.crossLinks?.length){
     const cl=document.createElement('div');cl.className='ac-cross-links';
     a.crossLinks.forEach(lid=>{
@@ -1032,17 +1343,6 @@ function buildArgCard(a,s){
     div.appendChild(cl);
   }
 
-  // Nested responses
-  const respArgs=Object.values(args).filter(x=>x.responseToId===a.id);
-  if(respArgs.length){
-    const ra=document.createElement('div');ra.className='ac-resp-area';
-    const rl=document.createElement('div');rl.className='resp-lbl';rl.textContent='Responses';ra.appendChild(rl);
-    respArgs.forEach(ra2=>{
-      const rs=spList.find(x=>x.id===ra2.speechId);
-      if(rs){const rb=buildArgCard(ra2,rs);ra.appendChild(rb);}
-    });
-    div.appendChild(ra);
-  }
   return div;
 }
 
@@ -1128,17 +1428,22 @@ window.confirmExtend=function(){
 // ── RESPOND ────────────────────────────────────────────────────────────────
 window.addResp=function(argId,speechId){
   const next=getNextSpeech(speechId);
-  if(!next){toast('No next speech');return}
+  if(!next){toast('No next speech for this flow');return}
   pushUndo();
   const id=uid();
   args[id]={id,speechId:next.id,label:'',cite:'',notes:'',status:'',crossLinks:[],responseToId:argId};
   wa(id);
   if(curFlow)update(ref(db,frk('meta')),{nextId});
-  toast(`Response added to ${next.l}`);renderCols();
+  renderCols();
+  // Scroll to the next column and focus the new response
   setTimeout(()=>{
     scrollToCol(next.id);
-    setTimeout(()=>{const el=document.querySelector(`[data-id="${id}"] .ac-label`);if(el){el.focus();setCursorEnd(el);}},250);
-  },100);
+    setTimeout(()=>{
+      const el=document.querySelector(`[data-id="${id}"] .ac-label`);
+      if(el){el.focus();setCursorEnd(el);}
+    },200);
+  },80);
+  toast(`Response box opened in ${next.l} →`);
 };
 
 // ── CROSS ─────────────────────────────────────────────────────────────────
@@ -1307,12 +1612,148 @@ document.getElementById('jm-name').addEventListener('keydown',e=>{if(e.key==='En
 </script>
 
 <script>
-// Stars
-(function(){const c=document.getElementById('stars'),ctx=c.getContext('2d');let st=[];
-function sz(){c.width=window.innerWidth;c.height=window.innerHeight}
-function init(){st=[];for(let i=0;i<160;i++)st.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()+.2,o:Math.random()*.5+.08,s:Math.random()*.2+.04})}
-function draw(){ctx.clearRect(0,0,c.width,c.height);st.forEach(s=>{s.o+=s.s*.015;if(s.o>.6||s.o<.06)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,200,200,${s.o})`;ctx.fill()});requestAnimationFrame(draw)}
-window.addEventListener('resize',()=>{sz();init()});sz();init();draw();})();
+// ── GLOBE ─────────────────────────────────────────────────────────────────
+(function(){
+  const canvas=document.getElementById('globe-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,R,cx,cy;
+  let rotY=0,rotX=0.25,isDrag=false,lx=0,ly=0,vy=0.004,autoSpin=true;
+
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+    R=Math.min(W,H)*0.38;cx=W/2;cy=H*0.46;
+  }
+
+  // Generate globe points
+  const pts=[];
+  for(let i=0;i<1200;i++){
+    const lat=(Math.random()-.5)*Math.PI;
+    const lon=Math.random()*Math.PI*2;
+    const isBig=Math.random()<0.03;
+    const isMed=Math.random()<0.1;
+    pts.push({lat,lon,r:isBig?3:isMed?1.6:.7,big:isBig,med:isMed});
+  }
+
+  // Connection arcs between big points
+  const bigPts=pts.filter(p=>p.big);
+  const arcs=[];
+  for(let i=0;i<16;i++){
+    const a=bigPts[Math.floor(Math.random()*bigPts.length)];
+    const b=bigPts[Math.floor(Math.random()*bigPts.length)];
+    if(a!==b)arcs.push({a,b,p:Math.random(),sp:.003+Math.random()*.004,col:Math.random()<.5?'#00d4ff':'#ff6b35'});
+  }
+
+  function proj(lat,lon){
+    const cl=Math.cos(lat),sl=Math.sin(lat);
+    const clo=Math.cos(lon+rotY),slo=Math.sin(lon+rotY);
+    const crx=Math.cos(rotX),srx=Math.sin(rotX);
+    const x=cl*slo,y=sl*crx-cl*clo*srx,z=sl*srx+cl*clo*crx;
+    return{x:cx+x*R,y:cy-y*R,z,v:z>-0.1};
+  }
+
+  function lerpArc(a,b,t){
+    // Great circle interpolation approximation
+    return{lat:a.lat+(b.lat-a.lat)*t,lon:a.lon+(b.lon-a.lon)*t};
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Atmospheric glow
+    const grad=ctx.createRadialGradient(cx,cy,R*.3,cx,cy,R*1.6);
+    grad.addColorStop(0,'rgba(0,50,100,0)');
+    grad.addColorStop(.7,'rgba(0,100,180,0.04)');
+    grad.addColorStop(1,'rgba(0,212,255,0.08)');
+    ctx.beginPath();ctx.arc(cx,cy,R*1.6,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
+
+    // Grid lines
+    ctx.lineWidth=.5;
+    for(let lat=-75;lat<=75;lat+=15){
+      const lr=lat*Math.PI/180;
+      ctx.beginPath();let f=true;
+      for(let lon=0;lon<=362;lon+=2){
+        const p=proj(lr,lon*Math.PI/180);
+        if(p.v){if(f){ctx.moveTo(p.x,p.y);f=false}else ctx.lineTo(p.x,p.y)}else f=true;
+      }
+      ctx.strokeStyle=`rgba(0,180,255,${.04+.04*Math.max(0,lat===0?.5:0)})`;ctx.stroke();
+    }
+    for(let lon=0;lon<360;lon+=15){
+      const lr=lon*Math.PI/180;
+      ctx.beginPath();let f=true;
+      for(let lat=-90;lat<=90;lat+=2){
+        const p=proj(lat*Math.PI/180,lr);
+        if(p.v){if(f){ctx.moveTo(p.x,p.y);f=false}else ctx.lineTo(p.x,p.y)}else f=true;
+      }
+      ctx.strokeStyle='rgba(0,180,255,0.04)';ctx.stroke();
+    }
+
+    // Points
+    pts.forEach(pt=>{
+      const p=proj(pt.lat,pt.lon);if(!p.v)return;
+      const alpha=Math.max(.05,Math.min(.95,(p.z+.15)*.9));
+      if(pt.big){
+        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,212,255,${alpha})`;ctx.fill();
+        ctx.beginPath();ctx.arc(p.x,p.y,pt.r+3,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,212,255,${alpha*.15})`;ctx.fill();
+      }else if(pt.med){
+        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(79,172,254,${alpha*.7})`;ctx.fill();
+      }else{
+        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${alpha*.18})`;ctx.fill();
+      }
+    });
+
+    // Arcs
+    arcs.forEach(arc=>{
+      arc.p+=arc.sp;if(arc.p>1)arc.p=0;
+      const pos=lerpArc(arc.a,arc.b,arc.p);
+      const p=proj(pos.lat,pos.lon);if(!p.v)return;
+      ctx.beginPath();ctx.arc(p.x,p.y,2.2,0,Math.PI*2);
+      ctx.fillStyle=arc.col+'cc';ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);
+      ctx.fillStyle=arc.col+'28';ctx.fill();
+    });
+
+    // Globe outline
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,212,255,0.12)';ctx.lineWidth=1;ctx.stroke();
+    // Inner glow ring
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    const grd2=ctx.createRadialGradient(cx,cy,R-.5,cx,cy,R+20);
+    grd2.addColorStop(0,'rgba(0,212,255,0.06)');grd2.addColorStop(1,'transparent');
+    ctx.strokeStyle=grd2;ctx.lineWidth=20;ctx.stroke();
+
+    if(autoSpin)rotY+=vy;
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener('mousedown',e=>{isDrag=true;autoSpin=false;lx=e.clientX;ly=e.clientY});
+  window.addEventListener('mousemove',e=>{
+    if(!isDrag)return;
+    vy=(e.clientX-lx)*.005;rotY+=vy;
+    rotX=Math.max(-1.2,Math.min(1.2,rotX+(e.clientY-ly)*.003));
+    lx=e.clientX;ly=e.clientY;
+  });
+  window.addEventListener('mouseup',()=>{isDrag=false;autoSpin=true});
+  window.addEventListener('resize',()=>{resize();});
+  resize();draw();
+})();
+
+// ── COUNTER ANIMATIONS ────────────────────────────────────────────────────
+function animCount(el,target,dur,suffix=''){
+  let t0=null;
+  const fmt=n=>n>=1000?(n/1000).toFixed(1)+'k':String(Math.floor(n));
+  (function step(t){if(!t0)t0=t;const p=Math.min((t-t0)/dur,1);el.textContent=fmt(p*target)+suffix;if(p<1)requestAnimationFrame(step)})(performance.now());
+}
+setTimeout(()=>{
+  const r=document.getElementById('hs-rooms'),a=document.getElementById('hs-args');
+  if(r)animCount(r,34,1800);
+  if(a)animCount(a,3241,2200);
+},700);
 </script>
 </body>
 </html>
