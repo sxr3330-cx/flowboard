@@ -444,7 +444,9 @@ body.app-open{overflow:hidden}
 /* card search */
 #card-overlay{display:none;position:fixed;inset:0;z-index:700;align-items:flex-start;justify-content:center;padding-top:65px;background:rgba(0,0,0,.78);backdrop-filter:blur(16px)}
 #card-overlay.show{display:flex}
-.card-panel{background:var(--s1);border:1px solid var(--b2);border-radius:16px;width:900px;max-width:95vw;height:74vh;display:flex;flex-direction:column;overflow:hidden}
+.card-panel{background:var(--s1);border:1px solid var(--b2);border-radius:16px;width:900px;max-width:95vw;height:82vh;display:flex;flex-direction:column;overflow:hidden}
+#logos-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#mine-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .cp-top{padding:14px 16px 0;flex-shrink:0}
 .cp-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cp-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
@@ -695,9 +697,10 @@ body.app-open{overflow:hidden}
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sb-top">
-      <div class="sb-logo">
+      <div class="sb-logo" onclick="goHome()" title="Return to home" style="cursor:pointer;transition:opacity .15s" onmouseenter="this.style.opacity='.7'" onmouseleave="this.style.opacity='1'">
         <div class="logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
         Flowboard
+        <span style="font-size:9px;color:var(--t3);margin-left:auto;font-family:'JetBrains Mono',monospace">← home</span>
       </div>
       <div class="sb-meta">
         <div class="room-pill" id="sb-room" onclick="copyRoom()"></div>
@@ -738,12 +741,15 @@ body.app-open{overflow:hidden}
     <div id="topbar">
       <input id="sheet-title" placeholder="Flow name…" maxlength="60">
       <div class="tb-sep"></div>
-      <button class="tb-btn" onclick="doUndo()">↩ Undo</button>
+      <button class="tb-btn" onclick="doUndo()" title="Undo (Ctrl+Z)">↩ Undo</button>
+      <button class="tb-btn" onclick="doRedo()" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
       <div class="tb-sep"></div>
       <button class="tb-btn acc" onclick="openCards()">⊞ Cards</button>
       <button class="tb-btn purple" id="flow-access-btn" onclick="toggleFlowAccess()">✦ Flow Access</button>
       <div class="tb-sep"></div>
       <button class="tb-btn danger" onclick="if(confirm('Clear this flow?'))clearFlow()">Clear</button>
+      <div style="margin-left:auto"></div>
+      <button class="tb-btn" onclick="goHome()" title="Return to home" style="color:var(--t3)">⌂ Home</button>
     </div>
     <div id="flow-wrap">
       <div id="col-headers"><div id="chi"></div></div>
@@ -842,25 +848,56 @@ body.app-open{overflow:hidden}
   </div>
 </div>
 
-<!-- CARD SEARCH -->
+<!-- CARD SEARCH — Logos embed + your cards -->
 <div id="card-overlay">
-  <div class="card-panel">
+  <div class="card-panel" style="width:1100px;max-width:97vw">
     <div class="cp-top">
       <div class="cp-hdr">
-        <div class="cp-title">Card Search <span class="cp-year">HSPolicy 25–26</span></div>
+        <div class="cp-title">
+          Card Search
+          <span class="cp-year">Logos + HSPolicy 25–26</span>
+        </div>
         <button class="cp-close" onclick="closeCards()">✕</button>
       </div>
-      <input class="cp-search" id="cp-q" placeholder="Search tags, cites, authors, teams…" autocomplete="off">
-      <div class="cp-filters">
-        <button class="cp-filter active" data-f="all" onclick="setCF('all',this)">All</button>
-        <button class="cp-filter" data-f="Aff" onclick="setCF('Aff',this)">Aff</button>
-        <button class="cp-filter" data-f="Neg" onclick="setCF('Neg',this)">Neg</button>
+      <!-- Source tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <button class="cp-filter active" id="csrc-logos" onclick="switchCardSrc('logos',this)" style="font-size:13px;padding:6px 16px">🌐 Logos (Open Evidence)</button>
+        <button class="cp-filter" id="csrc-mine" onclick="switchCardSrc('mine',this)" style="font-size:13px;padding:6px 16px">📂 Your Uploaded Cards</button>
       </div>
-      <span class="cp-count" id="cp-cnt">Type to search</span>
     </div>
-    <div class="cp-body">
-      <div id="card-list"><div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above</div></div>
-      <div id="card-view"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--t3);font-size:13px">Select a card to preview</div></div>
+    <!-- LOGOS IFRAME -->
+    <div id="logos-panel" class="cp-body" style="flex-direction:column;display:flex">
+      <div style="padding:8px 16px 10px;background:var(--s2);border-bottom:1px solid var(--b1);flex-shrink:0;font-size:12px;color:var(--t2);display:flex;align-items:center;gap:10px">
+        <span>Searching Logos — includes OpenEv, OpenCaselist, and open-source debate evidence</span>
+        <a href="https://logos-debate.netlify.app" target="_blank" style="color:var(--acc);font-size:11px;text-decoration:none;margin-left:auto;font-family:'JetBrains Mono',monospace">Open in new tab ↗</a>
+      </div>
+      <iframe
+        id="logos-iframe"
+        src="https://logos-debate.netlify.app"
+        style="flex:1;border:none;background:var(--s1)"
+        allow="same-origin"
+        loading="lazy"
+        title="Logos Debate Card Search"
+      ></iframe>
+    </div>
+    <!-- YOUR FIRESTORE CARDS -->
+    <div id="mine-panel" style="display:none;flex:1;flex-direction:column">
+      <div class="cp-top" style="border-top:1px solid var(--b1)">
+        <input class="cp-search" id="cp-q" placeholder="Search your uploaded HSPolicy 25-26 cards…" autocomplete="off">
+        <div class="cp-filters">
+          <button class="cp-filter active" data-f="all" onclick="setCF('all',this)">All</button>
+          <button class="cp-filter" data-f="Aff" onclick="setCF('Aff',this)">Aff</button>
+          <button class="cp-filter" data-f="Neg" onclick="setCF('Neg',this)">Neg</button>
+        </div>
+        <span class="cp-count" id="cp-cnt">Type to search your cards</span>
+        <div style="font-size:11px;color:var(--t3);margin-top:4px;padding-bottom:6px">
+          To index cards: run <code style="background:var(--s2);padding:2px 6px;border-radius:3px;color:var(--acc);font-size:10px">upload_cards_to_firestore.py</code> locally with your HSPolicy 25-26 folder.
+        </div>
+      </div>
+      <div class="cp-body">
+        <div id="card-list"><div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above to find your cards</div></div>
+        <div id="card-view"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--t3);font-size:13px;flex-direction:column;gap:8px"><span>Select a card to preview</span><span style="font-size:11px;color:var(--t3)">Cards are added from your local HSPolicy 25-26 files</span></div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -870,7 +907,7 @@ body.app-open{overflow:hidden}
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,onValue,set,update,remove,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,onValue,set,update,remove,onDisconnect,serverTimestamp,get}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import{getFirestore,collection,query,where,limit,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -917,7 +954,9 @@ const COLORS=['#60a5fa','#f87171','#a78bfa','#4ade80','#fbbf24','#fb923c','#67e8
 let rc='',myName='',myId='u_'+Math.random().toString(36).slice(2,9);
 let myColor=COLORS[Math.floor(Math.random()*COLORS.length)];
 let evt='policy',spList=SPEECHES.policy;
-let me=null; // firebase user
+let me=null;
+let myRole='editor'; // 'editor' | 'spectator'
+let allRoles={};
 
 let flows={};         // {id:{name,type,side,color,startSpeech,order}}
 let curFlow=null;     // current flow id
@@ -928,6 +967,7 @@ let ldVC={ac:{v:'',c:''},nc:{v:'',c:''}};
 let nextId=1;
 
 let undoStack=[];
+let redoStack=[];
 let speechOpen=false,speechMode='write',flowAccess=false;
 let extArgId=null,extTarget=null;
 let crossId=null;
@@ -945,7 +985,25 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function setSS(s,l){document.getElementById('sdot').className='sdot '+s;document.getElementById('slbl').textContent=l}
 function snap(){return JSON.stringify({args,flows:JSON.parse(JSON.stringify(flows))})}
-function pushUndo(){undoStack.push(snap());if(undoStack.length>30)undoStack.shift()}
+function pushUndo(){undoStack.push(snap());if(undoStack.length>40)undoStack.shift();redoStack=[];}
+
+window.doUndo=function(){
+  if(!undoStack.length){toast('Nothing to undo');return}
+  redoStack.push(snap());
+  const prev=JSON.parse(undoStack.pop());
+  args=prev.args||{};
+  if(curFlow)set(ref(db,frk('args')),args);
+  renderCols();toast('Undone ↩');
+};
+
+window.doRedo=function(){
+  if(!redoStack.length){toast('Nothing to redo');return}
+  undoStack.push(snap());
+  const next=JSON.parse(redoStack.pop());
+  args=next.args||{};
+  if(curFlow)set(ref(db,frk('args')),args);
+  renderCols();toast('Redone ↪');
+};
 function setCursorEnd(el){try{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);r.collapse(false);s.removeAllRanges();s.addRange(r)}catch(e){}}
 function getNextSpeech(sid){const i=spList.findIndex(s=>s.id===sid);return i>=0&&i<spList.length-1?spList[i+1]:null}
 function getFlowTypeInfo(side,type){const g=side==='neg'?FLOW_TYPES.neg:evt==='ld'?(side==='ld_neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff):FLOW_TYPES.aff;return g?.find(x=>x.t===type)||{t:type,l:type,c:'#888',start:spList[0]?.id}}
@@ -1223,10 +1281,52 @@ window.doJoin=function(){
   initRoom();
 };
 
+window.goHome=function(){
+  if(!confirm('Leave this room and return home?'))return;
+  window.location.reload();
+};
+
 // ── INIT ROOM ─────────────────────────────────────────────────────────────
 function initRoom(){
   document.getElementById('sb-room').textContent='# '+rc;
   const ec=document.getElementById('sb-ev');ec.textContent=evt==='policy'?'Policy':'LD';ec.className='ev-chip ev-'+evt;
+
+  // ── ROLES ────────────────────────────────────────────────────────────────
+  // rooms/{rc}/room-meta = {createdBy, event} — set once, persists forever
+  // rooms/{rc}/roles/{myId} = 'editor' | 'spectator'
+  const roomMetaRef=ref(db,rk('room-meta'));
+  get(roomMetaRef).then(snap=>{
+    if(!snap.val()){
+      // First person — creator, auto editor
+      set(roomMetaRef,{createdBy:myId,createdByName:myName,event:evt,createdAt:Date.now()});
+      set(ref(db,rk('roles',myId)),'editor');
+      myRole='editor';
+    }else{
+      // Room exists — check if we have a role already
+      get(ref(db,rk('roles',myId))).then(rsnap=>{
+        if(!rsnap.val()){
+          set(ref(db,rk('roles',myId)),'spectator');
+          myRole='spectator';
+        }else{
+          myRole=rsnap.val();
+        }
+        renderRoleBanner();renderCols();
+      });
+    }
+    renderRoleBanner();
+  });
+
+  // Live role updates (creator promotes us)
+  onValue(ref(db,rk('roles',myId)),snap=>{
+    const r=snap.val();
+    if(r&&r!==myRole){
+      myRole=r;renderRoleBanner();renderCols();
+      toast(r==='editor'?'✓ You can now edit this flow':'You are now a Spectator');
+    }
+  });
+
+  // All roles (for rendering presence with roles)
+  onValue(ref(db,rk('roles')),snap=>{allRoles=snap.val()||{};renderPresence();});
 
   // Presence
   const pr=ref(db,rk('presence',myId));
@@ -1238,22 +1338,16 @@ function initRoom(){
     renderPresence();
   });
 
-  // Flows index (includes kicked state)
+  // Flows index
   onValue(ref(db,rk('flows-index')),snap=>{
     const remote=snap.val()||{};
-    // Merge kicked state for flows that are already loaded
-    Object.entries(remote).forEach(([id,f])=>{
-      if(flows[id])flows[id].kicked=f.kicked||false;
-    });
+    Object.entries(remote).forEach(([id,f])=>{if(flows[id])flows[id].kicked=f.kicked||false;});
     flows=remote;
     renderFlowTabs();
     if(!curFlow){
       const ids=Object.values(flows).sort((a,b)=>(a.order||0)-(b.order||0)).map(f=>f.id);
       if(ids.length)switchFlow(ids[0]);
-    } else {
-      // Re-render cols if kicked state of current flow changed
-      renderCols();
-    }
+    }else{renderCols();}
   });
 
   // Speech doc
@@ -1270,10 +1364,8 @@ function initRoom(){
   document.getElementById('app').classList.add('open');
   document.body.classList.add('app-open');
   syncHdrScroll();
-  // Save room to user profile
   if(me)saveRoomToProfile(rc,evt,rc);
 
-  // Restore speech content on input
   let spDebounce=null;
   document.getElementById('speech-ed').addEventListener('input',()=>{
     clearTimeout(spDebounce);spDebounce=setTimeout(()=>{if(rc)set(ref(db,rk('speech')),document.getElementById('speech-ed').innerHTML)},600);
@@ -1438,6 +1530,7 @@ window.afmBack=function(){
 function closeAfm(){document.getElementById('add-flow-modal').classList.remove('open')}
 
 function createFlow(){
+  if(!canEdit()){toast('Spectators cannot create flows');return}
   const name=document.getElementById('afm-name').value.trim();
   const info=getFlowTypeInfo(afmSide,afmType);
   const finalName=name||(info.l+(afmSide==='aff'?' Aff':' Neg'));
@@ -1609,10 +1702,15 @@ function buildArgCard(a,s,flowKicked){
   const lbl=main.querySelector('.ac-label');
   const cite=main.querySelector('.ac-cite');
 
+  if(!canEdit()){
+    lbl.contentEditable='false';cite.contentEditable='false';
+    lbl.style.cursor='default';cite.style.cursor='default';
+  }else{
   lbl.addEventListener('input',()=>{if(args[a.id])args[a.id].label=lbl.textContent;wad(a.id)});
   lbl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();lbl.blur()}});
   cite.addEventListener('input',()=>{if(args[a.id])args[a.id].cite=cite.textContent;wad(a.id)});
   cite.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault()});
+  }
 
   if(flowAccess){
     lbl.style.cursor='pointer';lbl.title='Click to add to speech';
@@ -1663,6 +1761,7 @@ function wa(id){if(args[id]&&curFlow)set(ref(db,frk('args',id)),args[id])}
 
 // ── ARG ACTIONS ────────────────────────────────────────────────────────────
 function addArg(speechId,responseToId){
+  if(!canEdit()){toast('You are a spectator — ask the creator for editor access');return}
   pushUndo();
   const id=uid();
   const a={id,speechId,label:'',cite:'',notes:'',status:'',crossLinks:[]};
@@ -1677,6 +1776,7 @@ function addArg(speechId,responseToId){
 }
 
 window.delArg=function(id){
+  if(!canEdit()){toast('Spectators cannot delete arguments');return}
   pushUndo();
   Object.values(args).forEach(a=>{
     if(a.crossLinks?.includes(id)){
@@ -1690,6 +1790,7 @@ window.delArg=function(id){
 };
 
 window.toggleSt=function(id,status){
+  if(!canEdit()){toast('Spectators cannot modify arguments');return}
   if(!args[id])return;
   pushUndo();
   args[id].status=args[id].status===status?'':status;
@@ -1702,6 +1803,7 @@ window.toggleSt=function(id,status){
 
 // ── EXTEND ────────────────────────────────────────────────────────────────
 window.openExtend=function(argId,speechId){
+  if(!canEdit()){toast('Spectators cannot extend arguments');return}
   extArgId=argId;extTarget=null;
   const a=args[argId];
   document.getElementById('em-preview').textContent='"'+(a?.label||'').slice(0,55)+'"';
@@ -1734,6 +1836,7 @@ window.confirmExtend=function(){
 
 // ── RESPOND ────────────────────────────────────────────────────────────────
 window.addResp=function(argId,speechId){
+  if(!canEdit()){toast('Spectators cannot add responses');return}
   const next=getNextSpeech(speechId);
   if(!next){toast('No next speech for this flow');return}
   pushUndo();
@@ -1782,15 +1885,7 @@ function toggleCx(from,to){
 window.closeCross=function(){document.getElementById('cross-modal').classList.remove('open');crossId=null};
 
 // ── UNDO ──────────────────────────────────────────────────────────────────
-window.doUndo=function(){
-  if(!undoStack.length){toast('Nothing to undo');return}
-  const prev=JSON.parse(undoStack.pop());
-  args=prev.args||{};
-  if(curFlow){
-    set(ref(db,frk('args')),args);
-  }
-  renderCols();toast('Undone');
-};
+// ── UNDO handled above ────────────────────────────────────────────────────
 
 // ── SPEECH PANEL ──────────────────────────────────────────────────────────
 window.toggleSpeech=function(){
@@ -1833,6 +1928,43 @@ window.clearSpeech=function(){if(confirm('Clear speech for everyone?')){document
 window.exportSpeech=function(){const b=new Blob([document.getElementById('speech-ed').innerText],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='speech.txt';a.click()};
 
 // ── STATUS / PRESENCE ─────────────────────────────────────────────────────
+// ── SPECTATOR / EDITOR ROLES ──────────────────────────────────────────────
+function canEdit(){return myRole==='editor'}
+
+function renderRoleBanner(){
+  let banner=document.getElementById('role-banner');
+  if(myRole==='spectator'){
+    if(!banner){
+      banner=document.createElement('div');
+      banner.id='role-banner';
+      banner.style.cssText='background:rgba(251,191,36,0.08);border-bottom:1px solid rgba(251,191,36,0.2);padding:7px 14px;font-size:12px;color:var(--amb);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;font-family:JetBrains Mono,monospace';
+      banner.innerHTML=`<span>👁 Spectator mode — view only</span><span style="color:var(--t3);font-size:10px">Ask the room creator to give you editor access</span>`;
+      const main=document.getElementById('main');
+      const topbar=document.getElementById('topbar');
+      main.insertBefore(banner,topbar.nextSibling);
+    }
+  }else{
+    if(banner)banner.remove();
+  }
+  // Disable/enable edit controls
+  const addBtns=document.querySelectorAll('.add-flow-btn,.ac-btn,.add-arg-btn,.tb-btn.danger');
+  addBtns.forEach(b=>{
+    b.style.opacity=canEdit()?'1':'0.35';
+    b.style.pointerEvents=canEdit()?'':'none';
+  });
+}
+
+window.promoteUser=function(uid,role){
+  // Only creator can promote
+  get(ref(db,rk('room-meta'))).then(snap=>{
+    const meta=snap.val();
+    if(meta?.createdBy!==myId){toast('Only the room creator can change roles');return}
+    set(ref(db,rk('roles',uid)),role);
+    const peerName=peers[uid]?.name||'User';
+    toast(`${peerName} is now ${role==='editor'?'an Editor':'a Spectator'}`);
+  });
+};
+
 function renderStatus(){
   const a=Object.values(args);
   document.getElementById('st-aff').textContent='AFF '+a.filter(x=>spList.find(s=>s.id===x.speechId&&(s.side==='aff'||s.side==='ld-aff'))).length;
@@ -1842,9 +1974,29 @@ function renderStatus(){
 }
 function renderPresence(){
   const all=[{name:myName,color:myColor,id:myId},...Object.values(peers)];
-  document.getElementById('presence-row').innerHTML=
-    all.map(p=>`<div class="pdot" style="background:${p.color};box-shadow:0 0 4px ${p.color}55" title="${esc(p.name)}${p.id===myId?' (you)':''}"></div>`).join('')+
-    `<span style="font-size:10px;color:var(--t3);margin-left:5px;font-family:'JetBrains Mono',monospace">${all.length} online</span>`;
+  const row=document.getElementById('presence-row');
+  row.innerHTML='';
+  all.forEach(p=>{
+    const role=allRoles[p.id]||'spectator';const isMe=p.id===myId;
+    const isCreator=allRoles['_creatorId']===p.id||allRoles[myId]==='editor';
+    const div=document.createElement('div');
+    div.style.cssText=`display:flex;align-items:center;gap:4px;padding:3px 6px;border-radius:6px;cursor:${isMe?'default':'pointer'};transition:background .15s`;
+    div.title=`${p.name} — ${role}${isMe?' (you)':''}. ${isMe?'':'Click to change role.'}`;
+    div.innerHTML=`<div class="pdot" style="background:${p.color};box-shadow:0 0 4px ${p.color}55"></div><span style="font-size:10px;color:var(--t2);font-family:JetBrains Mono,monospace">${p.name.split(' ')[0]}</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;font-weight:700;font-family:JetBrains Mono,monospace;${role==='editor'?'background:rgba(0,212,255,0.1);color:var(--acc)':'background:rgba(251,191,36,0.1);color:var(--amb)'}">${role==='editor'?'ED':'VIEW'}</span>`;
+    if(!isMe){
+      div.addEventListener('mouseenter',()=>div.style.background='var(--s2)');
+      div.addEventListener('mouseleave',()=>div.style.background='');
+      div.onclick=()=>{
+        if(allRoles[myId]!=='editor'){toast('Only editors can change roles');return}
+        const nr=role==='editor'?'spectator':'editor';
+        if(confirm(`Make ${p.name} ${nr==='editor'?'an Editor':'a Spectator (view only)'}?`))
+          promoteUser(p.id,nr);
+      };
+    }
+    row.appendChild(div);
+  });
+  const cnt=document.createElement('span');cnt.style.cssText='font-size:10px;color:var(--t3);margin-left:4px;font-family:JetBrains Mono,monospace';cnt.textContent=all.length+' online';
+  row.appendChild(cnt);
 }
 
 // ── MISC ──────────────────────────────────────────────────────────────────
@@ -1855,53 +2007,79 @@ window.copyRoom=function(){navigator.clipboard.writeText(rc).catch(()=>{});toast
 window.clearFlow=function(){if(!curFlow)return;args={};set(ref(db,frk('args')),null);renderCols()};
 
 // ── CARD SEARCH ────────────────────────────────────────────────────────────
-window.openCards=function(){document.getElementById('card-overlay').classList.add('show');setTimeout(()=>document.getElementById('cp-q').focus(),100)};
+let cardSrc='logos';
+
+window.openCards=function(){
+  document.getElementById('card-overlay').classList.add('show');
+  const iframe=document.getElementById('logos-iframe');
+  if(iframe&&iframe.src!=='https://logos-debate.netlify.app/')iframe.src='https://logos-debate.netlify.app';
+  if(cardSrc==='mine')setTimeout(()=>document.getElementById('cp-q')?.focus(),120);
+};
 window.closeCards=function(){document.getElementById('card-overlay').classList.remove('show')};
-window.setCF=function(f,btn){cfFilter=f;document.querySelectorAll('.cp-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');doCS()};
-document.getElementById('cp-q').addEventListener('input',()=>{clearTimeout(cfDebounce);cfDebounce=setTimeout(doCS,350)});
+
+window.switchCardSrc=function(src,btn){
+  cardSrc=src;
+  document.querySelectorAll('#csrc-logos,#csrc-mine').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('logos-panel').style.display=src==='logos'?'flex':'none';
+  document.getElementById('mine-panel').style.display=src==='mine'?'flex':'none';
+  if(src==='mine')setTimeout(()=>document.getElementById('cp-q')?.focus(),120);
+};
+
+window.setCF=function(f,btn){
+  cfFilter=f;
+  document.querySelectorAll('.cp-filter[data-f]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');doCS();
+};
+
+document.getElementById('cp-q')?.addEventListener('input',()=>{clearTimeout(cfDebounce);cfDebounce=setTimeout(doCS,350)});
 
 async function doCS(){
-  const q=document.getElementById('cp-q').value.trim().toLowerCase();
-  if(!q){document.getElementById('cp-cnt').textContent='Type to search';document.getElementById('card-list').innerHTML='<div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above</div>';return}
-  document.getElementById('cp-cnt').textContent='Searching…';
+  const qEl=document.getElementById('cp-q');if(!qEl)return;
+  const q=qEl.value.trim().toLowerCase();
+  const cnt=document.getElementById('cp-cnt');
+  const list=document.getElementById('card-list');
+  if(!q){if(cnt)cnt.textContent='Type to search your cards';if(list)list.innerHTML='<div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above</div>';return}
+  if(cnt)cnt.textContent='Searching…';
   try{
     const col=collection(fs,'cards');
     const cs=[where('search_text','>=',q),where('search_text','<=',q+'\uf8ff'),limit(80)];
     if(cfFilter!=='all')cs.push(where('side','==',cfFilter));
     const snap=await getDocs(query(col,...cs));
     const res=snap.docs.map(d=>({id:d.id,...d.data()}));
-    document.getElementById('cp-cnt').textContent=`${res.length} result${res.length!==1?'s':''}`;
+    if(cnt)cnt.textContent=res.length+' result'+(res.length!==1?'s':'')+' in your cards';
     renderCL(res);
   }catch(e){
-    document.getElementById('cp-cnt').textContent='(Upload cards first)';
-    document.getElementById('card-list').innerHTML='<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">Run upload_cards_to_firestore.py first</div>';
+    if(cnt)cnt.textContent='No cards uploaded yet';
+    if(list)list.innerHTML='<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">Run <code style=\'background:var(--s3);padding:2px 5px;border-radius:3px;color:var(--acc)\'>upload_cards_to_firestore.py</code> to index your cards</div>';
   }
 }
+
 function renderCL(cards){
-  const list=document.getElementById('card-list');
+  const list=document.getElementById('card-list');if(!list)return;
   if(!cards.length){list.innerHTML='<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">No cards found</div>';return}
   list.innerHTML='';
   cards.forEach(card=>{
     const item=document.createElement('div');item.className='ci';
-    item.innerHTML=`<div class="ci-tag">${esc(card.tag||'(no tag)')}</div><div class="ci-meta">${card.side||'?'} · ${card.team_code||''}</div>`;
+    item.innerHTML='<div class="ci-tag">'+esc(card.tag||'(no tag)')+'</div><div class="ci-meta">'+(card.side||'?')+' · '+(card.team_code||'')+'</div>';
     item.onclick=()=>{document.querySelectorAll('.ci').forEach(c=>c.classList.remove('active'));item.classList.add('active');viewCard(card)};
     list.appendChild(item);
   });
 }
+
 function viewCard(card){
   selCard=card;
-  const spOpts=spList.map(s=>`<option value="${s.id}">${s.l}</option>`).join('');
-  document.getElementById('card-view').innerHTML=`
-    <div class="cv-tag">${esc(card.tag||'')}</div>
-    <div class="cv-meta"><span class="cv-m">${card.side||'?'}</span><span class="cv-m">${card.team||''}</span><span class="cv-m">${card.team_code||''}</span><span class="cv-m">${card.round||''}</span></div>
-    <div class="card-html">${card.card_html||''}</div>
-    <div class="cv-add">
-      <button class="cv-add-btn" onclick="addCardFlow()">+ Add to Flow</button>
-      <select class="cv-add-sel" id="cv-sp">${spOpts}</select>
-    </div>`;
+  const spOpts=spList.map(s=>'<option value="'+s.id+'">'+s.l+'</option>').join('');
+  const cv=document.getElementById('card-view');if(!cv)return;
+  cv.innerHTML='<div class="cv-tag">'+esc(card.tag||'')+'</div>'
+    +'<div class="cv-meta"><span class="cv-m">'+(card.side||'?')+'</span><span class="cv-m">'+(card.team||'')+'</span><span class="cv-m">'+(card.team_code||'')+'</span><span class="cv-m">'+(card.round||'')+'</span></div>'
+    +'<div class="card-html">'+(card.card_html||'')+'</div>'
+    +'<div class="cv-add"><button class="cv-add-btn" onclick="addCardFlow()">+ Add to Flow</button><select class="cv-add-sel" id="cv-sp">'+spOpts+'</select></div>';
 }
+
 window.addCardFlow=function(){
   if(!selCard)return;
+  if(!canEdit()){toast('Spectators cannot add cards');return}
   const sid=document.getElementById('cv-sp').value;
   const id=uid();
   args[id]={id,speechId:sid,label:selCard.tag||'',cite:'',notes:'',status:'',crossLinks:[],fromCard:true};
@@ -1912,7 +2090,8 @@ window.addCardFlow=function(){
 // ── KEYBOARD ───────────────────────────────────────────────────────────────
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeCross();window.closeExtend?.();document.getElementById('add-flow-modal').classList.remove('open');closeCards();}
-  if((e.ctrlKey||e.metaKey)&&e.key==='z'&&e.target.tagName!=='INPUT'&&e.target.contentEditable!=='true'){e.preventDefault();doUndo();}
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey&&e.target.tagName!=='INPUT'&&e.target.contentEditable!=='true'){e.preventDefault();doUndo();}
+  if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.key==='z'&&e.shiftKey))&&e.target.tagName!=='INPUT'&&e.target.contentEditable!=='true'){e.preventDefault();doRedo();}
 });
 document.getElementById('jm-code').addEventListener('keydown',e=>{if(e.key==='Enter')doJoin()});
 document.getElementById('jm-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('jm-code').focus()});
