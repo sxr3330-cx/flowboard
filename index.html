@@ -17,7 +17,8 @@
   --ld:#a78bfa;--ld2:rgba(167,139,250,0.12);
   --grn:#4ade80;--amb:#fbbf24;--orn:#fb923c;
 }
-html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;overflow:hidden}
+html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;overflow-x:hidden}
+body.app-open{overflow:hidden}
 
 /* ── NEW COLOR SCHEME ── */
 :root{
@@ -34,18 +35,18 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
 }
 
 /* ── LANDING ── */
-#landing{position:fixed;inset:0;background:var(--bg);z-index:999;overflow:hidden;display:flex;flex-direction:column}
-#globe-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-.land-noise{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
-.land-grid{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 80%)}
+#landing{background:var(--bg);display:flex;flex-direction:column;min-height:100vh;position:relative}
+#globe-canvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none}
+.land-noise{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;height:100vh}
+.land-grid{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 80%);height:100vh}
 
 /* NAV */
-#land-nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid var(--b1);backdrop-filter:blur(20px)}
-.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;text-decoration:none}
+#land-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--b1);backdrop-filter:blur(24px);background:rgba(2,3,10,0.7)}
+.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;text-decoration:none;cursor:pointer}
 .ln-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--acc),rgba(0,212,255,0.4));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,212,255,0.3)}
 .ln-logo-mark svg{width:16px;height:16px}
 .ln-links{display:flex;gap:32px;align-items:center}
-.ln-link{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;font-weight:400}
+.ln-link{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;font-weight:400;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
 .ln-link:hover{color:var(--t1)}
 .ln-cta{padding:9px 22px;border-radius:8px;background:var(--acc);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:all .2s;letter-spacing:-.2px}
 .ln-cta:hover{box-shadow:0 0 24px rgba(0,212,255,0.5);transform:translateY(-1px)}
@@ -53,40 +54,119 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
 .ln-signin:hover{color:var(--t1);border-color:var(--b3)}
 
 /* HERO */
-#land-hero{position:relative;z-index:5;flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:0 40px;gap:0}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:12px;color:var(--acc);font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .8s ease both}
-.hero-live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:livepulse 2s infinite}
+#land-hero{position:relative;z-index:5;min-height:90vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 40px;gap:0}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:12px;color:var(--acc);font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .8s ease both;cursor:default}
+.hero-live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:livepulse 2s infinite;flex-shrink:0}
 @keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,0.4)}50%{box-shadow:0 0 0 5px rgba(0,229,160,0)}}
 .hero-h{font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1.0;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .8s .1s ease both}
 .hero-h .line2{display:block;background:linear-gradient(90deg,var(--acc),#4facfe,var(--ld));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:18px;color:var(--t2);max-width:480px;line-height:1.65;font-weight:300;margin-bottom:40px;animation:fadeUp .8s .2s ease both}
-.hero-btns{display:flex;gap:12px;animation:fadeUp .8s .3s ease both;margin-bottom:60px}
+.hero-btns{display:flex;gap:12px;animation:fadeUp .8s .3s ease both;margin-bottom:60px;flex-wrap:wrap;justify-content:center}
 .h-btn-primary{padding:15px 32px;border-radius:10px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:all .2s;letter-spacing:-.2px;box-shadow:0 0 40px rgba(0,212,255,0.25)}
 .h-btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(0,212,255,0.4)}
 .h-btn-google{padding:14px 24px;border-radius:10px;background:rgba(255,255,255,0.04);color:var(--t1);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
 .h-btn-google:hover{border-color:var(--b3);background:rgba(255,255,255,0.07);transform:translateY(-1px)}
 .h-btn-google svg{width:18px;height:18px;flex-shrink:0}
+.h-btn-ld{padding:14px 24px;border-radius:10px;background:rgba(180,122,255,0.08);color:var(--ld);border:1px solid rgba(180,122,255,0.25);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .2s}
+.h-btn-ld:hover{background:rgba(180,122,255,0.14);transform:translateY(-1px)}
 
 /* STATS */
-.hero-stats{display:flex;gap:48px;animation:fadeUp .8s .4s ease both;padding-top:32px;border-top:1px solid var(--b1)}
+.hero-stats{display:flex;gap:48px;animation:fadeUp .8s .4s ease both;padding-top:32px;border-top:1px solid var(--b1);flex-wrap:wrap;justify-content:center}
 .h-stat-num{font-size:28px;font-weight:700;color:var(--acc);letter-spacing:-1px;font-family:'JetBrains Mono',monospace}
 .h-stat-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
 
-/* FEATURES SECTION */
-#land-features{position:relative;z-index:5;padding:80px 48px;background:linear-gradient(to bottom,transparent,rgba(7,11,20,0.95));border-top:1px solid var(--b1)}
+/* INTERACTIVE DEMO SECTION */
+#land-demo{position:relative;z-index:5;padding:80px 48px;background:linear-gradient(to bottom,transparent,rgba(7,11,20,0.97));border-top:1px solid var(--b1)}
+.demo-inner{max-width:960px;margin:0 auto}
+.demo-tabs{display:flex;gap:4px;padding:4px;background:var(--s1);border-radius:12px;border:1px solid var(--b1);margin-bottom:28px;width:fit-content}
+.demo-tab{padding:9px 20px;border-radius:9px;border:none;background:transparent;color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.demo-tab.active{background:var(--s3);color:var(--t1);border:1px solid var(--b2)}
+.demo-tab:hover:not(.active){color:var(--t1)}
+.demo-screen{background:var(--s1);border-radius:16px;border:1px solid var(--b2);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.6)}
+.demo-topbar{height:42px;background:var(--s2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;padding:0 14px}
+.demo-dot{width:10px;height:10px;border-radius:50%}
+.demo-cols{display:flex;height:320px;overflow:hidden}
+.demo-col{flex:1;border-right:1px solid var(--b1);padding:10px 8px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.demo-col:last-child{border-right:none}
+.demo-col-hdr{font-size:9px;font-weight:700;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:4px;text-align:center}
+.demo-arg{border-radius:7px;border:1px solid var(--b1);background:var(--s2);padding:8px 10px;font-size:11px;color:var(--t2);line-height:1.4;cursor:pointer;transition:all .2s}
+.demo-arg:hover{border-color:var(--acc);color:var(--t1);background:rgba(0,212,255,0.04)}
+.demo-arg.highlighted{border-color:rgba(0,229,160,0.4);background:rgba(0,229,160,0.05)}
+.demo-arg.dropped-demo{border-color:rgba(251,191,36,0.4);opacity:.5;text-decoration:line-through}
+.demo-arg strong{color:var(--t1);font-weight:600}
+.demo-arg .cite{font-size:9px;color:var(--acc);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.demo-tooltip{font-size:10px;color:var(--grn);margin-top:4px;display:none}
+.demo-arg:hover .demo-tooltip{display:block}
+
+/* FEATURES */
+#land-features{position:relative;z-index:5;padding:80px 48px;background:rgba(7,11,20,0.97)}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:40px auto 0}
-.feat-card{padding:28px;border-radius:16px;border:1px solid var(--b1);background:rgba(7,11,20,0.8);backdrop-filter:blur(20px);transition:all .25s;position:relative;overflow:hidden}
+.feat-card{padding:28px;border-radius:16px;border:1px solid var(--b1);background:rgba(7,11,20,0.8);backdrop-filter:blur(20px);transition:all .25s;position:relative;overflow:hidden;cursor:default}
 .feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,var(--acc3),transparent 60%);opacity:0;transition:opacity .3s}
 .feat-card:hover{border-color:var(--b2);transform:translateY(-3px)}
 .feat-card:hover::before{opacity:1}
 .feat-icon{font-size:24px;margin-bottom:14px;display:block}
 .feat-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:8px;letter-spacing:-.2px}
 .feat-desc{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* CTA SECTION */
+#land-cta{position:relative;z-index:5;padding:100px 48px;background:rgba(7,11,20,0.97);text-align:center;border-top:1px solid var(--b1)}
+.cta-box{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px}
+.cta-h{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-2px;line-height:1.1}
+.cta-h span{background:linear-gradient(90deg,var(--acc),#4facfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:16px;color:var(--t2);line-height:1.6;max-width:440px}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* FOOTER */
+#land-footer{position:relative;z-index:5;padding:32px 48px;background:rgba(2,3,10,0.98);border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-logo{font-size:13px;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:8px}
+.footer-links{display:flex;gap:24px}
+.footer-link{font-size:12px;color:var(--t3);text-decoration:none;transition:color .2s}
+.footer-link:hover{color:var(--t2)}
+.footer-copy{font-size:12px;color:var(--t3)}
+
 .section-eyebrow{font-size:11px;color:var(--acc);text-transform:uppercase;letter-spacing:2px;font-weight:600;text-align:center}
 .section-title{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-1.5px;text-align:center;margin-top:10px;margin-bottom:8px}
 .section-sub{font-size:15px;color:var(--t2);text-align:center;max-width:480px;margin:0 auto;line-height:1.6}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PROFILE PANEL ── */
+#profile-panel{position:fixed;top:0;right:0;bottom:0;width:360px;background:var(--s1);border-left:1px solid var(--b2);z-index:997;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:-20px 0 60px rgba(0,0,0,0.5)}
+#profile-panel.open{transform:translateX(0)}
+.pp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:996;pointer-events:none;transition:background .28s}
+.pp-overlay.open{background:rgba(0,0,12,0.6);pointer-events:all;backdrop-filter:blur(4px)}
+.pp-hdr{padding:20px 20px 16px;border-bottom:1px solid var(--b1);flex-shrink:0}
+.pp-hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pp-close{background:none;border:none;color:var(--t3);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:5px;line-height:1}
+.pp-close:hover{background:var(--s2);color:var(--t1)}
+.pp-user-row{display:flex;align-items:center;gap:12px}
+.pp-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--b2)}
+.pp-avatar-pl{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#4facfe);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#000;border:2px solid rgba(0,212,255,0.3);flex-shrink:0}
+.pp-name{font-size:15px;font-weight:600;color:var(--t1);letter-spacing:-.2px}
+.pp-email{font-size:12px;color:var(--t2);margin-top:1px}
+.pp-body{flex:1;overflow-y:auto;padding:16px}
+.pp-body::-webkit-scrollbar{width:3px}
+.pp-body::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.pp-section-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:10px;margin-top:4px}
+.pp-stat-row{display:flex;gap:8px;margin-bottom:20px}
+.pp-stat{flex:1;padding:14px;border-radius:10px;border:1px solid var(--b1);background:var(--s2);text-align:center}
+.pp-stat-n{font-size:22px;font-weight:700;color:var(--acc);font-family:'JetBrains Mono',monospace;letter-spacing:-1px}
+.pp-stat-l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
+.pp-room{padding:12px 14px;border-radius:9px;border:1px solid var(--b1);background:var(--s2);cursor:pointer;transition:all .15s;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.pp-room:hover{border-color:var(--b2);background:var(--s3);transform:translateX(2px)}
+.pp-room-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pp-room-info{flex:1;min-width:0}
+.pp-room-code{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--acc);font-weight:700;letter-spacing:1px}
+.pp-room-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-room-date{font-size:10px;color:var(--t3)}
+.pp-room-arrow{color:var(--t3);font-size:14px;flex-shrink:0}
+.pp-signin-prompt{padding:24px;text-align:center;color:var(--t2);font-size:13px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.pp-footer{padding:14px 16px;border-top:1px solid var(--b1);flex-shrink:0;display:flex;flex-direction:column;gap:6px}
+.pp-footer-btn{padding:10px 14px;border-radius:8px;background:transparent;color:var(--t2);border:1px solid var(--b1);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;transition:all .15s;text-align:left;display:flex;align-items:center;gap:8px;width:100%}
+.pp-footer-btn:hover{background:var(--s2);color:var(--t1);border-color:var(--b2)}
+.pp-footer-btn.danger{color:var(--neg)}
+.pp-footer-btn.danger:hover{border-color:var(--neg);background:var(--neg2)}
 
 /* ── ACCOUNT PAGE ── */
 #account-page{display:none;position:fixed;inset:0;background:var(--bg);z-index:998;overflow-y:auto}
@@ -408,30 +488,32 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
   <div class="land-grid"></div>
 
   <nav id="land-nav">
-    <a class="ln-logo" href="#">
+    <div class="ln-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
       <div class="ln-logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       Flowboard
-    </a>
-    <div class="ln-links">
-      <a class="ln-link" href="#land-features" onclick="scrollFeat()">Features</a>
-      <a class="ln-link" href="#" onclick="openJoin('policy');return false">Policy</a>
-      <a class="ln-link" href="#" onclick="openJoin('ld');return false">LD</a>
     </div>
-    <div style="display:flex;gap:8px">
+    <div class="ln-links">
+      <button class="ln-link" onclick="document.getElementById('land-demo').scrollIntoView({behavior:'smooth'})">How it works</button>
+      <button class="ln-link" onclick="document.getElementById('land-features').scrollIntoView({behavior:'smooth'})">Features</button>
+      <button class="ln-link" onclick="openJoin('policy')">Policy</button>
+      <button class="ln-link" onclick="openJoin('ld')">LD</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
       <button class="ln-signin" id="ln-signin-btn" onclick="doGoogle()">Sign In</button>
       <button class="ln-cta" onclick="openJoin('policy')">Start Flowing →</button>
     </div>
   </nav>
 
   <div id="land-hero">
-    <div class="hero-eyebrow"><div class="hero-live-dot"></div>Live multiplayer · Real-time sync · Policy & LD</div>
+    <div class="hero-eyebrow"><div class="hero-live-dot"></div>Live multiplayer · Policy & LD · Real-time sync</div>
     <h1 class="hero-h">
       Flow rounds.<br>
       <span class="line2">Win arguments.</span>
     </h1>
-    <p class="hero-sub">The first debate platform built for speed — shared flows, live speech docs, card search, and real-time sync across your entire team.</p>
+    <p class="hero-sub">The first debate platform built for speed — shared flows, live speech docs, card search, and real-time sync across your whole team.</p>
     <div class="hero-btns">
-      <button class="h-btn-primary" onclick="openJoin('policy')">Start a Room →</button>
+      <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
+      <button class="h-btn-ld" onclick="openJoin('ld')">Lincoln-Douglas</button>
       <button class="h-btn-google" onclick="doGoogle()">
         <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Sign in with Google
@@ -445,18 +527,114 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
     </div>
   </div>
 
+  <!-- INTERACTIVE DEMO -->
+  <div id="land-demo">
+    <div class="demo-inner">
+      <div class="section-eyebrow">See it in action</div>
+      <div class="section-title" style="margin-bottom:6px">Flow like you're in round</div>
+      <div class="section-sub" style="margin-bottom:28px">Click the arguments below to see how Flowboard works</div>
+      <div class="demo-tabs">
+        <button class="demo-tab active" onclick="switchDemo('policy',this)">Policy</button>
+        <button class="demo-tab" onclick="switchDemo('ld',this)">LD</button>
+      </div>
+      <div class="demo-screen" id="demo-screen">
+        <div class="demo-topbar">
+          <div class="demo-dot" style="background:#f87171"></div>
+          <div class="demo-dot" style="background:#fbbf24"></div>
+          <div class="demo-dot" style="background:#4ade80"></div>
+          <span style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-left:8px">Flowboard · Demo · OCTAS26</span>
+          <span style="margin-left:auto;font-size:10px;color:var(--grn);font-family:'JetBrains Mono',monospace">● live</span>
+        </div>
+        <div class="demo-cols" id="demo-cols"></div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:var(--t3);margin-top:14px">↑ Hover or click any argument card above. This is a real preview of the interface.</p>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
   <div id="land-features">
     <div class="section-eyebrow">Built for the round</div>
     <div class="section-title">Everything you need to win</div>
-    <div class="section-sub">Purpose-built for competitive policy and LD debate. No bloat.</div>
+    <div class="section-sub">Purpose-built for competitive policy and LD. No bloat, no learning curve.</div>
     <div class="feat-grid">
-      <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change instantly. Firebase-powered sub-second latency across any device.</div></div>
-      <div class="feat-card"><span class="feat-icon">📄</span><div class="feat-title">Flow Sheets</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Each starts at the right speech automatically.</div></div>
-      <div class="feat-card"><span class="feat-icon">🔍</span><div class="feat-title">Card Search</div><div class="feat-desc">25,000+ indexed cards from HSPolicy 25-26 with full formatting — bold, underline, and highlights preserved.</div></div>
+      <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change instantly. Firebase-powered sub-second latency from any device worldwide.</div></div>
+      <div class="feat-card"><span class="feat-icon">📄</span><div class="feat-title">Flow Sheets</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Each flow starts at the right speech automatically.</div></div>
+      <div class="feat-card"><span class="feat-icon">🔍</span><div class="feat-title">Card Search</div><div class="feat-desc">25,000+ indexed cards from HSPolicy 25-26 with full formatting — bold, underline, highlights preserved exactly.</div></div>
       <div class="feat-card"><span class="feat-icon">↩</span><div class="feat-title">Respond System</div><div class="feat-desc">Click respond on any arg and a linked response box opens in the next speech column automatically.</div></div>
-      <div class="feat-card"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any arg to add it to your speech instantly.</div></div>
-      <div class="feat-card"><span class="feat-icon">⊠</span><div class="feat-title">Kick Positions</div><div class="feat-desc">Kick an entire flow (Cap K, Politics DA) with one click — crosses out the whole sheet for both partners.</div></div>
+      <div class="feat-card"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any arg to pull it into your speech instantly.</div></div>
+      <div class="feat-card"><span class="feat-icon">⊠</span><div class="feat-title">Kick Positions</div><div class="feat-desc">Kick an entire flow (Cap K, Politics DA) with one click. Crosses out the whole sheet for both partners.</div></div>
     </div>
+  </div>
+
+  <!-- CTA -->
+  <div id="land-cta">
+    <div class="cta-box">
+      <div class="cta-h">Ready to flow?<br><span>Start your first room.</span></div>
+      <div class="cta-sub">Free forever. No account required. Share a room code and your partner is in within seconds.</div>
+      <div class="cta-btns">
+        <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
+        <button class="h-btn-google" onclick="doGoogle()">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="land-footer">
+    <div class="footer-logo">
+      <div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      Flowboard
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="#" onclick="openJoin('policy');return false">Policy</a>
+      <a class="footer-link" href="#" onclick="openJoin('ld');return false">LD</a>
+      <a class="footer-link" href="#land-features" onclick="document.getElementById('land-features').scrollIntoView({behavior:'smooth'});return false">Features</a>
+    </div>
+    <div class="footer-copy">© 2026 Flowboard</div>
+  </div>
+</div>
+
+<!-- PROFILE PANEL OVERLAY -->
+<div class="pp-overlay" id="pp-overlay" onclick="closeProfilePanel()"></div>
+
+<!-- PROFILE PANEL -->
+<div id="profile-panel">
+  <div class="pp-hdr">
+    <div class="pp-hdr-top">
+      <div style="font-size:14px;font-weight:600;color:var(--t1)">Profile</div>
+      <button class="pp-close" onclick="closeProfilePanel()">✕</button>
+    </div>
+    <div class="pp-user-row" id="pp-user-row">
+      <div style="font-size:13px;color:var(--t2)">Not signed in</div>
+    </div>
+  </div>
+  <div class="pp-body" id="pp-body">
+    <div class="pp-signin-prompt" id="pp-signin-prompt">
+      <div style="font-size:32px">👤</div>
+      <div>Sign in to save your flows and access your room history</div>
+      <button class="h-btn-google" onclick="doGoogle();closeProfilePanel()" style="font-size:13px;padding:11px 18px">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign in with Google
+      </button>
+    </div>
+    <div id="pp-signed-in" style="display:none">
+      <div class="pp-stat-row" id="pp-stats-row">
+        <div class="pp-stat"><div class="pp-stat-n" id="pp-stat-r">0</div><div class="pp-stat-l">Rooms</div></div>
+        <div class="pp-stat"><div class="pp-stat-n" id="pp-stat-f">0</div><div class="pp-stat-l">Flows</div></div>
+      </div>
+      <div class="pp-section-lbl">Recent Rooms</div>
+      <div id="pp-rooms-list"><div style="color:var(--t3);font-size:13px;padding:12px 0">Loading…</div></div>
+    </div>
+  </div>
+  <div class="pp-footer" id="pp-footer">
+    <button class="pp-footer-btn" onclick="openJoin('policy');closeProfilePanel()">
+      <span>+</span> Start a new room
+    </button>
+    <button class="pp-footer-btn danger" id="pp-signout-btn" style="display:none" onclick="doSignOut()">
+      Sign out
+    </button>
   </div>
 </div>
 
@@ -483,12 +661,10 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
       <div class="acc-greeting">Welcome back,<br><span id="acc-greeting-name">debater</span></div>
       <button class="h-btn-primary" onclick="closeAccountPage();openJoin('policy')" style="font-size:14px;padding:13px 24px">+ New Room</button>
     </div>
-
-    <div class="acc-stats-row" id="acc-stats-row">
+    <div class="acc-stats-row">
       <div class="acc-stat"><div class="acc-stat-n" id="acc-stat-rooms">0</div><div class="acc-stat-l">Rooms Flowed</div></div>
       <div class="acc-stat"><div class="acc-stat-n" id="acc-stat-flows">0</div><div class="acc-stat-l">Flow Sheets Created</div></div>
     </div>
-
     <div class="acc-section-title">Recent Rooms <span class="cnt" id="acc-rooms-cnt">0</span></div>
     <div class="acc-rooms-grid" id="acc-rooms-grid">
       <div class="acc-empty">Loading your rooms…</div>
@@ -550,7 +726,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',s
         <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         Card Search
       </button>
-      <button class="sb-btn" id="profile-btn" onclick="me?openAccountPage():doGoogle()">
+      <button class="sb-btn" id="profile-btn" onclick="me?openProfilePanel():doGoogle()">
         <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 14c0-2.761 2.239-4 5-4s5 1.239 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span id="profile-lbl">Sign In</span>
       </button>
@@ -774,119 +950,176 @@ function setCursorEnd(el){try{const r=document.createRange(),s=window.getSelecti
 function getNextSpeech(sid){const i=spList.findIndex(s=>s.id===sid);return i>=0&&i<spList.length-1?spList[i+1]:null}
 function getFlowTypeInfo(side,type){const g=side==='neg'?FLOW_TYPES.neg:evt==='ld'?(side==='ld_neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff):FLOW_TYPES.aff;return g?.find(x=>x.t===type)||{t:type,l:type,c:'#888',start:spList[0]?.id}}
 
-// ── AUTH ─────────────────────────────────────────────────────────────────
+// ── AUTH + PROFILE PANEL ─────────────────────────────────────────────────
 onAuthStateChanged(auth,user=>{
   me=user;
-  if(user){
-    // Update nav sign-in button to show account
-    const btn=document.getElementById('ln-signin-btn');
-    if(btn){
-      btn.textContent=user.displayName?.split(' ')[0]||'Account';
-      btn.onclick=openAccountPage;
-    }
-    // If we're on the landing page, show account page
-    if(document.getElementById('landing').style.display!=='none'&&document.getElementById('app').style.display==='none'){
-      openAccountPage();
-    }
-  } else {
-    const btn=document.getElementById('ln-signin-btn');
-    if(btn){btn.textContent='Sign In';btn.onclick=doGoogle;}
-  }
+  updateNavAuth();
+  updateProfilePanel();
   updateProfileUI();
 });
 
+function updateNavAuth(){
+  const btn=document.getElementById('ln-signin-btn');
+  if(!btn)return;
+  if(me){
+    btn.textContent=me.displayName?.split(' ')[0]||'Account';
+    btn.onclick=openProfilePanel;
+  }else{
+    btn.textContent='Sign In';
+    btn.onclick=doGoogle;
+  }
+}
+
 window.doGoogle=async function(){
   try{
-    const result=await signInWithPopup(auth,new GoogleAuthProvider());
-    // Will trigger onAuthStateChanged which opens account page
+    await signInWithPopup(auth,new GoogleAuthProvider());
   }catch(e){
-    if(e.code==='auth/popup-blocked')toast('Popup blocked — allow popups for this site');
-    else if(e.code==='auth/unauthorized-domain')toast('Add your domain to Firebase Auth → Authorized Domains');
-    else toast('Sign-in error: '+e.message);
+    if(e.code==='auth/popup-blocked')toast('Allow popups for this site then try again');
+    else if(e.code==='auth/unauthorized-domain')toast('Add your Vercel domain in Firebase → Auth → Authorized Domains');
+    else toast('Sign-in failed: '+(e.message||e.code));
   }
 };
 
 window.doSignOut=function(){
   signOut(auth).then(()=>{
+    closeProfilePanel();
     closeAccountPage();
     toast('Signed out');
   });
 };
 
+// Profile panel
+window.openProfilePanel=function(){
+  document.getElementById('profile-panel').classList.add('open');
+  document.getElementById('pp-overlay').classList.add('open');
+  if(me)loadProfilePanelData();
+};
+window.closeProfilePanel=function(){
+  document.getElementById('profile-panel').classList.remove('open');
+  document.getElementById('pp-overlay').classList.remove('open');
+};
+
+function updateProfilePanel(){
+  const userRow=document.getElementById('pp-user-row');
+  const signedInSection=document.getElementById('pp-signed-in');
+  const signinPrompt=document.getElementById('pp-signin-prompt');
+  const signoutBtn=document.getElementById('pp-signout-btn');
+  if(!userRow)return;
+  if(me){
+    const initials=(me.displayName||'?').split(' ').map(w=>w[0]).join('').slice(0,2);
+    const avatarHtml=me.photoURL?`<img src="${me.photoURL}" class="pp-avatar">`:`<div class="pp-avatar-pl">${initials}</div>`;
+    userRow.innerHTML=`${avatarHtml}<div><div class="pp-name">${esc(me.displayName||'User')}</div><div class="pp-email">${esc(me.email||'')}</div></div>`;
+    if(signedInSection)signedInSection.style.display='block';
+    if(signinPrompt)signinPrompt.style.display='none';
+    if(signoutBtn)signoutBtn.style.display='flex';
+  }else{
+    userRow.innerHTML=`<div style="font-size:13px;color:var(--t2)">Not signed in</div>`;
+    if(signedInSection)signedInSection.style.display='none';
+    if(signinPrompt)signinPrompt.style.display='flex';
+    if(signoutBtn)signoutBtn.style.display='none';
+  }
+}
+
+async function loadProfilePanelData(){
+  if(!me)return;
+  const userRoomsRef=ref(db,`users/${me.uid}/rooms`);
+  onValue(userRoomsRef,snap=>{
+    const rooms=snap.val()||{};
+    const list=Object.values(rooms).sort((a,b)=>(b.lastVisit||0)-(a.lastVisit||0));
+    // Stats
+    const statR=document.getElementById('pp-stat-r');
+    const statF=document.getElementById('pp-stat-f');
+    if(statR)statR.textContent=list.length;
+    if(statF){let tf=0;list.forEach(r=>tf+=(r.flowCount||0));statF.textContent=tf;}
+    // Rooms list
+    const rl=document.getElementById('pp-rooms-list');
+    if(!rl)return;
+    if(!list.length){rl.innerHTML='<div style="color:var(--t3);font-size:13px;padding:8px 0">No rooms yet — start flowing!</div>';return}
+    rl.innerHTML='';
+    const evtColors={policy:'#4facfe',ld:'#b47aff'};
+    list.slice(0,8).forEach(r=>{
+      const d=document.createElement('div');d.className='pp-room';
+      d.innerHTML=`
+        <div class="pp-room-dot" style="background:${evtColors[r.event]||'#888'}"></div>
+        <div class="pp-room-info">
+          <div class="pp-room-code"># ${r.code||'???'}</div>
+          <div class="pp-room-name">${esc(r.name||r.code||'Unnamed')}</div>
+          <div class="pp-room-date">${r.lastVisit?new Date(r.lastVisit).toLocaleDateString():'Recently'}</div>
+        </div>
+        <div class="pp-room-arrow">›</div>`;
+      d.onclick=()=>{closeProfilePanel();openJoinWithCode(r.code,r.event||'policy')};
+      rl.appendChild(d);
+    });
+  },{onlyOnce:true});
+}
+
+function updateProfileUI(){
+  const lbl=document.getElementById('profile-lbl');
+  if(lbl){if(me)lbl.textContent=me.displayName?.split(' ')[0]||'Profile';else lbl.textContent='Sign In';}
+}
+
+// Account page (full page)
 window.openAccountPage=function(){
   if(!me)return;
   document.getElementById('account-page').classList.add('open');
   renderAccountPage();
 };
-
 window.closeAccountPage=function(){
   document.getElementById('account-page').classList.remove('open');
 };
 
-function updateProfileUI(){
-  // Sidebar profile button
-  const lbl=document.getElementById('profile-lbl');
-  if(lbl){if(me)lbl.textContent=me.displayName?.split(' ')[0]||'Profile';else lbl.textContent='Sign In';}
-}
-
 async function renderAccountPage(){
   if(!me)return;
-  // Avatar
   const wrap=document.getElementById('acc-avatar-wrap');
   if(me.photoURL)wrap.innerHTML=`<img src="${me.photoURL}" class="acc-avatar">`;
   else{const initials=(me.displayName||'?').split(' ').map(w=>w[0]).join('').slice(0,2);wrap.innerHTML=`<div class="acc-avatar-pl">${initials}</div>`;}
   document.getElementById('acc-name').textContent=me.displayName||me.email||'User';
   document.getElementById('acc-email').textContent=me.email||'';
-  const firstName=me.displayName?.split(' ')[0]||'there';
-  document.getElementById('acc-greeting-name').textContent=firstName;
-
-  // Load rooms this user has been in (stored in DB per user)
+  document.getElementById('acc-greeting-name').textContent=me.displayName?.split(' ')[0]||'there';
   const userRoomsRef=ref(db,`users/${me.uid}/rooms`);
   onValue(userRoomsRef,snap=>{
     const rooms=snap.val()||{};
     const roomList=Object.values(rooms).sort((a,b)=>(b.lastVisit||0)-(a.lastVisit||0));
     document.getElementById('acc-rooms-cnt').textContent=roomList.length;
     document.getElementById('acc-stat-rooms').textContent=roomList.length;
-    // Count flows
-    let totalFlows=0;roomList.forEach(r=>totalFlows+=(r.flowCount||0));
-    document.getElementById('acc-stat-flows').textContent=totalFlows;
+    let tf=0;roomList.forEach(r=>tf+=(r.flowCount||0));
+    document.getElementById('acc-stat-flows').textContent=tf;
     renderRoomCards(roomList);
   },{onlyOnce:true});
 }
 
 function renderRoomCards(rooms){
   const grid=document.getElementById('acc-rooms-grid');
+  if(!grid)return;
   grid.innerHTML='';
   if(!rooms.length){
     grid.innerHTML='<div class="acc-empty">No rooms yet — start flowing!</div>';
-    const newBtn=document.createElement('div');newBtn.className='acc-new-room';
-    newBtn.innerHTML=`<div class="acc-new-icon">+</div><div class="acc-new-lbl">Start a new room</div>`;
-    newBtn.onclick=()=>{closeAccountPage();openJoin('policy')};
-    grid.appendChild(newBtn);return;
+    const nb=document.createElement('div');nb.className='acc-new-room';
+    nb.innerHTML='<div class="acc-new-icon">+</div><div class="acc-new-lbl">Start a new room</div>';
+    nb.onclick=()=>{closeAccountPage();openJoin('policy')};
+    grid.appendChild(nb);return;
   }
+  const evtColors={policy:'#4facfe',ld:'#b47aff'};
   rooms.slice(0,8).forEach(r=>{
     const card=document.createElement('div');card.className='acc-room-card';
     const evt=r.event||'policy';
-    const evtChipStyle=evt==='policy'?'background:var(--aff2);color:var(--aff)':'background:var(--ld2);color:var(--ld)';
     card.innerHTML=`
       <div class="acc-room-code"># ${r.code||'???'}</div>
       <div class="acc-room-name">${esc(r.name||r.code||'Unnamed Room')}</div>
       <div class="acc-room-meta">${r.lastVisit?new Date(r.lastVisit).toLocaleDateString():'Recently'}</div>
-      <span class="acc-room-evt" style="${evtChipStyle}">${evt.toUpperCase()}</span>`;
+      <span class="acc-room-evt" style="background:${evtColors[evt]}18;color:${evtColors[evt]}">${evt.toUpperCase()}</span>`;
     card.onclick=()=>{closeAccountPage();openJoinWithCode(r.code,r.event||'policy')};
     grid.appendChild(card);
   });
-  const newBtn=document.createElement('div');newBtn.className='acc-new-room';
-  newBtn.innerHTML=`<div class="acc-new-icon">+</div><div class="acc-new-lbl">New room</div>`;
-  newBtn.onclick=()=>{closeAccountPage();openJoin('policy')};
-  grid.appendChild(newBtn);
+  const nb=document.createElement('div');nb.className='acc-new-room';
+  nb.innerHTML='<div class="acc-new-icon">+</div><div class="acc-new-lbl">New room</div>';
+  nb.onclick=()=>{closeAccountPage();openJoin('policy')};
+  grid.appendChild(nb);
 }
 
-// Save room visit to user profile
 function saveRoomToProfile(code,event,name){
   if(!me)return;
-  const roomRef=ref(db,`users/${me.uid}/rooms/${code}`);
-  set(roomRef,{code,event,name:name||code,lastVisit:Date.now(),flowCount:Object.keys(flows).length});
+  set(ref(db,`users/${me.uid}/rooms/${code}`),{code,event,name:name||code,lastVisit:Date.now(),flowCount:Object.keys(flows).length});
 }
 
 window.openJoinWithCode=function(code,evt){
@@ -894,7 +1127,79 @@ window.openJoinWithCode=function(code,evt){
   setTimeout(()=>{document.getElementById('jm-code').value=code;},100);
 };
 
-window.scrollFeat=function(){document.getElementById('land-features')?.scrollIntoView({behavior:'smooth'})};
+// ── DEMO SECTION ──────────────────────────────────────────────────────────
+const DEMO_DATA={
+  policy:{
+    cols:[
+      {l:'1AC',side:'aff',color:'#4facfe',args:[
+        {label:'Naval capacity is structurally low',cite:'Kesler 25',status:''},
+        {label:'Status quo naval weakness causes miscalculation',cite:'Lish 26',status:''},
+        {label:'Plan: substantially increase naval readiness',cite:'',status:''},
+      ]},
+      {l:'1NC',side:'neg',color:'#f87171',args:[
+        {label:'Topicality — "substantially" requires 30%+ increase',cite:'Bradley 24',status:''},
+        {label:'DA: Defense spending triggers austerity spiral',cite:'Park 25',status:''},
+        {label:'K: Security discourse reifies militarism',cite:'Dillon 23',status:''},
+      ]},
+      {l:'2AC',side:'aff',color:'#4facfe',args:[
+        {label:'T — we meet, plan exceeds threshold',cite:'',status:'ext'},
+        {label:'DA: No link — plan funded by reallocation',cite:'',status:''},
+        {label:'K: Perm — do both, pragmatic engagement',cite:'',status:''},
+      ]},
+    ]
+  },
+  ld:{
+    cols:[
+      {l:'AC',side:'ld-aff',color:'#b47aff',args:[
+        {label:'Value: Justice',cite:'',status:''},
+        {label:'Criterion: Util — maximizes aggregate welfare',cite:'',status:''},
+        {label:'C1: Inequality causes structural violence',cite:'Galtung 22',status:''},
+      ]},
+      {l:'NC',side:'ld-neg',color:'#f87171',args:[
+        {label:'Value: Morality / Criterion: Kant CI',cite:'',status:''},
+        {label:'Neg VC: Util fails — ignores individual rights',cite:'Rawls 71',status:''},
+        {label:'Off-case: T — resolution requires state action',cite:'',status:''},
+      ]},
+    ]
+  }
+};
+
+let demoEvt='policy';
+window.switchDemo=function(evt,btn){
+  demoEvt=evt;
+  document.querySelectorAll('.demo-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDemo();
+};
+
+function renderDemo(){
+  const data=DEMO_DATA[demoEvt];
+  const cols=document.getElementById('demo-cols');
+  if(!cols)return;
+  cols.innerHTML='';
+  const sideColors={aff:'#4facfe','ld-aff':'#b47aff',neg:'#f87171','ld-neg':'#f87171'};
+  data.cols.forEach(col=>{
+    const dc=document.createElement('div');dc.className='demo-col';
+    const hdr=document.createElement('div');hdr.className='demo-col-hdr';
+    hdr.style.color=sideColors[col.side]||'#888';hdr.textContent=col.l;
+    dc.appendChild(hdr);
+    col.args.forEach(a=>{
+      const card=document.createElement('div');card.className='demo-arg'+(a.status==='ext'?' highlighted':a.status==='drop'?' dropped-demo':'');
+      card.innerHTML=`<strong>${a.label}</strong>${a.cite?`<div class="cite">${a.cite}</div>`:''}<div class="demo-tooltip">${a.status==='ext'?'✓ Extended':a.status==='drop'?'✗ Dropped':'↩ Click to add response →'}</div>`;
+      card.onclick=()=>{
+        if(a.status===''){a.status='ext';card.classList.add('highlighted');}
+        else if(a.status==='ext'){a.status='drop';card.classList.remove('highlighted');card.classList.add('dropped-demo');}
+        else{a.status='';card.classList.remove('highlighted','dropped-demo');}
+        card.querySelector('.demo-tooltip').textContent=a.status==='ext'?'✓ Extended':a.status==='drop'?'✗ Dropped':'↩ Click to interact →';
+      };
+      dc.appendChild(card);
+    });
+    cols.appendChild(dc);
+  });
+}
+
+// init demo
+setTimeout(renderDemo,100);
 
 // ── LANDING / JOIN ────────────────────────────────────────────────────────
 let joinEvt='policy';
@@ -961,7 +1266,9 @@ function initRoom(){
   document.getElementById('join-modal').classList.remove('open');
   document.getElementById('landing').style.display='none';
   document.getElementById('account-page').classList.remove('open');
+  closeProfilePanel();
   document.getElementById('app').classList.add('open');
+  document.body.classList.add('app-open');
   syncHdrScroll();
   // Save room to user profile
   if(me)saveRoomToProfile(rc,evt,rc);
