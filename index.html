@@ -442,22 +442,81 @@ body.app-open{overflow:hidden}
 #toast.show{opacity:1}
 
 /* card search */
-#card-overlay{display:none;position:fixed;inset:0;z-index:700;align-items:flex-start;justify-content:center;padding-top:65px;background:rgba(0,0,0,.78);backdrop-filter:blur(16px)}
+#card-overlay{display:none;position:fixed;inset:0;z-index:700;align-items:flex-start;justify-content:center;padding-top:40px;background:rgba(0,0,12,0.88);backdrop-filter:blur(24px)}
 #card-overlay.show{display:flex}
-.card-panel{background:var(--s1);border:1px solid var(--b2);border-radius:16px;width:900px;max-width:95vw;height:82vh;display:flex;flex-direction:column;overflow:hidden}
+.card-panel{background:var(--s1);border:1px solid var(--b2);border-radius:20px;width:1040px;max-width:96vw;height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.8)}
+/* custom header */
+.cs-header{padding:20px 22px 0;flex-shrink:0;background:var(--s1);border-bottom:1px solid var(--b1)}
+.cs-toprow{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cs-logo{font-size:14px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:8px}
+.cs-logo-dot{width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc);flex-shrink:0}
+.cs-badge{font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acc2);border:1px solid rgba(0,212,255,0.25);color:var(--acc);font-weight:700;letter-spacing:.5px;font-family:'JetBrains Mono',monospace}
+.cs-close{background:none;border:none;color:var(--t3);cursor:pointer;font-size:20px;padding:4px 8px;border-radius:7px;margin-left:auto;line-height:1;transition:all .15s}
+.cs-close:hover{background:var(--s2);color:var(--t1)}
+.cs-searchbar{display:flex;align-items:center;gap:10px;background:var(--s2);border:1.5px solid var(--b2);border-radius:12px;padding:11px 16px;margin-bottom:14px;transition:border-color .2s}
+.cs-searchbar:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,212,255,.06)}
+.cs-icon{font-size:16px;color:var(--t3);flex-shrink:0}
+.cs-input{flex:1;background:transparent;border:none;color:var(--t1);font-size:15px;outline:none;font-family:'Inter',sans-serif}
+.cs-input::placeholder{color:var(--t3)}
+.cs-submit{padding:7px 20px;border-radius:8px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;transition:all .2s;flex-shrink:0;letter-spacing:-.2px}
+.cs-submit:hover{box-shadow:0 0 20px rgba(0,212,255,.35);transform:translateY(-1px)}
+.cs-tabs{display:flex;gap:0;border-bottom:1px solid var(--b1)}
+.cs-tab{padding:9px 20px;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;margin-bottom:-1px}
+.cs-tab.active{color:var(--acc);border-bottom-color:var(--acc);font-weight:600}
+.cs-tab:hover:not(.active){color:var(--t1)}
+.cs-body{flex:1;overflow:hidden;display:flex;flex-direction:column}
 #logos-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
-#mine-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.cp-top{padding:14px 16px 0;flex-shrink:0}
+.cs-iframe-bar{padding:7px 18px;background:rgba(0,212,255,.04);border-bottom:1px solid rgba(0,212,255,.08);font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cs-iframe-bar a{color:var(--acc);text-decoration:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px}
+.cs-iframe-bar a:hover{text-decoration:underline}
+#logos-iframe{flex:1;border:none;background:#0a1628}
+#mine-panel{display:none;flex:1;flex-direction:column;overflow:hidden}
+.cp-top{padding:12px 16px 0;flex-shrink:0}
 .cp-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cp-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
-.cp-year{font-size:9px;padding:2px 7px;border-radius:3px;background:var(--acc2);border:1px solid rgba(232,255,71,.2);color:var(--acc);font-weight:700;letter-spacing:.5px}
-.cp-close{background:none;border:none;color:var(--t3);cursor:pointer;font-size:17px}
+.cp-year{display:none}
+.cp-close{display:none}
 .cp-search{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:11px 14px;color:var(--t1);font-size:14px;outline:none;margin-bottom:10px;font-family:'Inter',sans-serif}
 .cp-filters{display:flex;gap:6px;margin-bottom:10px}
 .cp-filter{padding:4px 10px;border-radius:5px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:12px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .15s}
 .cp-filter:hover{background:var(--s2);color:var(--t1)}
 .cp-filter.active{background:var(--acc2);border-color:rgba(232,255,71,.3);color:var(--acc)}
 .cp-count{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;display:block;padding-bottom:8px}
+.ev-src{padding:6px 14px;border-radius:7px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.ev-src:hover{background:var(--s2);color:var(--t1)}
+.ev-src.active{background:var(--acc2);border-color:rgba(0,212,255,.3);color:var(--acc);font-weight:700}
+.ev-filter{padding:5px 11px;border-radius:6px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .15s}
+.ev-filter:hover{background:var(--s2);color:var(--t1)}
+.ev-filter.active{background:var(--acc2);border-color:rgba(0,212,255,.3);color:var(--acc);font-weight:700}
+
+/* Card list items */
+.ev-card-item{padding:10px 12px;border-radius:8px;border:1px solid var(--b1);margin-bottom:4px;cursor:pointer;transition:all .15s;background:var(--s2)}
+.ev-card-item:hover{border-color:var(--b2);background:var(--s3)}
+.ev-card-item.active{border-color:rgba(0,212,255,.35);background:rgba(0,212,255,.05)}
+.ev-card-tag{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:4px;line-height:1.35}
+.ev-card-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.ev-card-src{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.8px}
+.ev-src-open{background:rgba(0,212,255,.12);color:var(--acc)}
+.ev-src-mine{background:rgba(74,222,128,.12);color:var(--grn)}
+
+/* Preview panel */
+.ev-preview-tag{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;margin-bottom:10px;line-height:1.2}
+.ev-preview-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--b1);align-items:center}
+.ev-meta-chip{font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace;background:var(--s2);padding:3px 8px;border-radius:5px;border:1px solid var(--b1)}
+.ev-card-body{font-size:13px;color:var(--t2);line-height:1.85}
+.ev-card-body strong,.ev-card-body b{font-weight:700;color:var(--t1)}
+.ev-card-body u{text-decoration:underline;color:var(--t1)}
+.ev-card-body mark{background:rgba(0,212,255,.15);color:var(--t1);border-radius:2px;padding:0 2px}
+.ev-add-bar{margin-top:20px;padding-top:16px;border-top:1px solid var(--b1);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ev-add-btn{padding:10px 22px;border-radius:8px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:opacity .15s}
+.ev-add-btn:hover{opacity:.87}
+.ev-sp-sel{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:9px 12px;color:var(--t1);font-family:'Inter',sans-serif;font-size:13px;outline:none;flex:1}
+.ev-sp-sel:focus{border-color:var(--acc)}
+
+/* Loading spinner */
+.ev-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;gap:12px;color:var(--t3);font-size:13px}
+.ev-spinner{width:24px;height:24px;border:2px solid var(--b2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .cp-body{display:flex;flex:1;overflow:hidden}
 #card-list{width:300px;flex-shrink:0;border-right:1px solid var(--b1);overflow-y:auto;padding:8px}
 #card-list::-webkit-scrollbar{width:3px}
@@ -848,55 +907,61 @@ body.app-open{overflow:hidden}
   </div>
 </div>
 
-<!-- CARD SEARCH — Logos embed + your cards -->
-<div id="card-overlay">
-  <div class="card-panel" style="width:1100px;max-width:97vw">
-    <div class="cp-top">
-      <div class="cp-hdr">
-        <div class="cp-title">
-          Card Search
-          <span class="cp-year">Logos + HSPolicy 25–26</span>
+<!-- CARD SEARCH -->
+<div id="card-overlay" onclick="if(event.target===this)closeCards()">
+  <div class="card-panel">
+    <!-- Header -->
+    <div style="padding:18px 20px 14px;border-bottom:1px solid var(--b1);flex-shrink:0;background:rgba(13,18,32,0.95)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--acc),#4facfe);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px">🔍</div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px">Evidence Search</div>
+            <div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace">OpenEv · OpenCaselist · Your Cards</div>
+          </div>
         </div>
-        <button class="cp-close" onclick="closeCards()">✕</button>
+        <button onclick="closeCards()" style="background:var(--s3);border:1px solid var(--b1);color:var(--t2);cursor:pointer;font-size:13px;width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center">✕</button>
       </div>
-      <!-- Source tabs -->
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button class="cp-filter active" id="csrc-logos" onclick="switchCardSrc('logos',this)" style="font-size:13px;padding:6px 16px">🌐 Logos (Open Evidence)</button>
-        <button class="cp-filter" id="csrc-mine" onclick="switchCardSrc('mine',this)" style="font-size:13px;padding:6px 16px">📂 Your Uploaded Cards</button>
+      <!-- Unified search bar -->
+      <div style="position:relative;margin-bottom:12px">
+        <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--t3);pointer-events:none">⌕</div>
+        <input id="ev-search" placeholder="Search debate evidence — tags, authors, citations, topics…"
+          style="width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:12px 14px 12px 38px;color:var(--t1);font-size:14px;outline:none;font-family:'Inter',sans-serif;transition:border-color .2s"
+          onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--b2)'" autocomplete="off">
+      </div>
+      <!-- Source + filter tabs -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;gap:5px">
+          <button class="ev-src active" data-src="open" onclick="setEvSrc('open',this)">Open Evidence</button>
+          <button class="ev-src" data-src="mine" onclick="setEvSrc('mine',this)">Your Cards</button>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center">
+          <button class="ev-filter active" data-f="all" onclick="setEvFilter('all',this)">All</button>
+          <button class="ev-filter" data-f="aff" onclick="setEvFilter('aff',this)">Aff</button>
+          <button class="ev-filter" data-f="neg" onclick="setEvFilter('neg',this)">Neg</button>
+          <div style="width:1px;height:16px;background:var(--b1);margin:0 4px"></div>
+          <span id="ev-count" style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace">Search above</span>
+        </div>
       </div>
     </div>
-    <!-- LOGOS IFRAME -->
-    <div id="logos-panel" class="cp-body" style="flex-direction:column;display:flex">
-      <div style="padding:8px 16px 10px;background:var(--s2);border-bottom:1px solid var(--b1);flex-shrink:0;font-size:12px;color:var(--t2);display:flex;align-items:center;gap:10px">
-        <span>Searching Logos — includes OpenEv, OpenCaselist, and open-source debate evidence</span>
-        <a href="https://logos-debate.netlify.app" target="_blank" style="color:var(--acc);font-size:11px;text-decoration:none;margin-left:auto;font-family:'JetBrains Mono',monospace">Open in new tab ↗</a>
-      </div>
-      <iframe
-        id="logos-iframe"
-        src="https://logos-debate.netlify.app"
-        style="flex:1;border:none;background:var(--s1)"
-        allow="same-origin"
-        loading="lazy"
-        title="Logos Debate Card Search"
-      ></iframe>
-    </div>
-    <!-- YOUR FIRESTORE CARDS -->
-    <div id="mine-panel" style="display:none;flex:1;flex-direction:column">
-      <div class="cp-top" style="border-top:1px solid var(--b1)">
-        <input class="cp-search" id="cp-q" placeholder="Search your uploaded HSPolicy 25-26 cards…" autocomplete="off">
-        <div class="cp-filters">
-          <button class="cp-filter active" data-f="all" onclick="setCF('all',this)">All</button>
-          <button class="cp-filter" data-f="Aff" onclick="setCF('Aff',this)">Aff</button>
-          <button class="cp-filter" data-f="Neg" onclick="setCF('Neg',this)">Neg</button>
-        </div>
-        <span class="cp-count" id="cp-cnt">Type to search your cards</span>
-        <div style="font-size:11px;color:var(--t3);margin-top:4px;padding-bottom:6px">
-          To index cards: run <code style="background:var(--s2);padding:2px 6px;border-radius:3px;color:var(--acc);font-size:10px">upload_cards_to_firestore.py</code> locally with your HSPolicy 25-26 folder.
+    <!-- Body -->
+    <div style="display:flex;flex:1;overflow:hidden">
+      <!-- Results list -->
+      <div id="ev-list" style="width:320px;flex-shrink:0;border-right:1px solid var(--b1);overflow-y:auto;background:var(--s1)">
+        <div id="ev-list-inner" style="padding:8px">
+          <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:13px;line-height:1.6">
+            <div style="font-size:28px;margin-bottom:10px">🔍</div>
+            Search OpenEv, OpenCaselist,<br>and your uploaded cards
+          </div>
         </div>
       </div>
-      <div class="cp-body">
-        <div id="card-list"><div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above to find your cards</div></div>
-        <div id="card-view"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--t3);font-size:13px;flex-direction:column;gap:8px"><span>Select a card to preview</span><span style="font-size:11px;color:var(--t3)">Cards are added from your local HSPolicy 25-26 files</span></div></div>
+      <!-- Card preview -->
+      <div id="ev-preview" style="flex:1;overflow-y:auto;padding:24px 28px;background:var(--bg)">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--t3)">
+          <div style="font-size:40px;opacity:.3">📄</div>
+          <div style="font-size:14px">Select a card to preview it here</div>
+          <div style="font-size:12px;color:var(--t3)">Click any result on the left</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2007,85 +2072,189 @@ window.copyRoom=function(){navigator.clipboard.writeText(rc).catch(()=>{});toast
 window.clearFlow=function(){if(!curFlow)return;args={};set(ref(db,frk('args')),null);renderCols()};
 
 // ── CARD SEARCH ────────────────────────────────────────────────────────────
-let cardSrc='logos';
+let evSrc='open', evFilter='all', evDebounce=null, evSelCard=null;
 
 window.openCards=function(){
   document.getElementById('card-overlay').classList.add('show');
-  const iframe=document.getElementById('logos-iframe');
-  if(iframe&&iframe.src!=='https://logos-debate.netlify.app/')iframe.src='https://logos-debate.netlify.app';
-  if(cardSrc==='mine')setTimeout(()=>document.getElementById('cp-q')?.focus(),120);
+  setTimeout(()=>document.getElementById('ev-search')?.focus(),100);
 };
 window.closeCards=function(){document.getElementById('card-overlay').classList.remove('show')};
 
-window.switchCardSrc=function(src,btn){
-  cardSrc=src;
-  document.querySelectorAll('#csrc-logos,#csrc-mine').forEach(b=>b.classList.remove('active'));
+window.setEvSrc=function(src,btn){
+  evSrc=src;
+  document.querySelectorAll('.ev-src').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('logos-panel').style.display=src==='logos'?'flex':'none';
-  document.getElementById('mine-panel').style.display=src==='mine'?'flex':'none';
-  if(src==='mine')setTimeout(()=>document.getElementById('cp-q')?.focus(),120);
+  doEvSearch();
 };
 
-window.setCF=function(f,btn){
-  cfFilter=f;
-  document.querySelectorAll('.cp-filter[data-f]').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');doCS();
+window.setEvFilter=function(f,btn){
+  evFilter=f;
+  document.querySelectorAll('.ev-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  doEvSearch();
 };
 
-document.getElementById('cp-q')?.addEventListener('input',()=>{clearTimeout(cfDebounce);cfDebounce=setTimeout(doCS,350)});
+document.getElementById('ev-search')?.addEventListener('input',()=>{
+  clearTimeout(evDebounce);evDebounce=setTimeout(doEvSearch,380);
+});
 
-async function doCS(){
-  const qEl=document.getElementById('cp-q');if(!qEl)return;
-  const q=qEl.value.trim().toLowerCase();
-  const cnt=document.getElementById('cp-cnt');
-  const list=document.getElementById('card-list');
-  if(!q){if(cnt)cnt.textContent='Type to search your cards';if(list)list.innerHTML='<div style="padding:24px 12px;color:var(--t3);font-size:13px;text-align:center">Search above</div>';return}
-  if(cnt)cnt.textContent='Searching…';
-  try{
-    const col=collection(fs,'cards');
-    const cs=[where('search_text','>=',q),where('search_text','<=',q+'\uf8ff'),limit(80)];
-    if(cfFilter!=='all')cs.push(where('side','==',cfFilter));
-    const snap=await getDocs(query(col,...cs));
-    const res=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(cnt)cnt.textContent=res.length+' result'+(res.length!==1?'s':'')+' in your cards';
-    renderCL(res);
-  }catch(e){
-    if(cnt)cnt.textContent='No cards uploaded yet';
-    if(list)list.innerHTML='<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">Run <code style=\'background:var(--s3);padding:2px 5px;border-radius:3px;color:var(--acc)\'>upload_cards_to_firestore.py</code> to index your cards</div>';
+document.getElementById('ev-search')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){clearTimeout(evDebounce);doEvSearch();}
+});
+
+async function doEvSearch(){
+  const q=(document.getElementById('ev-search')?.value||'').trim();
+  const cntEl=document.getElementById('ev-count');
+  const listEl=document.getElementById('ev-list-inner');
+  if(!q){
+    if(cntEl)cntEl.textContent='Search above';
+    if(listEl)listEl.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:13px;line-height:1.6"><div style="font-size:28px;margin-bottom:10px">🔍</div>Search open-source debate evidence</div>';
+    return;
+  }
+  if(cntEl)cntEl.textContent='Searching…';
+  if(listEl)listEl.innerHTML='<div class="ev-loading"><div class="ev-spinner"></div>Searching evidence…</div>';
+
+  if(evSrc==='open'){
+    await searchOpenEv(q,cntEl,listEl);
+  }else{
+    await searchFirestore(q,cntEl,listEl);
   }
 }
 
-function renderCL(cards){
-  const list=document.getElementById('card-list');if(!list)return;
-  if(!cards.length){list.innerHTML='<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">No cards found</div>';return}
-  list.innerHTML='';
-  cards.forEach(card=>{
-    const item=document.createElement('div');item.className='ci';
-    item.innerHTML='<div class="ci-tag">'+esc(card.tag||'(no tag)')+'</div><div class="ci-meta">'+(card.side||'?')+' · '+(card.team_code||'')+'</div>';
-    item.onclick=()=>{document.querySelectorAll('.ci').forEach(c=>c.classList.remove('active'));item.classList.add('active');viewCard(card)};
-    list.appendChild(item);
+// ── OPEN EVIDENCE SEARCH (via Logos API) ───────────────────────────────────
+async function searchOpenEv(q,cntEl,listEl){
+  // Try Logos search API — they expose a /search endpoint
+  try{
+    const res=await fetch('https://logos-debate.netlify.app/search?q='+encodeURIComponent(q),{
+      headers:{Accept:'application/json','X-Requested-With':'XMLHttpRequest'}
+    });
+    if(res.ok){
+      const data=await res.json();
+      const cards=Array.isArray(data)?data:(data.results||data.cards||[]);
+      renderEvList(cards.slice(0,60),cntEl,listEl,'open');
+      return;
+    }
+  }catch(e){}
+
+  // Fallback: show cards from Firestore if Logos API blocked by CORS
+  // plus a prominent link to search Logos in new tab
+  if(cntEl)cntEl.textContent='Open in Logos for full results';
+  if(listEl){
+    const q_enc=encodeURIComponent(q);
+    listEl.innerHTML=`
+      <div style="padding:20px 14px 10px">
+        <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:10px;padding:14px 16px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--acc);margin-bottom:6px">Search Open Evidence</div>
+          <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.5">Logos indexes OpenEv, OpenCaselist, and thousands of open-source debate files. Open it to search for "<strong style="color:var(--t1)">${esc(q)}</strong>".</div>
+          <a href="https://logos-debate.netlify.app/?q=${q_enc}" target="_blank"
+            style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;text-decoration:none;font-size:13px;font-weight:700;font-family:Inter,sans-serif">
+            Search "${esc(q.slice(0,30))}" on Logos ↗
+          </a>
+        </div>
+        <div style="font-size:11px;color:var(--t3);text-align:center;padding:8px">Also check your uploaded cards in the "Your Cards" tab</div>
+      </div>`;
+  }
+}
+
+// ── FIRESTORE CARD SEARCH ─────────────────────────────────────────────────
+async function searchFirestore(q,cntEl,listEl){
+  const ql=q.toLowerCase();
+  try{
+    const col=collection(fs,'cards');
+    const cs=[where('search_text','>=',ql),where('search_text','<=',ql+'\uf8ff'),limit(80)];
+    if(evFilter==='aff')cs.push(where('side','==','Aff'));
+    else if(evFilter==='neg')cs.push(where('side','==','Neg'));
+    const snap=await getDocs(query(col,...cs));
+    const results=snap.docs.map(d=>({id:d.id,...d.data(),_src:'mine'}));
+    renderEvList(results,cntEl,listEl,'mine');
+  }catch(e){
+    if(cntEl)cntEl.textContent='No cards uploaded';
+    if(listEl)listEl.innerHTML=`<div style="padding:20px 14px">
+      <div style="background:var(--s2);border-radius:10px;padding:16px;font-size:13px;color:var(--t2);line-height:1.6">
+        No cards indexed yet. Run <code style="background:var(--s3);padding:2px 6px;border-radius:4px;color:var(--acc);font-size:11px">upload_cards_to_firestore.py</code> locally to index your HSPolicy 25-26 folder.
+      </div>
+    </div>`;
+  }
+}
+
+function renderEvList(cards,cntEl,listEl,src){
+  if(!listEl)return;
+  if(!cards.length){
+    if(cntEl)cntEl.textContent='No results';
+    listEl.innerHTML='<div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:13px">No cards found for that query</div>';
+    return;
+  }
+  if(cntEl)cntEl.textContent=cards.length+(cards.length===60?'+ ':'  ')+'results';
+  listEl.innerHTML='';
+  cards.forEach((card,i)=>{
+    const item=document.createElement('div');
+    item.className='ev-card-item'+(i===0?' active':'');
+    const srcLabel=src==='mine'?'<span class="ev-card-src ev-src-mine">YOUR CARDS</span>':'<span class="ev-card-src ev-src-open">OPEN EV</span>';
+    const side=(card.side||card.Aff_neg||'').toUpperCase();
+    const team=card.team||card.team_code||card.Team||'';
+    item.innerHTML=`
+      <div class="ev-card-tag">${esc(card.tag||card.Tag||card.title||'(no tag)')}</div>
+      <div class="ev-card-meta">
+        ${srcLabel}
+        ${side?`<span>${side}</span>`:''}
+        ${team?`<span>${esc(team)}</span>`:''}
+        ${card.year||card.Year?`<span>${card.year||card.Year}</span>`:''}
+      </div>`;
+    item.onclick=()=>{
+      document.querySelectorAll('.ev-card-item').forEach(x=>x.classList.remove('active'));
+      item.classList.add('active');
+      showEvPreview(card,src);
+    };
+    listEl.appendChild(item);
+    if(i===0)showEvPreview(card,src);
   });
 }
 
-function viewCard(card){
-  selCard=card;
-  const spOpts=spList.map(s=>'<option value="'+s.id+'">'+s.l+'</option>').join('');
-  const cv=document.getElementById('card-view');if(!cv)return;
-  cv.innerHTML='<div class="cv-tag">'+esc(card.tag||'')+'</div>'
-    +'<div class="cv-meta"><span class="cv-m">'+(card.side||'?')+'</span><span class="cv-m">'+(card.team||'')+'</span><span class="cv-m">'+(card.team_code||'')+'</span><span class="cv-m">'+(card.round||'')+'</span></div>'
-    +'<div class="card-html">'+(card.card_html||'')+'</div>'
-    +'<div class="cv-add"><button class="cv-add-btn" onclick="addCardFlow()">+ Add to Flow</button><select class="cv-add-sel" id="cv-sp">'+spOpts+'</select></div>';
+function showEvPreview(card,src){
+  evSelCard=card;
+  const prev=document.getElementById('ev-preview');if(!prev)return;
+  const spOpts=spList.map(s=>`<option value="${s.id}">${s.l}</option>`).join('');
+  const tag=card.tag||card.Tag||card.title||'';
+  const side=(card.side||card.Aff_neg||'').toUpperCase();
+  const team=card.team||card.team_code||'';
+  const cite=card.cite||card.Cite||card.citation||'';
+  const body=card.card_html||card.body||card.text||'<em style="color:var(--t3)">No card text available</em>';
+  const srcLabel=src==='mine'
+    ?'<span class="ev-card-src ev-src-mine" style="font-size:10px;padding:2px 7px">YOUR CARDS</span>'
+    :'<span class="ev-card-src ev-src-open" style="font-size:10px;padding:2px 7px">OPEN EV</span>';
+
+  prev.innerHTML=`
+    <div class="ev-preview-tag">${esc(tag)}</div>
+    <div class="ev-preview-meta">
+      ${srcLabel}
+      ${side?`<span class="ev-meta-chip">${side}</span>`:''}
+      ${team?`<span class="ev-meta-chip">${esc(team)}</span>`:''}
+      ${cite?`<span class="ev-meta-chip" style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(cite)}">${esc(cite.slice(0,60))}${cite.length>60?'…':''}</span>`:''}
+    </div>
+    <div class="ev-card-body">${body}</div>
+    <div class="ev-add-bar">
+      <button class="ev-add-btn" onclick="addEvCardToFlow()">+ Add to Flow</button>
+      <select class="ev-sp-sel" id="ev-sp-sel">${spOpts}</select>
+      <span style="font-size:11px;color:var(--t3);margin-left:auto">Adds tag as argument label</span>
+    </div>`;
 }
 
-window.addCardFlow=function(){
-  if(!selCard)return;
-  if(!canEdit()){toast('Spectators cannot add cards');return}
-  const sid=document.getElementById('cv-sp').value;
+window.addEvCardToFlow=function(){
+  if(!evSelCard)return;
+  if(!canEdit()){toast('Spectators cannot add cards to the flow');return}
+  const sid=document.getElementById('ev-sp-sel')?.value;if(!sid)return;
   const id=uid();
-  args[id]={id,speechId:sid,label:selCard.tag||'',cite:'',notes:'',status:'',crossLinks:[],fromCard:true};
+  const tag=evSelCard.tag||evSelCard.Tag||evSelCard.title||'';
+  const cite=evSelCard.cite||evSelCard.Cite||evSelCard.team||'';
+  args[id]={id,speechId:sid,label:tag,cite,notes:'',status:'',crossLinks:[],fromCard:true};
   wa(id);if(curFlow)update(ref(db,frk('meta')),{nextId});
-  renderCols();closeCards();toast('Card added to '+sid.toUpperCase());
+  renderCols();closeCards();
+  toast('Card added to '+(spList.find(s=>s.id===sid)?.l||sid.toUpperCase()));
 };
+
+// legacy stubs so nothing breaks
+window.addCardFlow=window.addEvCardToFlow;
+window.setCF=window.setEvFilter;
 
 // ── KEYBOARD ───────────────────────────────────────────────────────────────
 document.addEventListener('keydown',e=>{
