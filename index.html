@@ -2823,6 +2823,18 @@ setTimeout(()=>{
   if(r)animCount(r,34,1800);
   if(a)animCount(a,3241,2400);
 },600);
+
+// Stub — module script overrides this once loaded
+// Handles the case where user clicks before module finishes loading
+if(!window.openJoin){
+  window.openJoin=function(evtType){
+    // Queue until module is ready
+    const check=setInterval(()=>{
+      const modal=document.getElementById('join-modal');
+      if(modal&&modal._ready){clearInterval(check);window.openJoin(evtType);}
+    },50);
+  };
+}
 </script>
 <!-- PROFILE PANEL OVERLAY -->
 <div class="pp-overlay" id="pp-overlay" onclick="closeProfilePanel()"></div>
@@ -3145,6 +3157,24 @@ import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}fro
 
 const FB={apiKey:"AIzaSyDhkxrjwjBGdD2euLSGgUGvOywyuAGEazw",authDomain:"flowboard-101a6.firebaseapp.com",databaseURL:"https://flowboard-101a6-default-rtdb.firebaseio.com",projectId:"flowboard-101a6",storageBucket:"flowboard-101a6.firebasestorage.app",messagingSenderId:"558167356977",appId:"1:558167356977:web:7358523b7d29b122c24710"};
 const app=initializeApp(FB),db=getDatabase(app),fs=getFirestore(app),auth=getAuth(app);
+
+// ── Define openJoin immediately so landing buttons work right away ─────────
+let _joinEvt='policy';
+window.openJoin=function(evtType='policy'){
+  _joinEvt=evtType;
+  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
+  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
+  const btn=document.getElementById(map[_joinEvt]||'jm-pol');
+  if(btn)btn.classList.add('active');
+  const modal=document.getElementById('join-modal');
+  if(modal){modal.classList.add('open');modal._ready=true;}
+  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
+};
+window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open')};
+// Mark modal ready immediately
+document.addEventListener('DOMContentLoaded',()=>{
+  const m=document.getElementById('join-modal');if(m)m._ready=true;
+});
 
 // ── SPEECH CONFIGS ──────────────────────────────────────────────────────
 const SPEECHES={
@@ -4178,17 +4208,6 @@ setTimeout(()=>{
 // ════════════════════════════════════════════════════════════════════════════
 
 // ── JOIN / ROOM ENTRY ──────────────────────────────────────────────────────
-let _joinEvt='policy';
-window.openJoin=function(evtType='policy'){
-  _joinEvt=evtType;
-  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
-  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
-  const btn=document.getElementById(map[_joinEvt]||'jm-pol');
-  if(btn)btn.classList.add('active');
-  document.getElementById('join-modal').classList.add('open');
-  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
-};
-window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open')};
 window.setJoinEvt=function(evtType,btn){
   _joinEvt=evtType;
   document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
