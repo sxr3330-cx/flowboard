@@ -106,6 +106,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
   transition: opacity .5s;
 }
 #particle-canvas.hidden { opacity: 0; }
+#stars { position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55; }
 
 /* ── NOISE OVERLAY ─────────────────────────────────────────────────────── */
 .noise-overlay {
@@ -1727,6 +1728,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 </head>
 <body>
 
+<canvas id="stars"></canvas>
 <!-- CURSOR -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
@@ -2824,17 +2826,7 @@ setTimeout(()=>{
   if(a)animCount(a,3241,2400);
 },600);
 
-// Stub — module script overrides this once loaded
-// Handles the case where user clicks before module finishes loading
-if(!window.openJoin){
-  window.openJoin=function(evtType){
-    // Queue until module is ready
-    const check=setInterval(()=>{
-      const modal=document.getElementById('join-modal');
-      if(modal&&modal._ready){clearInterval(check);window.openJoin(evtType);}
-    },50);
-  };
-}
+
 </script>
 <!-- PROFILE PANEL OVERLAY -->
 <div class="pp-overlay" id="pp-overlay" onclick="closeProfilePanel()"></div>
@@ -2912,6 +2904,36 @@ if(!window.openJoin){
   </div>
 </div>
 
+
+<!-- GLOBAL SYNC FUNCTIONS — plain script, runs before module -->
+<script>
+window._joinEvtPending=null;
+window._moduleReady=false;
+// Stub that works before module loads
+window.openJoin=function(evtType){
+  const modal=document.getElementById('join-modal');
+  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
+  if(modal){modal.classList.add('open');}
+  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById(map[evtType||'policy']||'jm-pol');
+  if(btn)btn.classList.add('active');
+  window._joinEvtPending=evtType||'policy';
+  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
+};
+window.closeJoin=function(){
+  const modal=document.getElementById('join-modal');
+  if(modal)modal.classList.remove('open');
+};
+window.setJoinEvt=function(evtType,btn){
+  window._joinEvtPending=evtType;
+  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+};
+window.doJoin=function(){
+  // Will be overridden by module — show error if module not ready
+  alert('Loading… please try again in a moment.');
+};
+</script>
 
 <!-- JOIN MODAL -->
 <div id="join-modal">
@@ -3158,23 +3180,19 @@ import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}fro
 const FB={apiKey:"AIzaSyDhkxrjwjBGdD2euLSGgUGvOywyuAGEazw",authDomain:"flowboard-101a6.firebaseapp.com",databaseURL:"https://flowboard-101a6-default-rtdb.firebaseio.com",projectId:"flowboard-101a6",storageBucket:"flowboard-101a6.firebasestorage.app",messagingSenderId:"558167356977",appId:"1:558167356977:web:7358523b7d29b122c24710"};
 const app=initializeApp(FB),db=getDatabase(app),fs=getFirestore(app),auth=getAuth(app);
 
-// ── Define openJoin immediately so landing buttons work right away ─────────
+// ── openJoin — full implementation, overrides the sync stub ─────────────
 let _joinEvt='policy';
 window.openJoin=function(evtType='policy'){
   _joinEvt=evtType;
+  window._joinEvtPending=evtType;
   document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
   const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
   const btn=document.getElementById(map[_joinEvt]||'jm-pol');
   if(btn)btn.classList.add('active');
-  const modal=document.getElementById('join-modal');
-  if(modal){modal.classList.add('open');modal._ready=true;}
+  document.getElementById('join-modal').classList.add('open');
   setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
 };
-window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open')};
-// Mark modal ready immediately
-document.addEventListener('DOMContentLoaded',()=>{
-  const m=document.getElementById('join-modal');if(m)m._ready=true;
-});
+window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open');};
 
 // ── SPEECH CONFIGS ──────────────────────────────────────────────────────
 const SPEECHES={
@@ -4209,7 +4227,7 @@ setTimeout(()=>{
 
 // ── JOIN / ROOM ENTRY ──────────────────────────────────────────────────────
 window.setJoinEvt=function(evtType,btn){
-  _joinEvt=evtType;
+  _joinEvt=evtType;window._joinEvtPending=evtType;
   document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 };
@@ -5038,8 +5056,6 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-// Expose openJoin globally for landing page buttons
-window.openJoin=window.openJoin;
 
 // ── APP STAR FIELD ────────────────────────────────────────────────────────
 (function(){
