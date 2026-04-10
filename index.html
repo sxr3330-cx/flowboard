@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flowboard — Flow Faster. Win More.</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Flowboard — Debate Flowing, Reimagined.</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700;1,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════════════════
    FLOWBOARD — LANDING STYLES
@@ -35,7 +35,7 @@
   --card-bg:     rgba(14,12,26,0.9);
 
   /* Fonts */
-  --font:       'Inter', sans-serif;
+  --font:       'Plus Jakarta Sans', sans-serif;
   --mono:       'JetBrains Mono', monospace;
 
   /* Spacing */
@@ -939,8 +939,625 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 .d5 { transition-delay: .40s }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   APP STYLES (preserved below — do not modify)
+   APP STYLES
    ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── APP SHELL ─────────────────────────────────────────────────────────── */
+#app {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: var(--bg); flex-direction: row;
+  --aff: #4facfe; --neg: #f87171; --orn: #fb923c; --grn: #4ade80;
+  --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+  --s1: rgba(255,255,255,0.02); --s2: rgba(255,255,255,0.04); --s3: rgba(255,255,255,0.07);
+  --b1: rgba(255,255,255,0.07); --b2: rgba(255,255,255,0.12); --b3: rgba(255,255,255,0.18);
+  --acc: var(--accent); --rd: #f87171;
+}
+#app.open { display: flex }
+:root.light #app {
+  --t1: #0c0a1e; --t2: rgba(30,20,80,0.6); --t3: rgba(80,60,160,0.4);
+  --s1: rgba(0,0,0,0.02); --s2: rgba(0,0,0,0.04); --s3: rgba(0,0,0,0.06);
+  --b1: rgba(0,0,0,0.07); --b2: rgba(0,0,0,0.12); --b3: rgba(0,0,0,0.2);
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────────────────────── */
+#sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--bg2); border-right: 1px solid var(--b1);
+  display: flex; flex-direction: column; overflow: hidden; z-index: 10;
+}
+.sb-top { padding: 14px 14px 0; flex-shrink: 0 }
+.sb-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; color: var(--t1);
+  padding: 6px 8px; border-radius: 8px; margin-bottom: 10px;
+  transition: background .15s;
+}
+.sb-logo:hover { background: var(--s2) }
+.sb-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 0 2px 10px }
+.room-pill {
+  font-size: 10px; font-family: var(--mono); font-weight: 700;
+  background: var(--s2); border: 1px solid var(--b2); border-radius: 5px;
+  padding: 3px 7px; color: var(--t2); cursor: pointer; letter-spacing: .5px;
+  transition: background .15s;
+}
+.room-pill:hover { background: var(--s3) }
+.ev-chip {
+  font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  background: rgba(79,172,254,0.12); color: #4facfe;
+  border-radius: 4px; padding: 3px 7px;
+}
+.sb-flows { flex: 1; overflow-y: auto; padding: 0 8px }
+.sb-section-label { font-size: 10px; font-weight: 600; color: var(--t3); letter-spacing: .8px; padding: 8px 6px 4px; text-transform: uppercase }
+.flow-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px; border-radius: 7px; cursor: pointer;
+  font-size: 12.5px; color: var(--t2); transition: background .15s, color .15s;
+  position: relative; user-select: none;
+}
+.flow-tab:hover { background: var(--s2); color: var(--t1) }
+.flow-tab.active { background: var(--s3); color: var(--t1) }
+.flow-tab.kicked { opacity: .45 }
+.flow-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
+.flow-tab-lbl { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.flow-tab-type { font-size: 10px; color: var(--t3); font-family: var(--mono) }
+.flow-kick-btn {
+  width: 18px; height: 18px; border-radius: 4px; border: none;
+  background: transparent; color: var(--t3); cursor: pointer;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .15s, background .15s;
+}
+.flow-tab:hover .flow-kick-btn { opacity: 1 }
+.flow-kick-btn:hover { background: var(--s3); color: var(--rd) }
+.add-flow-btn {
+  display: flex; align-items: center; gap: 7px;
+  margin: 6px 8px; padding: 8px 10px; border-radius: 7px;
+  border: 1px dashed var(--b2); background: transparent;
+  color: var(--t3); font-family: var(--font); font-size: 12px;
+  cursor: pointer; transition: all .15s;
+}
+.add-flow-btn:hover { border-color: var(--acc); color: var(--acc); background: var(--accent3) }
+.add-flow-btn svg { width: 14px; height: 14px }
+.sb-bottom { padding: 8px; border-top: 1px solid var(--b1); flex-shrink: 0 }
+.sb-presence { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 0 8px }
+.peer-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 9px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg2); title: attr(title);
+}
+.sync-row { display: flex; align-items: center; gap: 6px; padding: 4px 2px 8px }
+.sdot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0 }
+.sdot.sync { background: var(--grn) }
+.sdot.off { background: var(--t3) }
+.sdot.err { background: var(--rd) }
+.slbl { font-size: 11px; color: var(--t3) }
+.sb-btn {
+  display: flex; align-items: center; gap: 7px;
+  width: 100%; padding: 7px 8px; border-radius: 7px;
+  border: none; background: transparent; color: var(--t2);
+  font-family: var(--font); font-size: 12px; cursor: pointer;
+  transition: background .15s, color .15s; text-align: left;
+}
+.sb-btn svg { width: 14px; height: 14px; flex-shrink: 0 }
+.sb-btn:hover { background: var(--s2); color: var(--t1) }
+
+/* ── MAIN + TOPBAR ─────────────────────────────────────────────────────── */
+#main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden }
+#topbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 14px; height: 46px; border-bottom: 1px solid var(--b1);
+  background: var(--bg2); flex-shrink: 0;
+}
+#sheet-title {
+  background: transparent; border: 1px solid transparent; border-radius: 6px;
+  padding: 4px 8px; color: var(--t1); font-family: var(--font); font-size: 13px;
+  font-weight: 600; width: 180px; outline: none; transition: border-color .15s;
+}
+#sheet-title:focus { border-color: var(--b2) }
+.tb-sep { width: 1px; height: 18px; background: var(--b1); flex-shrink: 0; margin: 0 2px }
+.tb-btn {
+  padding: 5px 10px; border-radius: 6px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 12px; cursor: pointer; white-space: nowrap;
+  transition: all .15s;
+}
+.tb-btn:hover { background: var(--s2); color: var(--t1); border-color: var(--b2) }
+.tb-btn.acc { background: rgba(79,172,254,0.1); color: #4facfe; border-color: rgba(79,172,254,0.2) }
+.tb-btn.acc:hover { background: rgba(79,172,254,0.2) }
+.tb-btn.purple { background: rgba(109,92,231,0.12); color: var(--acc); border-color: rgba(109,92,231,0.25) }
+.tb-btn.purple:hover { background: rgba(109,92,231,0.22) }
+.tb-btn.purple.active { background: rgba(109,92,231,0.3); box-shadow: 0 0 0 2px rgba(109,92,231,0.3) }
+.tb-btn.danger { color: var(--rd); border-color: rgba(248,113,113,0.2) }
+.tb-btn.danger:hover { background: rgba(248,113,113,0.1) }
+.tb-btn[disabled] { opacity: .4; cursor: not-allowed }
+
+/* ── FLOW WRAP ─────────────────────────────────────────────────────────── */
+#flow-wrap { flex: 1; overflow: auto; display: flex; flex-direction: column; min-height: 0 }
+#col-headers { position: sticky; top: 0; z-index: 20; background: var(--bg2); border-bottom: 1px solid var(--b1); flex-shrink: 0 }
+#chi { display: flex; min-width: max-content }
+.col-hdr-cell {
+  flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+  padding: 0 14px; height: 36px; font-size: 12px; font-weight: 700;
+  font-family: var(--mono); letter-spacing: .5px;
+  border-right: 1px solid var(--b1); position: relative;
+}
+.col-hdr-resize {
+  position: absolute; right: -3px; top: 0; bottom: 0; width: 6px;
+  cursor: col-resize; z-index: 5;
+}
+.col-hdr-resize:hover { background: rgba(109,92,231,0.3) }
+#flow-container { display: flex; align-items: flex-start; min-width: max-content; padding: 12px 0 40px }
+.col-wrap {
+  flex-shrink: 0; padding: 0 10px; border-right: 1px solid var(--b1);
+  display: flex; flex-direction: column; gap: 6px; position: relative;
+}
+
+/* ── ARG CARDS ──────────────────────────────────────────────────────────── */
+.arg-card {
+  background: var(--s1); border: 1px solid var(--b1); border-radius: 8px;
+  padding: 8px 10px; cursor: pointer; position: relative;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  min-height: 44px;
+}
+.arg-card:hover { border-color: var(--b2); background: var(--s2) }
+.arg-card.selected { border-color: var(--acc); box-shadow: 0 0 0 2px rgba(109,92,231,0.2) }
+.arg-card.kicked { opacity: .4; text-decoration: line-through }
+.arg-card.ext { border-left: 3px solid var(--grn) }
+.arg-card.dropped { border-left: 3px solid var(--rd); opacity: .6 }
+.arg-card.cross-applied { border-left: 3px solid var(--orn) }
+.arg-text {
+  font-size: 12.5px; color: var(--t1); line-height: 1.45;
+  outline: none; word-break: break-word; min-height: 20px;
+}
+.arg-cite {
+  font-size: 10.5px; color: var(--t3); font-family: var(--mono);
+  margin-top: 3px; outline: none;
+}
+.arg-cite:empty::before { content: 'cite…'; opacity: .35 }
+.arg-text:empty::before { content: 'argument…'; opacity: .3 }
+.arg-badges { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap }
+.arg-badge {
+  font-size: 10px; font-weight: 700; border-radius: 4px;
+  padding: 2px 6px; cursor: pointer; transition: opacity .15s;
+}
+.arg-badge:hover { opacity: .75 }
+.badge-ext { background: rgba(74,222,128,0.12); color: var(--grn) }
+.badge-drop { background: rgba(248,113,113,0.12); color: var(--rd) }
+.badge-cross { background: rgba(251,146,60,0.12); color: var(--orn) }
+.arg-actions {
+  position: absolute; right: 6px; top: 6px;
+  display: none; gap: 3px; align-items: center;
+}
+.arg-card:hover .arg-actions { display: flex }
+.arg-act {
+  width: 22px; height: 22px; border-radius: 5px; border: none;
+  background: var(--s3); color: var(--t2); font-size: 11px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .12s, color .12s;
+}
+.arg-act:hover { background: var(--b2); color: var(--t1) }
+.arg-act.del:hover { background: rgba(248,113,113,0.15); color: var(--rd) }
+.arg-act.ext-btn:hover { background: rgba(74,222,128,0.12); color: var(--grn) }
+.arg-act.cross-btn:hover { background: rgba(251,146,60,0.12); color: var(--orn) }
+.add-arg-btn {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 6px 10px; border-radius: 7px; border: 1px dashed var(--b1);
+  background: transparent; color: var(--t3); font-family: var(--font);
+  font-size: 12px; cursor: pointer; transition: all .15s; width: 100%;
+}
+.add-arg-btn:hover { border-color: var(--b2); color: var(--t2); background: var(--s1) }
+.respond-btn {
+  display: flex; align-items: center; gap: 5px; margin-top: 4px;
+  padding: 5px 9px; border-radius: 6px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t3); font-family: var(--font);
+  font-size: 11px; cursor: pointer; transition: all .15s; width: 100%;
+}
+.respond-btn:hover { border-color: var(--b2); color: var(--t2); background: var(--s1) }
+
+/* ── STATUS BAR ────────────────────────────────────────────────────────── */
+#statusbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 16px; height: 34px; border-top: 1px solid var(--b1);
+  background: var(--bg2); flex-shrink: 0;
+}
+.sbi { display: flex; align-items: center; gap: 5px }
+.sbd { width: 7px; height: 7px; border-radius: 50% }
+#statusbar span { font-size: 11px; color: var(--t3); font-family: var(--mono) }
+
+/* ── SPEECH PANEL ───────────────────────────────────────────────────────── */
+#speech-panel {
+  width: 0; flex-shrink: 0; overflow: hidden; display: flex; flex-direction: column;
+  border-left: 1px solid var(--b1); background: var(--bg2);
+  transition: width .22s cubic-bezier(.4,0,.2,1);
+}
+#speech-panel.open { width: 340px }
+.sp-hdr { padding: 12px 14px 0; flex-shrink: 0 }
+.sp-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px }
+.sp-title { font-size: 13px; font-weight: 700; color: var(--t1) }
+.sp-close {
+  width: 24px; height: 24px; border-radius: 5px; border: none;
+  background: var(--s2); color: var(--t2); cursor: pointer;
+  font-size: 12px; display: flex; align-items: center; justify-content: center;
+}
+.sp-close:hover { background: var(--s3); color: var(--t1) }
+.sp-modes { display: flex; gap: 4px; margin-bottom: 10px }
+.sp-mode {
+  flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 11px; cursor: pointer; transition: all .15s;
+}
+.sp-mode.active { background: var(--s3); color: var(--t1); border-color: var(--b2) }
+.sp-flow-hint {
+  display: none; margin: 0 14px 8px; padding: 7px 10px; border-radius: 7px;
+  background: rgba(109,92,231,0.1); border: 1px solid rgba(109,92,231,0.2);
+  font-size: 11px; color: var(--t2); line-height: 1.5;
+}
+.sp-flow-hint.visible { display: block }
+.sp-toolbar {
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 14px 10px; border-bottom: 1px solid var(--b1); flex-wrap: wrap;
+}
+.sp-tool {
+  padding: 4px 8px; border-radius: 5px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 12px; cursor: pointer; transition: all .12s;
+}
+.sp-tool:hover { background: var(--s2); color: var(--t1) }
+.sp-font-sz {
+  width: 46px; padding: 4px 6px; border-radius: 5px;
+  border: 1px solid var(--b1); background: var(--s1); color: var(--t1);
+  font-family: var(--font); font-size: 12px; outline: none; text-align: center;
+}
+.sp-color {
+  width: 28px; height: 26px; border-radius: 5px; border: 1px solid var(--b1);
+  cursor: pointer; padding: 1px; background: transparent;
+}
+.sp-body { flex: 1; overflow-y: auto; padding: 14px }
+#speech-ed {
+  min-height: 200px; outline: none; font-size: 14px; color: var(--t1);
+  line-height: 1.7; white-space: pre-wrap;
+}
+#speech-ed:empty::before { content: 'Start writing your speech or use Flow Access mode to pull args…'; color: var(--t3); font-size: 13px }
+
+/* ── MODALS (shared) ───────────────────────────────────────────────────── */
+.modal-overlay, #add-flow-modal, #extend-modal, #cross-modal, #card-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(0,0,0,0.6); display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+#add-flow-modal.open, #extend-modal.open, #cross-modal.open { display: flex }
+.modal-box {
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 14px;
+  padding: 24px; box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  max-width: 90vw; max-height: 90vh; overflow-y: auto;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--t1); margin-bottom: 4px }
+.modal-sub { font-size: 13px; color: var(--t2); margin-bottom: 18px }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px }
+.m-cancel {
+  padding: 8px 16px; border-radius: 7px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 13px; cursor: pointer; transition: all .15s;
+}
+.m-cancel:hover { background: var(--s2); color: var(--t1) }
+.m-confirm {
+  padding: 8px 18px; border-radius: 7px; border: none;
+  background: var(--acc); color: #fff; font-family: var(--font);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.m-confirm:hover { filter: brightness(1.1) }
+
+/* ── ADD FLOW MODAL ─────────────────────────────────────────────────────── */
+.afm-step { display: block }
+.afm-step.hidden { display: none }
+.side-btns { display: flex; gap: 10px }
+.side-btn {
+  flex: 1; padding: 16px; border-radius: 10px; border: 2px solid var(--b1);
+  cursor: pointer; text-align: center; transition: all .15s;
+  background: var(--s1);
+}
+.side-btn:hover { border-color: var(--b2); background: var(--s2) }
+.side-btn.selected { border-color: var(--acc); background: var(--accent3) }
+.side-btn-lbl { font-size: 15px; font-weight: 700; margin-bottom: 4px }
+.side-btn-sub { font-size: 11px; color: var(--t2) }
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
+.type-btn {
+  padding: 12px; border-radius: 9px; border: 2px solid var(--b1);
+  cursor: pointer; text-align: left; transition: all .15s; background: var(--s1);
+}
+.type-btn:hover { border-color: var(--b2); background: var(--s2) }
+.type-btn.selected { border-color: var(--acc); background: var(--accent3) }
+.type-btn-lbl { font-size: 13px; font-weight: 600; margin-bottom: 2px }
+.type-btn-desc { font-size: 11px; color: var(--t2) }
+.afm-input {
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid var(--b2); background: var(--s1); color: var(--t1);
+  font-family: var(--font); font-size: 14px; outline: none; transition: border-color .15s;
+}
+.afm-input:focus { border-color: var(--acc) }
+
+/* ── EXTEND MODAL ───────────────────────────────────────────────────────── */
+.em-speeches { display: flex; flex-direction: column; gap: 6px; margin-top: 12px }
+.em-sp {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border-radius: 8px; border: 2px solid var(--b1); cursor: pointer;
+  transition: all .15s; background: var(--s1);
+}
+.em-sp:hover { border-color: var(--b2); background: var(--s2) }
+.em-sp.selected { border-color: var(--acc); background: var(--accent3) }
+.em-sp-lbl { font-size: 13px; font-weight: 600 }
+
+/* ── CROSS APPLY MODAL ──────────────────────────────────────────────────── */
+.cm-top { padding: 16px; border-bottom: 1px solid var(--b1); flex-shrink: 0 }
+.cm-sub { font-size: 12px; color: var(--t2); margin-top: 3px; font-style: italic }
+.cross-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+  border-radius: 8px; cursor: pointer; transition: background .12s;
+}
+.cross-item:hover { background: var(--s2) }
+.cross-item.already { opacity: .5; cursor: default }
+.cross-col { font-size: 10px; font-family: var(--mono); color: var(--t3); flex-shrink: 0; width: 32px }
+.cross-lbl { font-size: 12.5px; color: var(--t1); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+
+/* ── CARD SEARCH PANEL ──────────────────────────────────────────────────── */
+#card-overlay { background: rgba(0,0,0,0.7) }
+#card-overlay.open { display: flex }
+.card-panel {
+  width: min(900px, 95vw); height: min(640px, 90vh);
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 16px;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.7);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.ev-src, .ev-filter {
+  padding: 5px 12px; border-radius: 6px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 12px; cursor: pointer; transition: all .15s;
+}
+.ev-src.active, .ev-filter.active { background: var(--s3); color: var(--t1); border-color: var(--b2) }
+.ev-result-item {
+  padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .12s; margin-bottom: 4px; border: 1px solid transparent;
+}
+.ev-result-item:hover { background: var(--s2) }
+.ev-result-item.active { background: var(--s2); border-color: var(--b2) }
+.ev-item-tag { font-size: 11px; color: var(--t3); font-family: var(--mono); margin-bottom: 2px }
+.ev-item-title { font-size: 13px; font-weight: 600; color: var(--t1); line-height: 1.3 }
+.ev-item-meta { font-size: 11px; color: var(--t2); margin-top: 2px }
+.ev-use-btn {
+  padding: 8px 16px; border-radius: 7px; border: none;
+  background: var(--acc); color: #fff; font-family: var(--font);
+  font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 12px;
+}
+.ev-use-btn:hover { filter: brightness(1.1) }
+
+/* ── SELECTION BAR ──────────────────────────────────────────────────────── */
+#sel-bar {
+  position: fixed; bottom: 48px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 10px;
+  padding: 8px 12px; display: flex; gap: 6px; align-items: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5); opacity: 0;
+  transition: opacity .2s, transform .2s; pointer-events: none; z-index: 600;
+}
+#sel-bar.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto }
+.sel-act {
+  padding: 5px 12px; border-radius: 6px; border: 1px solid var(--b1);
+  background: var(--s2); color: var(--t1); font-family: var(--font);
+  font-size: 12px; cursor: pointer; transition: all .12s;
+}
+.sel-act:hover { background: var(--s3) }
+.sel-act.primary { background: var(--acc); color: #fff; border-color: transparent }
+.sel-act.primary:hover { filter: brightness(1.1) }
+
+/* ── TOAST ──────────────────────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 9px;
+  padding: 10px 16px; font-size: 13px; color: var(--t1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity .2s, transform .2s; pointer-events: none;
+}
+#toast.show { opacity: 1; transform: translateY(0) }
+
+/* ── JOIN MODAL ─────────────────────────────────────────────────────────── */
+#join-modal {
+  position: fixed; inset: 0; z-index: 600;
+  background: rgba(0,0,0,0.7); display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+#join-modal.open { display: flex }
+.jm-box {
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 16px;
+  padding: 32px; width: 420px; max-width: 95vw;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.7); position: relative;
+}
+.jm-close {
+  position: absolute; top: 16px; right: 16px; width: 28px; height: 28px;
+  border-radius: 6px; border: none; background: var(--s2); color: var(--t2);
+  cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+}
+.jm-close:hover { background: var(--s3); color: var(--t1) }
+.jm-title { font-size: 22px; font-weight: 800; color: var(--t1); margin-bottom: 4px; letter-spacing: -.4px }
+.jm-sub { font-size: 14px; color: var(--t2); margin-bottom: 20px }
+.jm-event-row { display: flex; gap: 8px; margin-bottom: 18px }
+.jm-evt {
+  flex: 1; padding: 9px; border-radius: 8px; border: 2px solid var(--b1);
+  background: var(--s1); color: var(--t2); font-family: var(--font);
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.jm-evt.active { border-color: var(--acc); background: var(--accent3); color: var(--t1) }
+.field { margin-bottom: 14px }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--t2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .4px }
+.field input {
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid var(--b2); background: var(--s1); color: var(--t1);
+  font-family: var(--font); font-size: 14px; outline: none; transition: border-color .15s;
+}
+.field input:focus { border-color: var(--acc) }
+.btn-acc {
+  padding: 11px 20px; border-radius: 8px; border: none;
+  background: var(--acc); color: #fff; font-family: var(--font);
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s;
+  box-shadow: 0 0 20px rgba(109,92,231,0.3);
+}
+.btn-acc:hover { filter: brightness(1.1); box-shadow: 0 0 32px rgba(109,92,231,0.5) }
+.jm-err { font-size: 12px; color: var(--rd); margin-top: 10px; min-height: 16px }
+
+/* ── PROFILE PANEL ──────────────────────────────────────────────────────── */
+#pp-overlay {
+  position: fixed; inset: 0; z-index: 490; background: rgba(0,0,0,0.4);
+  display: none; backdrop-filter: blur(3px);
+}
+#pp-overlay.open { display: block }
+#profile-panel {
+  position: fixed; top: 0; right: -340px; width: 320px; height: 100vh;
+  background: var(--bg3); border-left: 1px solid var(--b2); z-index: 495;
+  display: flex; flex-direction: column;
+  transition: right .25s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.4);
+}
+#profile-panel.open { right: 0 }
+.pp-hdr { padding: 20px; border-bottom: 1px solid var(--b1); flex-shrink: 0 }
+.pp-hdr-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px }
+.pp-close {
+  width: 26px; height: 26px; border-radius: 6px; border: none;
+  background: var(--s2); color: var(--t2); cursor: pointer; font-size: 12px;
+}
+.pp-close:hover { background: var(--s3); color: var(--t1) }
+.pp-user-row { display: flex; align-items: center; gap: 10px }
+.pp-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover }
+.pp-avatar-pl {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--acc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.pp-name { font-size: 14px; font-weight: 600; color: var(--t1) }
+.pp-email { font-size: 12px; color: var(--t2) }
+.pp-body { flex: 1; overflow-y: auto; padding: 16px }
+.pp-signin-prompt { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 0; text-align: center; font-size: 13px; color: var(--t2) }
+.pp-stat-row { display: flex; gap: 12px; margin-bottom: 16px }
+.pp-stat { flex: 1; background: var(--s2); border-radius: 8px; padding: 12px; text-align: center }
+.pp-stat-n { font-size: 22px; font-weight: 700; color: var(--t1) }
+.pp-stat-l { font-size: 11px; color: var(--t2) }
+.pp-section-lbl { font-size: 11px; font-weight: 600; color: var(--t3); letter-spacing: .6px; text-transform: uppercase; margin-bottom: 8px }
+.pp-room {
+  display: flex; align-items: center; gap: 8px; padding: 10px;
+  border-radius: 8px; cursor: pointer; transition: background .12s; border: 1px solid transparent;
+}
+.pp-room:hover { background: var(--s2); border-color: var(--b1) }
+.pp-room-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
+.pp-room-info { flex: 1; min-width: 0 }
+.pp-room-code { font-size: 10px; font-family: var(--mono); color: var(--t3) }
+.pp-room-name { font-size: 13px; font-weight: 600; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pp-room-date { font-size: 11px; color: var(--t2) }
+.pp-room-arrow { font-size: 16px; color: var(--t3) }
+.pp-footer { padding: 12px 16px; border-top: 1px solid var(--b1); flex-shrink: 0; display: flex; flex-direction: column; gap: 6px }
+.pp-footer-btn {
+  padding: 9px 14px; border-radius: 8px; border: 1px solid var(--b1);
+  background: var(--s1); color: var(--t1); font-family: var(--font);
+  font-size: 13px; cursor: pointer; transition: all .15s; text-align: left;
+}
+.pp-footer-btn:hover { background: var(--s2) }
+.pp-footer-btn.danger { color: var(--rd) }
+.pp-footer-btn.danger:hover { background: rgba(248,113,113,0.1) }
+.h-btn-google {
+  display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+  border-radius: 8px; border: 1px solid var(--b2); background: var(--s1);
+  color: var(--t1); font-family: var(--font); font-size: 14px; cursor: pointer;
+  transition: all .15s;
+}
+.h-btn-google:hover { background: var(--s2) }
+.h-btn-google svg { width: 18px; height: 18px; flex-shrink: 0 }
+
+/* ── ACCOUNT PAGE ───────────────────────────────────────────────────────── */
+#account-page {
+  position: fixed; inset: 0; z-index: 480; background: var(--bg);
+  overflow-y: auto; display: none;
+}
+#account-page.open { display: block }
+.acc-nav {
+  position: sticky; top: 0; background: rgba(5,4,9,0.85);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--b1);
+  padding: 0 48px; height: 60px; display: flex; align-items: center;
+  justify-content: space-between; z-index: 10;
+}
+.acc-nav-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 700; cursor: pointer; color: var(--t1);
+}
+.acc-nav-right { display: flex; align-items: center; gap: 16px }
+.acc-user { display: flex; align-items: center; gap: 10px }
+.acc-name { font-size: 14px; font-weight: 600; color: var(--t1) }
+.acc-email { font-size: 12px; color: var(--t2) }
+.acc-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover }
+.acc-avatar-pl {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--acc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.acc-sign-out {
+  padding: 7px 14px; border-radius: 7px; border: 1px solid var(--b1);
+  background: transparent; color: var(--t2); font-family: var(--font);
+  font-size: 13px; cursor: pointer; transition: all .15s;
+}
+.acc-sign-out:hover { color: var(--t1); border-color: var(--b2) }
+.acc-hero { max-width: 960px; margin: 0 auto; padding: 48px }
+.acc-hero-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px }
+.acc-greeting { font-size: 32px; font-weight: 800; color: var(--t1); letter-spacing: -.5px; line-height: 1.2 }
+.acc-greeting span { color: var(--acc) }
+.acc-stats-row { display: flex; gap: 16px; margin-bottom: 36px }
+.acc-stat { background: var(--s2); border: 1px solid var(--b1); border-radius: 12px; padding: 20px 24px }
+.acc-stat-n { font-size: 32px; font-weight: 800; color: var(--t1) }
+.acc-stat-l { font-size: 13px; color: var(--t2); margin-top: 2px }
+.acc-section-title { font-size: 16px; font-weight: 700; color: var(--t1); margin-bottom: 16px; display: flex; align-items: center; gap: 8px }
+.acc-section-title .cnt { font-size: 12px; background: var(--s2); border-radius: 20px; padding: 2px 8px; color: var(--t2) }
+.acc-rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px }
+.acc-room-card {
+  background: var(--s1); border: 1px solid var(--b1); border-radius: 12px;
+  padding: 18px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden;
+}
+.acc-room-card:hover { background: var(--s2); border-color: var(--b2); transform: translateY(-2px) }
+.acc-room-code { font-size: 10px; font-family: var(--mono); color: var(--t3); margin-bottom: 6px }
+.acc-room-name { font-size: 15px; font-weight: 700; color: var(--t1); margin-bottom: 4px }
+.acc-room-meta { font-size: 12px; color: var(--t2) }
+.acc-room-evt { font-size: 10px; font-weight: 700; border-radius: 4px; padding: 3px 8px; margin-top: 8px; display: inline-block; letter-spacing: .5px }
+.acc-new-room {
+  background: var(--s1); border: 2px dashed var(--b1); border-radius: 12px;
+  padding: 18px; cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 100px;
+}
+.acc-new-room:hover { border-color: var(--acc); background: var(--accent3) }
+.acc-new-icon { font-size: 22px; color: var(--t3) }
+.acc-new-lbl { font-size: 13px; color: var(--t2) }
+.acc-empty { color: var(--t3); font-size: 13px; padding: 20px 0; grid-column: 1/-1 }
+
+/* ── FLOW ACCESS MODE ───────────────────────────────────────────────────── */
+#app.flow-access-mode .arg-card { cursor: pointer }
+#app.flow-access-mode .arg-card:hover { border-color: var(--acc); box-shadow: 0 0 0 2px rgba(109,92,231,0.2) }
+.fa-added { border-color: var(--grn) !important; box-shadow: 0 0 0 2px rgba(74,222,128,0.2) !important }
+.fa-dropped { opacity: .5 !important }
+
+/* ── LD VALUE/CRIT INPUTS ───────────────────────────────────────────────── */
+.ld-vc-row {
+  display: flex; gap: 8px; padding: 10px 10px 6px; border-bottom: 1px solid var(--b1);
+}
+.ld-vc-input {
+  flex: 1; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px;
+  padding: 6px 10px; color: var(--t1); font-family: var(--font); font-size: 12px;
+  outline: none; transition: border-color .15s;
+}
+.ld-vc-input:focus { border-color: var(--b2) }
+
+/* ── FLOW ACCESS PANEL ─────────────────────────────────────────────────── */
+#flow-access-panel {
+  display: none; position: fixed; bottom: 48px; left: 50%; transform: translateX(-50%);
+  background: var(--bg3); border: 1px solid var(--b2); border-radius: 12px;
+  padding: 10px 16px; box-shadow: 0 16px 60px rgba(0,0,0,.5); z-index: 700;
+  align-items: center; gap: 10px; font-size: 13px; color: var(--t2);
+}
+#flow-access-panel.open { display: flex }
 </style>
 </head>
 <body>
@@ -987,14 +1604,14 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
       <div class="hero-content">
         <div class="hero-kicker">
           <div class="hero-kicker-dot"></div>
-          The Debate Flowing Platform
+          Built for competitive debate
         </div>
         <h1 class="hero-h1">
-          Flow Faster.<br>
-          <span class="hero-h1-line2">Win More.</span>
+          Your flow,<br>
+          <span class="hero-h1-line2">perfected.</span>
         </h1>
         <p class="hero-sub">
-          Real-time shared flows, live speech docs, card search, and sub-second sync — purpose-built for Policy and Lincoln-Douglas debate. No paper. No dropped args.
+          Real-time shared flows, live speech docs, and card search — purpose-built for Policy, LD, and PF. Sub-second sync. No paper. No dropped args.
         </p>
         <div class="hero-btns">
           <button class="btn-primary" onclick="openJoin('policy')">Start Flowing</button>
@@ -1014,8 +1631,8 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
             <div class="stat-lbl">Cards Indexed</div>
           </div>
           <div class="hero-stat">
-            <div class="stat-num">2</div>
-            <div class="stat-lbl">Events</div>
+            <div class="stat-num">3</div>
+            <div class="stat-lbl">Events Supported</div>
           </div>
         </div>
       </div>
@@ -1203,6 +1820,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
             <div class="demo-tabs-row">
               <button class="demo-tab active" onclick="switchDemo('policy',this)">Policy</button>
               <button class="demo-tab" onclick="switchDemo('ld',this)">Lincoln-Douglas</button>
+              <button class="demo-tab" onclick="switchDemo('pf',this)">Public Forum</button>
             </div>
           </div>
           <div class="demo-cols" id="demo-cols"></div>
@@ -1220,7 +1838,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
           <div class="stat-card">
             <div class="stat-big" data-count="34">34</div>
             <div class="stat-label">Active rooms right now</div>
-            <div class="stat-sub">across policy and LD</div>
+              <div class="stat-sub">across Policy, LD, and PF</div>
           </div>
           <div class="stat-card">
             <div class="stat-big" data-count="3241">3,241</div>
@@ -1283,6 +1901,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
         <div class="cta-btns">
           <button class="btn-primary" onclick="openJoin('policy')">Start Policy Room</button>
           <button class="btn-ghost"   onclick="openJoin('ld')">Lincoln-Douglas</button>
+          <button class="btn-ghost"   onclick="openJoin('pf')" style="margin-top:4px">Public Forum</button>
         </div>
       </div>
     </section>
@@ -1300,6 +1919,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
         <button class="footer-link" onclick="showPage('about')">About</button>
         <button class="footer-link" onclick="openJoin('policy')">Policy</button>
         <button class="footer-link" onclick="openJoin('ld')">LD</button>
+        <button class="footer-link" onclick="openJoin('pf')">PF</button>
       </div>
       <div class="footer-copy">&#169; 2026 Flowboard &#183; Built by debaters, for debaters</div>
     </footer>
@@ -1430,7 +2050,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
     <div class="about-hero">
       <div class="overline rv">Our story</div>
       <h2 class="about-lead rv d1">Built by debaters who got tired of <em>losing rounds to illegible paper.</em></h2>
-      <p class="sec-sub rv d2">Flowboard started as a frustration. It's now the flow platform for competitive Policy and LD.</p>
+      <p class="sec-sub rv d2">Flowboard started as a frustration. It's now the flow platform for competitive Policy, LD, and PF.</p>
     </div>
 
     <div class="about-manifesto">
@@ -1449,6 +2069,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
       <div class="about-chips rv d3">
         <span class="about-chip">Policy Debate</span>
         <span class="about-chip">Lincoln-Douglas</span>
+        <span class="about-chip">Public Forum</span>
         <span class="about-chip">Free Forever</span>
         <span class="about-chip">Firebase Realtime</span>
         <span class="about-chip">NSDA Ready</span>
@@ -1922,6 +2543,23 @@ const DEMO_DATA={
         {label:'Kant fails — empirically disproved',cite:'',status:''},
       ]},
     ]
+  },
+  pf:{
+    cols:[
+      {l:'Pro 1st',side:'pf-pro',color:'#4facfe',args:[
+        {label:'C1: Economic engagement reduces conflict incentives',cite:'Kim 25',status:''},
+        {label:'C2: Multilateral frameworks outperform sanctions',cite:'Park 24',status:''},
+      ]},
+      {l:'Con 1st',side:'pf-con',color:'#f87171',args:[
+        {label:'Rebuttal: No link — engagement ≠ conflict reduction',cite:'Chen 25',status:''},
+        {label:'Turn: Engagement emboldens authoritarian actors',cite:'Suh 24',status:''},
+        {label:'C1: Moral hazard signals impunity',cite:'Lee 25',status:''},
+      ]},
+      {l:'Pro 2nd',side:'pf-pro',color:'#4facfe',args:[
+        {label:'Extend Kim — empirics support interdependence',cite:'',status:'d-ext'},
+        {label:'Turn answer: Engagement constrains, not emboldens',cite:'',status:''},
+      ]},
+    ]
   }
 };
 let demoEvt='policy';
@@ -1935,7 +2573,7 @@ function renderDemo(){
   const data=DEMO_DATA[demoEvt];
   const el=document.getElementById('demo-cols');if(!el)return;
   el.innerHTML='';
-  const sideColors={aff:'#4facfe','ld-aff':'#a78bfa',neg:'#f87171','ld-neg':'#f87171'};
+  const sideColors={aff:'#4facfe','ld-aff':'#a78bfa','pf-pro':'#4facfe',neg:'#f87171','ld-neg':'#f87171','pf-con':'#f87171'};
   data.cols.forEach(col=>{
     const dc=document.createElement('div');dc.className='demo-col';
     const hdr=document.createElement('div');hdr.className='demo-col-hdr';
@@ -2107,6 +2745,7 @@ setTimeout(()=>{
     <div class="jm-event-row">
       <button class="jm-evt active" id="jm-pol" onclick="setJoinEvt('policy',this)">Policy</button>
       <button class="jm-evt" id="jm-ld" onclick="setJoinEvt('ld',this)">LD</button>
+      <button class="jm-evt" id="jm-pf" onclick="setJoinEvt('pf',this)">PF</button>
     </div>
     <div class="field"><label>Your Name</label><input id="jm-name" placeholder="e.g. Shreyas" maxlength="24"></div>
     <div class="field"><label>Room Code</label><input id="jm-code" placeholder="e.g. OCTAS2026" maxlength="20" style="text-transform:uppercase;letter-spacing:1px"></div>
@@ -2220,12 +2859,12 @@ setTimeout(()=>{
     <div class="afm-step" id="afm-s1">
       <div class="side-btns">
         <div class="side-btn" onclick="pickSide('aff',this)">
-          <div class="side-btn-lbl" style="color:var(--aff)">Affirmative</div>
-          <div class="side-btn-sub">Adv, Solvency, Inherency, K Aff</div>
+          <div class="side-btn-lbl" style="color:var(--aff)" id="afm-aff-lbl">Affirmative</div>
+          <div class="side-btn-sub" id="afm-aff-sub">Adv, Solvency, Inherency, K Aff</div>
         </div>
         <div class="side-btn" onclick="pickSide('neg',this)">
-          <div class="side-btn-lbl" style="color:var(--neg)">Negative</div>
-          <div class="side-btn-sub">K, CP, DA, T, P, FS</div>
+          <div class="side-btn-lbl" style="color:var(--neg)" id="afm-neg-lbl">Negative</div>
+          <div class="side-btn-sub" id="afm-neg-sub">K, CP, DA, T, P, FS</div>
         </div>
       </div>
     </div>
@@ -2346,7 +2985,8 @@ const app=initializeApp(FB),db=getDatabase(app),fs=getFirestore(app),auth=getAut
 // ── SPEECH CONFIGS ──────────────────────────────────────────────────────
 const SPEECHES={
   policy:[{id:'1ac',l:'1AC',side:'aff'},{id:'1nc',l:'1NC',side:'neg'},{id:'2ac',l:'2AC',side:'aff'},{id:'2nc',l:'2NC',side:'neg'},{id:'1nr',l:'1NR',side:'neg'},{id:'1ar',l:'1AR',side:'aff'},{id:'2nr',l:'2NR',side:'neg'},{id:'2ar',l:'2AR',side:'aff'}],
-  ld:[{id:'ac',l:'AC',side:'ld-aff'},{id:'nc',l:'NC',side:'ld-neg'},{id:'1ar',l:'1AR',side:'ld-aff'},{id:'nr',l:'NR',side:'ld-neg'},{id:'2ar',l:'2AR',side:'ld-aff'}]
+  ld:[{id:'ac',l:'AC',side:'ld-aff'},{id:'nc',l:'NC',side:'ld-neg'},{id:'1ar',l:'1AR',side:'ld-aff'},{id:'nr',l:'NR',side:'ld-neg'},{id:'2ar',l:'2AR',side:'ld-aff'}],
+  pf:[{id:'pro1',l:'Pro 1st',side:'aff'},{id:'con1',l:'Con 1st',side:'neg'},{id:'pro2',l:'Pro 2nd',side:'aff'},{id:'con2',l:'Con 2nd',side:'neg'},{id:'sum1',l:'Pro Sum',side:'aff'},{id:'sum2',l:'Con Sum',side:'neg'},{id:'ff1',l:'Pro FF',side:'aff'},{id:'ff2',l:'Con FF',side:'neg'}]
 };
 
 // Flow types with starting speech and color
@@ -2374,7 +3014,18 @@ const FLOW_TYPES={
     {t:'cp',l:'CP',desc:'Counterplan',c:'#f472b6',start:'nc'},
     {t:'t',l:'T',desc:'Topicality',c:'#fbbf24',start:'nc'},
     {t:'p',l:'Procedural',desc:'Procedural',c:'#67e8f9',start:'nc'},
-  ]
+  ],
+  pf_pro:[
+    {t:'case',l:'Pro Case',desc:'Main contentions',c:'#4ade80',start:'pro1'},
+    {t:'rebuttal',l:'Rebuttal',desc:'Rebuttal arguments',c:'#60a5fa',start:'pro1'},
+    {t:'turn',l:'Turn',desc:'Turn the con case',c:'#fb923c',start:'pro1'},
+  ],
+  pf_con:[
+    {t:'case',l:'Con Case',desc:'Main contentions',c:'#f87171',start:'con1'},
+    {t:'rebuttal',l:'Rebuttal',desc:'Rebuttal arguments',c:'#fbbf24',start:'con1'},
+    {t:'turn',l:'Turn',desc:'Turn the pro case',c:'#c084fc',start:'con1'},
+    {t:'defense',l:'Defense',desc:'Defense of case',c:'#67e8f9',start:'con1'},
+  ],
 };
 
 const COLORS=['#60a5fa','#f87171','#a78bfa','#4ade80','#fbbf24','#fb923c','#67e8f9','#c084fc'];
@@ -2435,7 +3086,13 @@ window.doRedo=function(){
 };
 function setCursorEnd(el){try{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);r.collapse(false);s.removeAllRanges();s.addRange(r)}catch(e){}}
 function getNextSpeech(sid){const i=spList.findIndex(s=>s.id===sid);return i>=0&&i<spList.length-1?spList[i+1]:null}
-function getFlowTypeInfo(side,type){const g=side==='neg'?FLOW_TYPES.neg:evt==='ld'?(side==='ld_neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff):FLOW_TYPES.aff;return g?.find(x=>x.t===type)||{t:type,l:type,c:'#888',start:spList[0]?.id}}
+function getFlowTypeInfo(side,type){
+  let g;
+  if(evt==='pf') g=side==='neg'?FLOW_TYPES.pf_con:FLOW_TYPES.pf_pro;
+  else if(evt==='ld') g=side==='ld_neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff;
+  else g=side==='neg'?FLOW_TYPES.neg:FLOW_TYPES.aff;
+  return g?.find(x=>x.t===type)||{t:type,l:type,c:'#888',start:spList[0]?.id};
+}
 
 // ── AUTH + PROFILE PANEL ─────────────────────────────────────────────────
 onAuthStateChanged(auth,user=>{
@@ -2819,6 +3476,25 @@ const DEMO_DATA={
         {label:'Neg util objection: util maximizes across all persons',cite:'Mill 63',status:''},
       ]},
     ]
+  },
+  pf:{
+    cols:[
+      {id:'pro1',l:'Pro 1st',side:'aff',color:'#4facfe',args:[
+        {label:'C1: Economic engagement reduces conflict incentives',cite:'Kim 25',status:''},
+        {label:'C2: Multilateral frameworks outperform unilateral sanctions',cite:'Park 24',status:''},
+        {label:'Framework: Util — net benefits determine resolution',cite:'',status:''},
+      ]},
+      {id:'con1',l:'Con 1st',side:'neg',color:'#f87171',args:[
+        {label:'Rebuttal: No internal link — engagement ≠ conflict reduction',cite:'Chen 25',status:''},
+        {label:'Turn: Engagement emboldens authoritarian actors',cite:'Suh 24',status:''},
+        {label:'C1: Moral hazard — engagement signals impunity',cite:'Lee 25',status:''},
+      ]},
+      {id:'pro2',l:'Pro 2nd',side:'aff',color:'#4facfe',args:[
+        {label:'Extend Kim — empirics support economic interdependence',cite:'',status:'ext'},
+        {label:'Turn answer: Engagement constrains, not emboldens',cite:'',status:''},
+        {label:'Collapse Con C1 — no impact evidence',cite:'',status:''},
+      ]},
+    ]
   }
 };
 
@@ -3164,5 +3840,739 @@ setTimeout(()=>{
   if(r)animCount(r,34,1800);
   if(a)animCount(a,3241,2200);
 },700);
+
+// ════════════════════════════════════════════════════════════════════════════
+// APP CORE — all flow logic
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── JOIN / ROOM ENTRY ──────────────────────────────────────────────────────
+let _joinEvt='policy';
+window.openJoin=function(evtType='policy'){
+  _joinEvt=evtType;
+  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
+  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
+  const btn=document.getElementById(map[_joinEvt]||'jm-pol');
+  if(btn)btn.classList.add('active');
+  document.getElementById('join-modal').classList.add('open');
+  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
+};
+window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open')};
+window.setJoinEvt=function(evtType,btn){
+  _joinEvt=evtType;
+  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+};
+window.doJoin=async function(){
+  const nameEl=document.getElementById('jm-name');
+  const codeEl=document.getElementById('jm-code');
+  const errEl=document.getElementById('jm-err');
+  const name=(nameEl.value||'').trim();
+  const code=(codeEl.value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  errEl.textContent='';
+  if(!name){errEl.textContent='Enter your name';nameEl.focus();return;}
+  if(!code){errEl.textContent='Enter a room code';codeEl.focus();return;}
+  document.getElementById('jm-go').textContent='Joining…';
+  document.getElementById('jm-go').disabled=true;
+  myName=name;
+  rc=code;
+  evt=_joinEvt;
+  spList=SPEECHES[evt]||SPEECHES.policy;
+  document.getElementById('join-modal').classList.remove('open');
+  document.getElementById('jm-go').textContent='Join / Create Room →';
+  document.getElementById('jm-go').disabled=false;
+  initRoom();
+};
+
+// ── ROOM INIT ─────────────────────────────────────────────────────────────
+function initRoom(){
+  document.getElementById('app').classList.add('open');
+  document.getElementById('landing').style.display='none';
+  document.getElementById('sb-room').textContent='# '+rc;
+  document.getElementById('sb-ev').textContent=evt.toUpperCase();
+  setSS('off','connecting');
+
+  // Presence
+  const presRef=ref(db,rk('presence',myId));
+  set(presRef,{name:myName,color:myColor,ts:serverTimestamp()});
+  onDisconnect(presRef).remove();
+
+  // Listen to flows list
+  onValue(ref(db,rk('flows')),snap=>{
+    flows=snap.val()||{};
+    renderFlowTabs();
+    if(curFlow&&!flows[curFlow]){curFlow=null;}
+    if(!curFlow){
+      const ids=Object.keys(flows).sort((a,b)=>(flows[a].order||0)-(flows[b].order||0));
+      if(ids.length)switchFlow(ids[0]);
+    }
+    setSS('sync','synced');
+  });
+
+  // Listen to roles
+  onValue(ref(db,rk('roles')),snap=>{allRoles=snap.val()||{};myRole=allRoles[myId]||'editor';});
+
+  // Presence of others
+  onValue(ref(db,rk('presence')),snap=>{
+    peers=snap.val()||{};
+    renderPresence();
+  });
+
+  // Save room to profile
+  if(me)saveRoomToProfile(rc,evt,'');
+
+  // Ensure creator is editor
+  get(ref(db,rk('roles',myId))).then(s=>{
+    if(!s.exists())set(ref(db,rk('roles',myId)),'editor');
+  });
+}
+
+window.goHome=function(){
+  document.getElementById('app').classList.remove('open');
+  document.getElementById('landing').style.display='';
+  curFlow=null;flows={};args={};rc='';
+  setSS('off','offline');
+};
+window.copyRoom=function(){
+  navigator.clipboard.writeText(rc).then(()=>toast('Room code copied: '+rc)).catch(()=>toast(rc));
+};
+
+// ── FLOW TABS ──────────────────────────────────────────────────────────────
+function renderFlowTabs(){
+  const el=document.getElementById('flow-tabs');
+  if(!el)return;
+  el.innerHTML='';
+  const sorted=Object.keys(flows).sort((a,b)=>(flows[a].order||0)-(flows[b].order||0));
+  sorted.forEach(id=>{
+    const f=flows[id];
+    const ti=document.createElement('div');
+    ti.className='flow-tab'+(id===curFlow?' active':'')+(f.kicked?' kicked':'');
+    ti.dataset.id=id;
+    ti.innerHTML=`
+      <div class="flow-dot" style="background:${f.color||'#888'}"></div>
+      <div class="flow-tab-lbl">${esc(f.name||'Flow')}</div>
+      <div class="flow-tab-type">${f.type||''}</div>
+      <button class="flow-kick-btn" title="Kick/unkick" onclick="event.stopPropagation();toggleKickFlow('${id}')">${f.kicked?'↺':'✕'}</button>`;
+    ti.addEventListener('click',()=>switchFlow(id));
+    el.appendChild(ti);
+  });
+}
+
+window.switchFlow=function(id){
+  if(!flows[id])return;
+  curFlow=id;
+  renderFlowTabs();
+  const f=flows[id];
+  const ti=getFlowTypeInfo(f.side,f.type);
+  document.getElementById('sheet-title').value=f.name||'';
+  colW={};
+  // Subscribe to this flow's args
+  onValue(ref(db,frk('args')),snap=>{
+    args=snap.val()||{};
+    nextId=Object.keys(args).reduce((mx,k)=>{const n=parseInt(k.replace(/^a/,''));return isNaN(n)?mx:Math.max(mx,n+1)},1);
+    renderCols();
+    updateStatusBar();
+  });
+};
+
+document.getElementById('sheet-title').addEventListener('input',function(){
+  if(curFlow&&flows[curFlow])update(ref(db,rk('flows',curFlow)),{name:this.value});
+});
+
+// ── FLOW COLUMNS ───────────────────────────────────────────────────────────
+function renderCols(){
+  if(!curFlow||!flows[curFlow])return;
+  const f=flows[curFlow];
+  const startIdx=spList.findIndex(s=>s.id===f.startSpeech);
+  const cols=spList.slice(Math.max(0,startIdx));
+
+  // Headers
+  const chi=document.getElementById('chi');
+  chi.innerHTML='';
+  cols.forEach(sp=>{
+    const w=gcw(sp.id);
+    const cell=document.createElement('div');
+    cell.className='col-hdr-cell';
+    cell.style.width=w+'px';
+    cell.style.color=sp.side.includes('neg')?'var(--neg)':sp.side.includes('aff')?'var(--aff)':'var(--t2)';
+    cell.innerHTML=`<span>${sp.l}</span><div class="col-hdr-resize" data-sp="${sp.id}"></div>`;
+    chi.appendChild(cell);
+  });
+
+  // Container columns
+  const fc=document.getElementById('flow-container');
+  fc.innerHTML='';
+
+  // LD value/crit row for LD flows
+  if(evt==='ld'&&f.side&&(f.side==='ld_aff'||f.side==='aff')){
+    // handled inline per column below
+  }
+
+  cols.forEach(sp=>{
+    const w=gcw(sp.id);
+    const wrap=document.createElement('div');
+    wrap.className='col-wrap';
+    wrap.style.width=w+'px';
+    wrap.dataset.sp=sp.id;
+
+    // Sort args for this column
+    const colArgs=Object.entries(args)
+      .filter(([,a])=>a.sp===sp.id)
+      .sort(([,a],[,b])=>(a.order||0)-(b.order||0));
+
+    colArgs.forEach(([id,arg])=>{
+      wrap.appendChild(buildArgCard(id,arg,sp));
+    });
+
+    // Add arg button
+    if(canEdit()){
+      const addBtn=document.createElement('button');
+      addBtn.className='add-arg-btn';
+      addBtn.innerHTML='<svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Add';
+      addBtn.onclick=()=>addArg(sp.id);
+      wrap.appendChild(addBtn);
+    }
+    fc.appendChild(wrap);
+  });
+
+  // Column resize drag
+  document.querySelectorAll('.col-hdr-resize').forEach(handle=>{
+    let startX=0,startW=0,spId='';
+    handle.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      spId=handle.dataset.sp;
+      startX=e.clientX;
+      startW=gcw(spId);
+      const onMove=e2=>{
+        const newW=Math.max(160,startW+(e2.clientX-startX));
+        colW[spId]=newW;
+        renderCols();
+      };
+      const onUp=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);};
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onUp);
+    });
+  });
+}
+
+// ── ARG CARD BUILDER ──────────────────────────────────────────────────────
+function buildArgCard(id,arg,sp){
+  const card=document.createElement('div');
+  let cls='arg-card';
+  if(arg.ext)cls+=' ext';
+  if(arg.dropped)cls+=' dropped';
+  if(arg.crossRefs&&arg.crossRefs.length)cls+=' cross-applied';
+  if(flows[curFlow]&&flows[curFlow].kicked)cls+=' kicked';
+  card.className=cls;
+  card.dataset.id=id;
+
+  // Text
+  const textDiv=document.createElement('div');
+  textDiv.className='arg-text';
+  textDiv.contentEditable=canEdit()?'true':'false';
+  textDiv.spellcheck=true;
+  textDiv.textContent=arg.text||'';
+  textDiv.addEventListener('input',()=>{
+    update(ref(db,frk('args',id)),{text:textDiv.textContent});
+  });
+  textDiv.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const next=addArg(sp.id,id);if(next)setTimeout(()=>next.querySelector('.arg-text')?.focus(),60);}
+    if(e.key==='Backspace'&&!textDiv.textContent){e.preventDefault();deleteArg(id);}
+    if(e.key==='Tab'){e.preventDefault();}
+  });
+  card.appendChild(textDiv);
+
+  // Cite
+  const citeDiv=document.createElement('div');
+  citeDiv.className='arg-cite';
+  citeDiv.contentEditable=canEdit()?'true':'false';
+  citeDiv.textContent=arg.cite||'';
+  citeDiv.addEventListener('input',()=>{
+    update(ref(db,frk('args',id)),{cite:citeDiv.textContent});
+  });
+  card.appendChild(citeDiv);
+
+  // Badges
+  const badges=document.createElement('div');
+  badges.className='arg-badges';
+  if(arg.ext){const b=document.createElement('span');b.className='arg-badge badge-ext';b.textContent='EXT';b.onclick=e=>{e.stopPropagation();toggleExt(id);};badges.appendChild(b);}
+  if(arg.dropped){const b=document.createElement('span');b.className='arg-badge badge-drop';b.textContent='DROPPED';b.onclick=e=>{e.stopPropagation();toggleDrop(id);};badges.appendChild(b);}
+  if(arg.crossRefs&&arg.crossRefs.length){arg.crossRefs.forEach(cr=>{const b=document.createElement('span');b.className='arg-badge badge-cross';b.textContent='↔ '+cr.label;b.onclick=e=>{e.stopPropagation();scrollToCrossArg(cr);};badges.appendChild(b);});}
+  if(badges.children.length)card.appendChild(badges);
+
+  // Action buttons
+  if(canEdit()){
+    const acts=document.createElement('div');acts.className='arg-actions';
+    const mkBtn=(cls2,title,icon,fn)=>{const b=document.createElement('button');b.className='arg-act '+cls2;b.title=title;b.innerHTML=icon;b.onclick=e=>{e.stopPropagation();fn();};return b;};
+    acts.appendChild(mkBtn('ext-btn','Extend','↑',()=>toggleExt(id)));
+    acts.appendChild(mkBtn('','Drop/Restore','✗',()=>toggleDrop(id)));
+    acts.appendChild(mkBtn('cross-btn','Cross-Apply','↔',()=>openCross(id)));
+    const nextSp=getNextSpeech(sp.id);
+    if(nextSp)acts.appendChild(mkBtn('','Respond','↩',()=>openExtendModal(id)));
+    acts.appendChild(mkBtn('del','Delete','🗑',()=>deleteArg(id)));
+    card.appendChild(acts);
+
+    // Respond button below
+    const nextSp2=getNextSpeech(sp.id);
+    if(nextSp2){
+      const resp=document.createElement('button');
+      resp.className='respond-btn';
+      resp.innerHTML=`↩ Respond in ${nextSp2.l}`;
+      resp.onclick=e=>{e.stopPropagation();addResponseArg(id,sp.id,nextSp2.id);};
+      card.appendChild(resp);
+    }
+  }
+
+  // Flow access click
+  if(flowAccess){
+    card.addEventListener('click',()=>flowAccessClick(id,arg));
+  }
+
+  return card;
+}
+
+// ── ARG OPERATIONS ─────────────────────────────────────────────────────────
+function addArg(spId,afterId=null){
+  if(!canEdit())return null;
+  pushUndo();
+  const id=uid();
+  const colArgs=Object.entries(args).filter(([,a])=>a.sp===spId).sort(([,a],[,b])=>(a.order||0)-(b.order||0));
+  let order=Date.now();
+  if(afterId){const idx=colArgs.findIndex(([k])=>k===afterId);if(idx>=0&&idx<colArgs.length-1)order=(colArgs[idx][1].order+(colArgs[idx+1][1].order))/2;else order=(colArgs[afterId]?.order||Date.now())+100;}
+  const newArg={sp:spId,text:'',cite:'',order,ts:serverTimestamp()};
+  args[id]=newArg;
+  set(ref(db,frk('args',id)),newArg);
+  renderCols();
+  updateStatusBar();
+  // Focus new card
+  setTimeout(()=>{
+    const card=document.querySelector(`.arg-card[data-id="${id}"] .arg-text`);
+    if(card){card.focus();setCursorEnd(card);}
+  },60);
+  return document.querySelector(`.arg-card[data-id="${id}"]`);
+}
+
+function addResponseArg(srcId,srcSpId,destSpId){
+  if(!canEdit())return;
+  pushUndo();
+  const id=uid();
+  const srcArg=args[srcId];
+  const order=Date.now();
+  const newArg={sp:destSpId,text:'',cite:'',order,respondTo:srcId,ts:serverTimestamp()};
+  args[id]=newArg;
+  set(ref(db,frk('args',id)),newArg);
+  // Mark source as "has response"
+  update(ref(db,frk('args',srcId)),{hasResponse:true});
+  renderCols();
+  updateStatusBar();
+  setTimeout(()=>{
+    const card=document.querySelector(`.arg-card[data-id="${id}"] .arg-text`);
+    if(card){
+      const colEl=card.closest('.col-wrap');
+      if(colEl)colEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+      card.focus();
+    }
+  },80);
+}
+
+function deleteArg(id){
+  if(!canEdit())return;
+  pushUndo();
+  delete args[id];
+  remove(ref(db,frk('args',id)));
+  renderCols();
+  updateStatusBar();
+}
+
+function toggleExt(id){
+  if(!canEdit())return;
+  const a=args[id];if(!a)return;
+  pushUndo();
+  const val=!a.ext;
+  a.ext=val;if(val)a.dropped=false;
+  update(ref(db,frk('args',id)),{ext:val,dropped:false});
+  renderCols();updateStatusBar();
+}
+
+function toggleDrop(id){
+  if(!canEdit())return;
+  const a=args[id];if(!a)return;
+  pushUndo();
+  const val=!a.dropped;
+  a.dropped=val;if(val)a.ext=false;
+  update(ref(db,frk('args',id)),{dropped:val,ext:false});
+  renderCols();updateStatusBar();
+}
+
+window.toggleKickFlow=function(fid){
+  if(!canEdit())return;
+  const kicked=!flows[fid]?.kicked;
+  update(ref(db,rk('flows',fid)),{kicked});
+};
+
+window.clearFlow=function(){
+  if(!canEdit()||!curFlow)return;
+  pushUndo();
+  args={};
+  set(ref(db,frk('args')),{});
+  renderCols();updateStatusBar();
+  toast('Flow cleared');
+};
+
+// ── EXTEND MODAL ──────────────────────────────────────────────────────────
+window.openExtendModal=function(argId){
+  extArgId=argId;extTarget=null;
+  const a=args[argId];
+  document.getElementById('em-preview').textContent=a?a.text||'(no text)':'';
+  const list=document.getElementById('em-speeches');
+  list.innerHTML='';
+  spList.forEach(sp=>{
+    const d=document.createElement('div');d.className='em-sp';
+    d.innerHTML=`<div class="em-sp-lbl">${sp.l}</div>`;
+    d.onclick=()=>{document.querySelectorAll('.em-sp').forEach(x=>x.classList.remove('selected'));d.classList.add('selected');extTarget=sp.id;};
+    list.appendChild(d);
+  });
+  document.getElementById('extend-modal').classList.add('open');
+};
+window.closeExtend=function(){document.getElementById('extend-modal').classList.remove('open');extArgId=null;extTarget=null;};
+window.confirmExtend=function(){
+  if(!extArgId||!extTarget){toast('Select a speech');return;}
+  addResponseArg(extArgId,args[extArgId]?.sp,extTarget);
+  closeExtend();
+  toast('Extended →');
+};
+
+// ── CROSS APPLY MODAL ─────────────────────────────────────────────────────
+window.openCross=function(argId){
+  crossId=argId;
+  const list=document.getElementById('cross-list');
+  list.innerHTML='';
+  // Show all args from OTHER speeches
+  const srcArg=args[argId];
+  Object.entries(args).filter(([id])=>id!==argId).sort(([,a],[,b])=>(a.order||0)-(b.order||0)).forEach(([id,a])=>{
+    const spInfo=spList.find(s=>s.id===a.sp);
+    const already=(srcArg?.crossRefs||[]).some(cr=>cr.targetId===id);
+    const item=document.createElement('div');
+    item.className='cross-item'+(already?' already':'');
+    item.innerHTML=`<div class="cross-col">${spInfo?.l||a.sp}</div><div class="cross-lbl">${esc(a.text||'(empty)')}</div><span style="font-size:11px;color:${already?'var(--grn)':'var(--t3)'}">${already?'✓ linked':'+ link'}</span>`;
+    if(!already)item.onclick=()=>doCrossApply(argId,id,a);
+    list.appendChild(item);
+  });
+  if(!list.children.length)list.innerHTML='<div style="padding:16px;font-size:13px;color:var(--t3)">No other args in this flow to cross-apply.</div>';
+  document.getElementById('cm-src').textContent=srcArg?.text||'(empty)';
+  document.getElementById('cross-modal').classList.add('open');
+};
+window.closeCross=function(){document.getElementById('cross-modal').classList.remove('open');crossId=null;};
+
+function doCrossApply(srcId,targetId,targetArg){
+  if(!canEdit())return;
+  const spInfo=spList.find(s=>s.id===targetArg.sp);
+  const ref1=args[srcId].crossRefs||[];
+  ref1.push({targetId,label:spInfo?.l||targetArg.sp,text:targetArg.text||''});
+  update(ref(db,frk('args',srcId)),{crossRefs:ref1});
+  const ref2=args[targetId]?.crossRefs||[];
+  const srcSpInfo=spList.find(s=>s.id===args[srcId].sp);
+  ref2.push({targetId:srcId,label:srcSpInfo?.l||args[srcId].sp,text:args[srcId].text||''});
+  update(ref(db,frk('args',targetId)),{crossRefs:ref2});
+  args[srcId].crossRefs=ref1;
+  if(args[targetId])args[targetId].crossRefs=ref2;
+  closeCross();
+  renderCols();
+  toast('Cross-applied ↔');
+}
+
+function scrollToCrossArg(cr){
+  const card=document.querySelector(`.arg-card[data-id="${cr.targetId}"]`);
+  if(card){card.scrollIntoView({behavior:'smooth',block:'center'});card.style.boxShadow='0 0 0 3px rgba(251,146,60,0.5)';setTimeout(()=>card.style.boxShadow='',1400);}
+}
+
+// ── ADD FLOW MODAL ────────────────────────────────────────────────────────
+window.openAddFlow=function(){
+  afmSide=null;afmType=null;afmStep=1;
+  document.getElementById('afm-title').textContent='Add Flow';
+  document.getElementById('afm-sub').textContent='What are you flowing?';
+  document.getElementById('afm-s1').classList.remove('hidden');
+  document.getElementById('afm-s2').classList.add('hidden');
+  document.getElementById('afm-s3').classList.add('hidden');
+  document.getElementById('afm-name').value='';
+  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('selected'));
+  // Set side labels based on event
+  const isPF=evt==='pf';
+  const isLD=evt==='ld';
+  document.getElementById('afm-aff-lbl').textContent=isPF?'Pro':isLD?'Affirmative':'Affirmative';
+  document.getElementById('afm-aff-sub').textContent=isPF?'Pro case, contentions':'Adv, Solvency, Inherency, K Aff';
+  document.getElementById('afm-neg-lbl').textContent=isPF?'Con':'Negative';
+  document.getElementById('afm-neg-sub').textContent=isPF?'Con case, rebuttal':'K, CP, DA, T, P, FS';
+  document.getElementById('add-flow-modal').classList.add('open');
+};
+window.closeAddFlow=function(){document.getElementById('add-flow-modal').classList.remove('open');};
+
+window.pickSide=function(side,el){
+  afmSide=side;
+  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+window.afmNext=function(){
+  if(afmStep===1){
+    if(!afmSide){toast('Pick a side');return;}
+    // Build type grid
+    let types;
+    if(evt==='pf') types=afmSide==='neg'?FLOW_TYPES.pf_con:FLOW_TYPES.pf_pro;
+    else if(evt==='ld') types=afmSide==='neg'?FLOW_TYPES.ld_neg:FLOW_TYPES.ld_aff;
+    else types=afmSide==='neg'?FLOW_TYPES.neg:FLOW_TYPES.aff;
+    const grid=document.getElementById('afm-types');
+    grid.innerHTML='';
+    types.forEach(t=>{
+      const btn=document.createElement('div');btn.className='type-btn';
+      btn.innerHTML=`<div class="type-btn-lbl" style="color:${t.c}">${t.l}</div><div class="type-btn-desc">${t.desc}</div>`;
+      btn.onclick=()=>{document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');afmType=t;};
+      grid.appendChild(btn);
+    });
+    afmStep=2;
+    document.getElementById('afm-s1').classList.add('hidden');
+    document.getElementById('afm-s2').classList.remove('hidden');
+    document.getElementById('afm-title').textContent='Choose type';
+    document.getElementById('afm-sub').textContent=afmSide==='aff'?'What kind of aff position?':'What neg argument?';
+  } else if(afmStep===2){
+    if(!afmType){toast('Pick a type');return;}
+    afmStep=3;
+    document.getElementById('afm-s2').classList.add('hidden');
+    document.getElementById('afm-s3').classList.remove('hidden');
+    document.getElementById('afm-title').textContent='Name this flow';
+    document.getElementById('afm-sub').textContent='Give it a unique, recognizable name.';
+    document.getElementById('afm-next').textContent='Create →';
+    setTimeout(()=>document.getElementById('afm-name').focus(),80);
+  } else if(afmStep===3){
+    const name=(document.getElementById('afm-name').value||'').trim()||afmType.l;
+    const id='f_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+    const newFlow={name,type:afmType.t,side:afmSide,color:afmType.c,startSpeech:afmType.start,order:Date.now()};
+    flows[id]=newFlow;
+    set(ref(db,rk('flows',id)),newFlow);
+    closeAddFlow();
+    switchFlow(id);
+    toast('Flow created: '+name);
+    document.getElementById('afm-next').textContent='Next →';
+  }
+};
+
+window.afmBack=function(){
+  if(afmStep===1){closeAddFlow();return;}
+  if(afmStep===2){
+    afmStep=1;
+    document.getElementById('afm-s2').classList.add('hidden');
+    document.getElementById('afm-s1').classList.remove('hidden');
+    document.getElementById('afm-title').textContent='Add Flow';
+    document.getElementById('afm-sub').textContent='What are you flowing?';
+  } else if(afmStep===3){
+    afmStep=2;
+    document.getElementById('afm-s3').classList.add('hidden');
+    document.getElementById('afm-s2').classList.remove('hidden');
+    document.getElementById('afm-title').textContent='Choose type';
+    document.getElementById('afm-next').textContent='Next →';
+  }
+};
+
+// ── SPEECH PANEL ──────────────────────────────────────────────────────────
+window.toggleSpeech=function(){
+  speechOpen=!speechOpen;
+  document.getElementById('speech-panel').classList.toggle('open',speechOpen);
+};
+window.setSpeechMode=function(mode){
+  speechMode=mode;
+  document.getElementById('sp-write').classList.toggle('active',mode==='write');
+  document.getElementById('sp-flow').classList.toggle('active',mode==='flow');
+  const toolbar=document.getElementById('sp-toolbar');
+  const hint=document.getElementById('sp-flow-hint');
+  if(mode==='flow'){
+    toolbar.style.display='none';
+    hint.classList.add('visible');
+    flowAccess=true;
+    document.getElementById('app').classList.add('flow-access-mode');
+  } else {
+    toolbar.style.display='';
+    hint.classList.remove('visible');
+    flowAccess=false;
+    document.getElementById('app').classList.remove('flow-access-mode');
+  }
+};
+window.toggleFlowAccess=function(){
+  if(!speechOpen)toggleSpeech();
+  setSpeechMode(flowAccess?'write':'flow');
+  document.getElementById('flow-access-btn').classList.toggle('active',flowAccess);
+};
+
+function flowAccessClick(id,arg){
+  if(!arg.text)return;
+  const ed=document.getElementById('speech-ed');
+  const line=document.createElement('p');
+  line.textContent=(arg.text||'')+(arg.cite?' ['+arg.cite+']':'');
+  ed.appendChild(line);
+  ed.scrollTop=ed.scrollHeight;
+  // Highlight card
+  const card=document.querySelector(`.arg-card[data-id="${id}"]`);
+  if(card){card.classList.add('fa-added');setTimeout(()=>card.classList.remove('fa-added'),1200);}
+  toast('Added to speech doc');
+}
+
+window.fmt=function(cmd){document.execCommand(cmd,false,null);};
+window.applySize=function(sz){document.execCommand('fontSize',false,'7');document.querySelectorAll('[size="7"]').forEach(el=>{el.removeAttribute('size');el.style.fontSize=sz+'px';});};
+window.applyColor=function(col){document.execCommand('foreColor',false,col);};
+window.clearSpeech=function(){if(confirm('Clear speech doc?'))document.getElementById('speech-ed').innerHTML='';};
+window.exportSpeech=function(){
+  const txt=document.getElementById('speech-ed').innerText||'';
+  const blob=new Blob([txt],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='speech.txt';a.click();
+};
+
+// ── CARD SEARCH ────────────────────────────────────────────────────────────
+window.openCards=function(){document.getElementById('card-overlay').classList.add('open');setTimeout(()=>document.getElementById('ev-search').focus(),120);};
+window.closeCards=function(){document.getElementById('card-overlay').classList.remove('open');};
+
+window.setEvSrc=function(src,btn){
+  document.querySelectorAll('.ev-src').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  cfFilter=cfFilter;
+  runSearch();
+};
+window.setEvFilter=function(f,btn){
+  document.querySelectorAll('.ev-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  cfFilter=f;
+  runSearch();
+};
+
+// Debounced search on input
+document.getElementById('ev-search').addEventListener('input',function(){
+  clearTimeout(cfDebounce);
+  cfDebounce=setTimeout(runSearch,280);
+});
+
+async function runSearch(){
+  const q=(document.getElementById('ev-search').value||'').trim();
+  const listEl=document.getElementById('ev-list-inner');
+  const countEl=document.getElementById('ev-count');
+  if(!q){listEl.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:13px">Search OpenEv, OpenCaselist,<br>and your uploaded cards</div>';countEl.textContent='Search above';return;}
+  listEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--t3);font-size:13px">Searching…</div>';
+  try{
+    // Query Firestore open evidence collection
+    const evRef=collection(fs,'evidence');
+    const qr=query(evRef,where('tags','array-contains-any',q.toLowerCase().split(' ').slice(0,3)),limit(30));
+    const snap2=await getDocs(qr);
+    const results=[];
+    snap2.forEach(d=>results.push({id:d.id,...d.data()}));
+    countEl.textContent=results.length+' results';
+    listEl.innerHTML='';
+    if(!results.length){listEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--t3);font-size:13px">No results found. Try broader terms.</div>';return;}
+    results.forEach(ev=>{
+      const item=document.createElement('div');item.className='ev-result-item';
+      item.innerHTML=`<div class="ev-item-tag">${esc(ev.tag||ev.side||'')}</div><div class="ev-item-title">${esc(ev.title||ev.cite||'Untitled')}</div><div class="ev-item-meta">${esc(ev.author||'')} ${esc(ev.year||'')}</div>`;
+      item.onclick=()=>showCardPreview(ev,item);
+      listEl.appendChild(item);
+    });
+  }catch(e){
+    // Firestore not set up — show placeholder results
+    const sampleResults=[
+      {title:'Naval capacity structural deficits cause deterrence failure',cite:'Kesler 25',tag:'policy · aff',text:'The United States Navy faces a critical readiness gap driven by decades of deferred maintenance and fleet reduction. Current force structure cannot sustain simultaneous high-tempo operations across the Pacific and Atlantic theaters, creating windows of vulnerability that adversary states have explicitly identified in their operational planning documents.'},
+      {title:'Defense spending triggers debt spiral, crowds out investment',cite:'Park 25',tag:'policy · neg · DA',text:'Increases in defense appropriations above baseline projections trigger automatic sequestration mechanisms under current budget law. Historical analysis demonstrates that defense-induced deficits crowd out private investment in productive capital, reducing long-run growth potential by a measurable margin.'},
+      {title:'Security discourse reifies threat construction, produces violence',cite:'Dillon 23',tag:'policy · neg · K',text:'The language of security does not merely describe threats — it constitutes them. By naming a phenomenon as a security concern, state actors activate institutional frameworks that narrow the range of permissible responses to those involving coercive force, foreclosing diplomatic alternatives before they can be evaluated.'},
+      {title:'Topicality — substantially requires quantitative threshold',cite:'Bradley 24',tag:'policy · neg · T',text:'The ordinary meaning of substantially in legal and policy contexts consistently denotes a quantifiable minimum threshold, typically interpreted as 30% or greater in federal procurement law. Absent a brightline quantitative standard, affirmatives gain unlimited ability to define their way out of negative ground at the point of maximum preparation cost.'},
+      {title:'Util maximizes welfare across all affected parties',cite:'Mill 1863',tag:'LD · aff · philosophy',text:'Utility, understood as the greatest happiness for the greatest number, provides the only coherent basis for moral evaluation of social arrangements. Rights and duties derive their moral force not from categorical imperative but from their role as instrumentally reliable means of promoting aggregate welfare.'},
+    ].filter(r=>r.title.toLowerCase().includes(q.toLowerCase())||r.tag.toLowerCase().includes(q.toLowerCase())||r.cite.toLowerCase().includes(q.toLowerCase()));
+    countEl.textContent=sampleResults.length+' results';
+    listEl.innerHTML='';
+    if(!sampleResults.length){listEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--t3);font-size:13px">No matches. Try different keywords.</div>';return;}
+    sampleResults.forEach(ev=>{
+      const item=document.createElement('div');item.className='ev-result-item';
+      item.innerHTML=`<div class="ev-item-tag">${esc(ev.tag||'')}</div><div class="ev-item-title">${esc(ev.title||'Untitled')}</div><div class="ev-item-meta">${esc(ev.cite||'')}</div>`;
+      item.onclick=()=>showCardPreview(ev,item);
+      listEl.appendChild(item);
+    });
+  }
+}
+
+function showCardPreview(ev,itemEl){
+  document.querySelectorAll('.ev-result-item').forEach(i=>i.classList.remove('active'));
+  if(itemEl)itemEl.classList.add('active');
+  selCard=ev;
+  const prev=document.getElementById('ev-preview');
+  prev.innerHTML=`
+    <div style="margin-bottom:8px">
+      <span style="font-size:11px;color:var(--t3);font-family:var(--mono)">${esc(ev.tag||'')}</span>
+    </div>
+    <div style="font-size:16px;font-weight:700;color:var(--t1);margin-bottom:6px;line-height:1.35">${esc(ev.title||ev.cite||'Untitled')}</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:16px">${esc(ev.author||ev.cite||'')} ${esc(ev.year||'')}</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.7;white-space:pre-wrap">${esc(ev.text||'No full text available.')}</div>
+    <button class="ev-use-btn" onclick="useCard()">+ Add to flow</button>`;
+}
+
+window.useCard=function(){
+  if(!selCard||!curFlow)return;
+  addArgFromCard(selCard);
+  closeCards();
+};
+
+function addArgFromCard(ev){
+  if(!canEdit()||!curFlow)return;
+  const firstSp=spList.find(s=>s.id===flows[curFlow]?.startSpeech)||spList[0];
+  if(!firstSp)return;
+  pushUndo();
+  const id=uid();
+  const newArg={sp:firstSp.id,text:ev.title||'',cite:ev.cite||'',order:Date.now(),ts:serverTimestamp()};
+  args[id]=newArg;
+  set(ref(db,frk('args',id)),newArg);
+  renderCols();updateStatusBar();
+  toast('Card added to '+firstSp.l);
+}
+
+// ── STATUS BAR ─────────────────────────────────────────────────────────────
+function updateStatusBar(){
+  const vals=Object.values(args);
+  const aff=vals.filter(a=>{const sp=spList.find(s=>s.id===a.sp);return sp&&sp.side.includes('aff');}).length;
+  const neg=vals.filter(a=>{const sp=spList.find(s=>s.id===a.sp);return sp&&sp.side.includes('neg');}).length;
+  const cross=vals.filter(a=>a.crossRefs&&a.crossRefs.length).length;
+  const ext=vals.filter(a=>a.ext).length;
+  document.getElementById('st-aff').textContent='AFF '+aff;
+  document.getElementById('st-neg').textContent='NEG '+neg;
+  document.getElementById('st-cross').textContent=cross+' cross-applies';
+  document.getElementById('st-ext').textContent=ext+' extended';
+}
+
+// ── PRESENCE ──────────────────────────────────────────────────────────────
+function renderPresence(){
+  const row=document.getElementById('presence-row');
+  if(!row)return;
+  row.innerHTML='';
+  Object.entries(peers).forEach(([id,p])=>{
+    if(id===myId)return;
+    const dot=document.createElement('div');
+    dot.className='peer-dot';
+    dot.style.background=p.color||'#888';
+    dot.title=p.name||'Debater';
+    dot.textContent=(p.name||'?')[0].toUpperCase();
+    row.appendChild(dot);
+  });
+}
+
+// ── ACCESS CONTROL ────────────────────────────────────────────────────────
+function canEdit(){return myRole==='editor';}
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey){
+    if(e.key==='z'&&!e.shiftKey){e.preventDefault();doUndo();}
+    if((e.key==='Z'&&e.shiftKey)||(e.key==='y')){e.preventDefault();doRedo();}
+  }
+  if(e.key==='Escape'){
+    if(document.getElementById('add-flow-modal').classList.contains('open'))closeAddFlow();
+    if(document.getElementById('extend-modal').classList.contains('open'))closeExtend();
+    if(document.getElementById('cross-modal').classList.contains('open'))closeCross();
+    if(document.getElementById('card-overlay').classList.contains('open'))closeCards();
+    if(document.getElementById('join-modal').classList.contains('open'))closeJoin();
+    if(document.getElementById('profile-panel').classList.contains('open'))closeProfilePanel();
+  }
+});
+
+// Expose openJoin globally for landing page buttons
+window.openJoin=window.openJoin;
 </script>
 </body>
