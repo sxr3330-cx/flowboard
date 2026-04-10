@@ -2905,44 +2905,33 @@ setTimeout(()=>{
 </div>
 
 
-<!-- GLOBAL SYNC FUNCTIONS — plain script, runs before module -->
+<!-- GLOBAL FUNCTIONS — synchronous, always available -->
 <script>
-window._joinEvtPending=null;
-window._moduleReady=false;
-// Stub that works before module loads
+var _pendingEvt='policy';
+var _fbReady=false;
+
 window.openJoin=function(evtType){
-  const modal=document.getElementById('join-modal');
-  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
-  if(modal){modal.classList.add('open');}
-  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
-  const btn=document.getElementById(map[evtType||'policy']||'jm-pol');
+  _pendingEvt=evtType||'policy';
+  var modal=document.getElementById('join-modal');
+  if(modal)modal.classList.add('open');
+  document.querySelectorAll('.jm-evt').forEach(function(b){b.classList.remove('active');});
+  var map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
+  var btn=document.getElementById(map[_pendingEvt]||'jm-pol');
   if(btn)btn.classList.add('active');
-  window._joinEvtPending=evtType||'policy';
-  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
+  setTimeout(function(){var n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
 };
 window.closeJoin=function(){
-  const modal=document.getElementById('join-modal');
+  var modal=document.getElementById('join-modal');
   if(modal)modal.classList.remove('open');
 };
 window.setJoinEvt=function(evtType,btn){
-  window._joinEvtPending=evtType;
-  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  _pendingEvt=evtType||'policy';
+  document.querySelectorAll('.jm-evt').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
 };
-window._doJoinPending=false;
 window.doJoin=function(){
-  // Store intent and retry once module loads (max 3s)
-  window._doJoinPending=true;
-  let attempts=0;
-  const retry=setInterval(function(){
-    attempts++;
-    if(window._moduleDoJoin){
-      clearInterval(retry);
-      window._moduleDoJoin();
-    } else if(attempts>30){
-      clearInterval(retry);
-    }
-  },100);
+  if(!_fbReady){setTimeout(window.doJoin,150);return;}
+  window._realDoJoin();
 };
 </script>
 
@@ -3191,19 +3180,7 @@ import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}fro
 const FB={apiKey:"AIzaSyDhkxrjwjBGdD2euLSGgUGvOywyuAGEazw",authDomain:"flowboard-101a6.firebaseapp.com",databaseURL:"https://flowboard-101a6-default-rtdb.firebaseio.com",projectId:"flowboard-101a6",storageBucket:"flowboard-101a6.firebasestorage.app",messagingSenderId:"558167356977",appId:"1:558167356977:web:7358523b7d29b122c24710"};
 const app=initializeApp(FB),db=getDatabase(app),fs=getFirestore(app),auth=getAuth(app);
 
-// ── openJoin — full implementation, overrides the sync stub ─────────────
-let _joinEvt='policy';
-window.openJoin=function(evtType='policy'){
-  _joinEvt=evtType;
-  window._joinEvtPending=evtType;
-  document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
-  const map={policy:'jm-pol',ld:'jm-ld',pf:'jm-pf'};
-  const btn=document.getElementById(map[_joinEvt]||'jm-pol');
-  if(btn)btn.classList.add('active');
-  document.getElementById('join-modal').classList.add('open');
-  setTimeout(()=>{const n=document.getElementById('jm-name');if(n&&!n.value)n.focus();},120);
-};
-window.closeJoin=function(){document.getElementById('join-modal').classList.remove('open');};
+// ── Module loaded — set _fbReady so doJoin works ────────────────────────
 
 // ── SPEECH CONFIGS ──────────────────────────────────────────────────────
 const SPEECHES={
@@ -4242,28 +4219,27 @@ window.setJoinEvt=function(evtType,btn){
   document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 };
-window.doJoin=async function(){
+window._realDoJoin=async function(){
   const nameEl=document.getElementById('jm-name');
   const codeEl=document.getElementById('jm-code');
   const errEl=document.getElementById('jm-err');
+  if(!nameEl||!codeEl)return;
   const name=(nameEl.value||'').trim();
   const code=(codeEl.value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   errEl.textContent='';
   if(!name){errEl.textContent='Enter your name';nameEl.focus();return;}
   if(!code){errEl.textContent='Enter a room code';codeEl.focus();return;}
-  document.getElementById('jm-go').textContent='Joining…';
-  document.getElementById('jm-go').disabled=true;
-  myName=name;
-  rc=code;
-  evt=_joinEvt||window._joinEvtPending||'policy';
+  const goBtn=document.getElementById('jm-go');
+  if(goBtn){goBtn.textContent='Joining…';goBtn.disabled=true;}
+  myName=name; rc=code;
+  evt=window._pendingEvt||'policy';
   spList=SPEECHES[evt]||SPEECHES.policy;
   document.getElementById('join-modal').classList.remove('open');
-  document.getElementById('jm-go').textContent='Join / Create Room →';
-  document.getElementById('jm-go').disabled=false;
+  if(goBtn){goBtn.textContent='Join / Create Room →';goBtn.disabled=false;}
   initRoom();
 };
-// Register so the pre-module stub can call us
-window._moduleDoJoin=window.doJoin;
+window.doJoin=window._realDoJoin;
+window._fbReady=true;
 
 // ── ROOM INIT ─────────────────────────────────────────────────────────────
 function initRoom(){
@@ -4396,7 +4372,7 @@ window.switchFlow=function(id){
     // Merge: don't overwrite text being typed right now
     Object.keys(incoming).forEach(k=>{
       if(args[k]){
-        const el=document.querySelector(\`.arg-card[data-arg-id="${k}"] :focus\`);
+        const el=document.querySelector(`.arg-card[data-arg-id="${k}"] :focus`);
         if(el){incoming[k].text=args[k].text;incoming[k].cite=args[k].cite;}
       }
     });
