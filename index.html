@@ -44,19 +44,7 @@
   --sec-pad:    120px 80px;
 }
 
-:root.light {
-  --bg:          #fafafe;
-  --bg2:         #f3f0ff;
-  --bg3:         #ebe6ff;
-  --surface:     rgba(109,92,231,0.04);
-  --surface2:    rgba(109,92,231,0.08);
-  --border:      rgba(0,0,0,0.07);
-  --border2:     rgba(109,92,231,0.2);
-  --text:        #0c0a1e;
-  --text2:       rgba(30,20,80,0.6);
-  --text3:       rgba(80,60,160,0.4);
-  --card-bg:     rgba(255,255,255,0.95);
-}
+/* landing is always dark — no light mode */
 
 html {
   scroll-behavior: smooth;
@@ -135,7 +123,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
   background: rgba(5,4,9,0.72);
   transition: background .3s;
 }
-:root.light #land-nav { background: rgba(250,250,254,0.84) }
+
 
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
@@ -1005,6 +993,75 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 }
 #app.open { display: flex }
 
+/* ── APP LIGHT MODE ────────────────────────────────────────────────────── */
+#app.light {
+  background: #f5f4f8;
+  --t1:  #1a1830;
+  --t2:  rgba(40,35,80,0.55);
+  --t3:  rgba(60,55,100,0.32);
+  --s1:  rgba(0,0,0,0.03);
+  --s2:  rgba(0,0,0,0.055);
+  --s3:  rgba(0,0,0,0.08);
+  --b1:  rgba(0,0,0,0.08);
+  --b2:  rgba(0,0,0,0.14);
+  --b3:  rgba(0,0,0,0.22);
+  --acc: #5b4dd4;
+  --aff: #2563eb;
+  --neg: #dc2626;
+  --grn: #16a34a;
+  --orn: #ea580c;
+  --rd:  #dc2626;
+}
+#app.light #sidebar          { background: #eeedf5; border-right-color: rgba(0,0,0,0.08) }
+#app.light #topbar           { background: #eeedf5; border-bottom-color: rgba(0,0,0,0.08) }
+#app.light #col-headers      { background: #eeedf5; border-bottom-color: rgba(0,0,0,0.08) }
+#app.light #main             { background: #f5f4f8 }
+#app.light #speech-panel     { background: #eeedf5; border-left-color: rgba(0,0,0,0.08) }
+#app.light .col-wrap         { background: rgba(245,244,248,0.9); border-right-color: rgba(0,0,0,0.07) }
+#app.light .arg-card         { background: #fff; border-color: rgba(0,0,0,0.1) }
+#app.light .arg-card:hover   { background: #faf9ff; border-color: rgba(91,77,212,0.3) }
+#app.light .arg-card:focus-within { border-color: rgba(91,77,212,0.5); background: #faf9ff }
+#app.light .arg-card.ext     { border-color: rgba(22,163,74,0.5); background: rgba(22,163,74,0.04); border-left-color: #16a34a }
+#app.light .arg-card.dropped { border-color: rgba(220,38,38,0.3) }
+#app.light .arg-text         { color: #1a1830 }
+#app.light .arg-cite         { color: rgba(91,77,212,0.7) }
+#app.light .arg-act          { background: #eeedf5; border-color: rgba(0,0,0,0.1); color: rgba(40,35,80,0.55) }
+#app.light .arg-act:hover    { background: #dddcec; color: #1a1830 }
+#app.light .flow-tab         { color: rgba(40,35,80,0.55) }
+#app.light .flow-tab:hover   { background: rgba(0,0,0,0.05) }
+#app.light .flow-tab.active  { background: rgba(91,77,212,0.12); color: #1a1830 }
+#app.light .sb-btn           { color: rgba(40,35,80,0.55) }
+#app.light .sb-btn:hover     { background: rgba(0,0,0,0.05); color: #1a1830 }
+#app.light .add-flow-btn     { color: rgba(60,55,100,0.4); border-color: rgba(0,0,0,0.1) }
+#app.light .add-flow-btn:hover { border-color: rgba(91,77,212,0.4); color: #5b4dd4 }
+#app.light .tb-btn           { color: rgba(40,35,80,0.5) }
+#app.light .tb-btn:hover     { background: rgba(0,0,0,0.06); color: #1a1830 }
+#app.light .tb-btn.acc       { background: rgba(37,99,235,0.08); color: #2563eb; border-color: rgba(37,99,235,0.2) }
+#app.light .tb-btn.purple    { background: rgba(91,77,212,0.08); color: #5b4dd4; border-color: rgba(91,77,212,0.2) }
+#app.light .tb-btn.purple.active { background: rgba(91,77,212,0.16) }
+#app.light #sheet-title      { color: #1a1830 }
+#app.light .col-hdr-cell.aff-hdr { color: #2563eb }
+#app.light .col-hdr-cell.neg-hdr { color: #dc2626 }
+#app.light .col-hdr-cell.ld-hdr  { color: #7c3aed }
+#app.light .room-pill        { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); color: rgba(40,35,80,0.6) }
+#app.light .sync-row .slbl   { color: rgba(60,55,100,0.45) }
+#app.light .add-arg-btn      { color: rgba(60,55,100,0.35) }
+#app.light .add-arg-btn:hover{ background: rgba(0,0,0,0.04); color: rgba(40,35,80,0.6) }
+#app.light #app-stars        { opacity: 0 }
+#app.light .sp-mode          { color: rgba(40,35,80,0.5) }
+#app.light .sp-mode.active   { background: rgba(91,77,212,0.14); color: #1a1830 }
+#app.light #speech-ed        { color: #1a1830 }
+#app.light .sp-entry-text    { color: #1a1830 }
+#app.light .modal-box        { background: #fff; border-color: rgba(0,0,0,0.12) }
+#app.light .modal-title      { color: #1a1830 }
+#app.light .modal-sub        { color: rgba(40,35,80,0.55) }
+#app.light .side-btn         { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1) }
+#app.light .side-btn:hover   { background: rgba(0,0,0,0.06) }
+#app.light .side-btn.selected{ background: rgba(91,77,212,0.08); border-color: #5b4dd4 }
+#app.light .type-btn         { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1) }
+#app.light .type-btn:hover   { background: rgba(0,0,0,0.06) }
+#app.light .type-btn.selected{ background: rgba(91,77,212,0.08); border-color: #5b4dd4 }
+
 /* App star field */
 #app-stars {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -1754,9 +1811,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
       <button class="nav-link"        id="nav-about"    onclick="showPage('about')">About</button>
     </div>
     <div class="nav-right">
-      <button class="nav-theme" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
+      <!-- theme toggle removed from landing — landing is always dark -->
       <button class="nav-signin" id="ln-signin-btn" onclick="doGoogle()">Sign In</button>
       <button class="nav-cta"    onclick="openJoin('policy')">Get Started</button>
     </div>
@@ -2992,6 +3047,10 @@ window.doJoin=function(){
         <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         Card Search
       </button>
+      <button class="sb-btn" id="app-theme-btn" onclick="toggleAppTheme()" title="Toggle light/dark">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span id="app-theme-lbl">Light mode</span>
+      </button>
       <button class="sb-btn" id="profile-btn" onclick="me?openProfilePanel():doGoogle()">
         <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 14c0-2.761 2.239-4 5-4s5 1.239 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span id="profile-lbl">Sign In</span>
@@ -3512,11 +3571,21 @@ const SUN_SVG=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 window.toggleTheme=function(){
   isDark=!isDark;
   document.documentElement.className=isDark?'dark':'light';
-  const btn=document.getElementById('theme-btn');
-  if(btn)btn.innerHTML=isDark?MOON_SVG:SUN_SVG;
-  // Update globe rendering
 };
 document.documentElement.className='dark';
+
+let appDark=true;
+window.toggleAppTheme=function(){
+  appDark=!appDark;
+  const app=document.getElementById('app');
+  if(app)app.classList.toggle('light',!appDark);
+  const lbl=document.getElementById('app-theme-lbl');
+  const btn=document.getElementById('app-theme-btn');
+  if(lbl)lbl.textContent=appDark?'Light mode':'Dark mode';
+  if(btn){
+    btn.querySelector('svg').style.opacity=appDark?'1':'0.6';
+  }
+};
 
 // ── CUSTOM CURSOR ─────────────────────────────────────────────────────────
 (function(){
