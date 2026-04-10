@@ -36,100 +36,187 @@ body.app-open{overflow:hidden}
 
 /* ── LANDING ── */
 #landing{background:var(--bg);display:flex;flex-direction:column;min-height:100vh;position:relative}
-#globe-canvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none}
+#globe-canvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none;transition:opacity .4s}
+#globe-canvas.hidden{opacity:0}
 .land-noise{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;height:100vh}
 .land-grid{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 80%);height:100vh}
 
 /* NAV */
-#land-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--b1);backdrop-filter:blur(24px);background:rgba(2,3,10,0.7)}
-.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;text-decoration:none;cursor:pointer}
-.ln-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--acc),rgba(0,212,255,0.4));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+/* ── NAV ── */
+:root.dark{--bg-page:#03020f;--s-page:#07051a;--s2-page:#0d0b26;--t-page:#e8e4ff;--t2-page:rgba(200,190,255,0.6);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(120,80,255,0.12);--card-page:rgba(10,8,32,0.8)}
+:root.light{--bg-page:#f4f2ff;--s-page:#edeaff;--s2-page:#e0dcff;--t-page:#1a0a3a;--t2-page:rgba(60,40,120,0.7);--t3-page:rgba(100,80,180,0.5);--border-page:rgba(120,80,255,0.18);--card-page:rgba(255,255,255,0.9)}
+:root{--bg-page:#03020f;--s-page:#07051a;--s2-page:#0d0b26;--t-page:#e8e4ff;--t2-page:rgba(200,190,255,0.6);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(120,80,255,0.12);--card-page:rgba(10,8,32,0.8);--acc-p:#7c3aed;--acc2-p:#4f46e5;--acc3-p:rgba(124,58,237,0.1);--grn-p:#4ade80}
+
+/* ── NAV ── */
+#land-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;border-bottom:1px solid var(--border-page);backdrop-filter:blur(32px);background:rgba(3,2,15,0.75);transition:background .3s}
+:root.light #land-nav{background:rgba(244,242,255,0.88)}
+.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t-page);cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;letter-spacing:-.4px}
+.ln-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(124,58,237,0.4);flex-shrink:0}
 .ln-logo-mark svg{width:16px;height:16px}
-.ln-links{display:flex;gap:32px;align-items:center}
-.ln-link{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;font-weight:400;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
-.ln-link:hover{color:var(--t1)}
-.ln-cta{padding:9px 22px;border-radius:8px;background:var(--acc);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:all .2s;letter-spacing:-.2px}
-.ln-cta:hover{box-shadow:0 0 24px rgba(0,212,255,0.5);transform:translateY(-1px)}
-.ln-signin{padding:9px 18px;border-radius:8px;background:transparent;color:var(--t2);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;transition:all .2s}
-.ln-signin:hover{color:var(--t1);border-color:var(--b3)}
+.ln-links{display:flex;gap:6px;align-items:center}
+.ln-link{font-size:13px;color:var(--t2-page);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:color .2s;font-weight:500;padding:6px 12px;border-radius:7px;position:relative}
+.ln-link:hover{color:var(--t-page);background:rgba(124,58,237,0.07)}
+.ln-link.active{color:var(--t-page)}
+.ln-link.active::after{content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:linear-gradient(90deg,#7c3aed,#4f46e5);border-radius:2px}
+.ln-theme-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border-page);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2-page);transition:all .2s}
+.ln-theme-btn:hover{background:rgba(124,58,237,0.1);color:var(--t-page)}
+.ln-signin{padding:8px 18px;border-radius:8px;background:transparent;color:var(--t2-page);border:1px solid var(--border-page);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:all .2s}
+.ln-signin:hover{color:var(--t-page);border-color:rgba(124,58,237,0.4);background:rgba(124,58,237,0.07)}
+.ln-cta{padding:9px 22px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:all .2s;box-shadow:0 0 20px rgba(124,58,237,0.35);letter-spacing:-.2px}
+.ln-cta:hover{box-shadow:0 0 35px rgba(124,58,237,0.6);transform:translateY(-1px)}
 
-/* HERO */
-#land-hero{position:relative;z-index:5;min-height:90vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 40px;gap:0}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:12px;color:var(--acc);font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .8s ease both;cursor:default}
-.hero-live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:livepulse 2s infinite;flex-shrink:0}
-@keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,0.4)}50%{box-shadow:0 0 0 5px rgba(0,229,160,0)}}
-.hero-h{font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1.0;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .8s .1s ease both}
-.hero-h .line2{display:block;background:linear-gradient(90deg,var(--acc),#4facfe,var(--ld));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:18px;color:var(--t2);max-width:480px;line-height:1.65;font-weight:300;margin-bottom:40px;animation:fadeUp .8s .2s ease both}
-.hero-btns{display:flex;gap:12px;animation:fadeUp .8s .3s ease both;margin-bottom:60px;flex-wrap:wrap;justify-content:center}
-.h-btn-primary{padding:15px 32px;border-radius:10px;background:linear-gradient(135deg,var(--acc),#4facfe);color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:all .2s;letter-spacing:-.2px;box-shadow:0 0 40px rgba(0,212,255,0.25)}
-.h-btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(0,212,255,0.4)}
-.h-btn-google{padding:14px 24px;border-radius:10px;background:rgba(255,255,255,0.04);color:var(--t1);border:1px solid var(--b2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
-.h-btn-google:hover{border-color:var(--b3);background:rgba(255,255,255,0.07);transform:translateY(-1px)}
+/* ── PAGES ── */
+.page{display:none;min-height:100vh;background:var(--bg-page);color:var(--t-page);font-family:'Inter',sans-serif;overflow-x:hidden}
+.page.active{display:block}
+#page-home{padding-top:64px}
+#page-features,#page-about{padding-top:64px;overflow-y:auto}
+
+/* ── HERO ── */
+#land-hero{position:relative;min-height:91vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 40px 40px;overflow:hidden}
+#land-hero::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(124,58,237,0.15) 0%,transparent 70%);pointer-events:none;animation:heroGlow 6s ease-in-out infinite alternate}
+@keyframes heroGlow{from{transform:translateX(-50%) scale(1)}to{transform:translateX(-50%) scale(1.15)}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(124,58,237,0.35);background:rgba(124,58,237,0.1);font-size:12px;color:#a78bfa;font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .6s ease both;position:relative;z-index:1}
+.hero-live-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:livepulse 2s infinite}
+@keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+.hero-h{font-size:clamp(56px,9vw,120px);font-weight:800;line-height:.95;letter-spacing:-4.5px;margin-bottom:24px;animation:fadeUp .65s .06s ease both;color:var(--t-page);position:relative;z-index:1}
+.hero-h .grad{display:block;background:linear-gradient(135deg,#a78bfa 0%,#818cf8 45%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:19px;color:var(--t2-page);max-width:540px;line-height:1.65;font-weight:300;margin-bottom:40px;animation:fadeUp .65s .12s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:12px;margin-bottom:64px;flex-wrap:wrap;justify-content:center;animation:fadeUp .65s .18s ease both;position:relative;z-index:1}
+.h-btn-primary{padding:15px 34px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:all .2s;box-shadow:0 0 40px rgba(124,58,237,0.4);letter-spacing:-.2px}
+.h-btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(124,58,237,0.6)}
+.h-btn-ld{padding:14px 26px;border-radius:10px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.3);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .2s}
+.h-btn-ld:hover{background:rgba(99,102,241,0.18);transform:translateY(-1px)}
+.h-btn-google{padding:14px 22px;border-radius:10px;background:rgba(255,255,255,0.05);color:#c4b5fd;border:1px solid rgba(255,255,255,0.1);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:9px}
 .h-btn-google svg{width:18px;height:18px;flex-shrink:0}
-.h-btn-ld{padding:14px 24px;border-radius:10px;background:rgba(180,122,255,0.08);color:var(--ld);border:1px solid rgba(180,122,255,0.25);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .2s}
-.h-btn-ld:hover{background:rgba(180,122,255,0.14);transform:translateY(-1px)}
+.h-btn-google:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2);transform:translateY(-1px)}
+.hero-stats{display:flex;gap:56px;animation:fadeUp .65s .24s ease both;padding-top:36px;border-top:1px solid var(--border-page);flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.h-stat-num{font-size:30px;font-weight:800;background:linear-gradient(135deg,#a78bfa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1.5px}
+.h-stat-lbl{font-size:11px;color:var(--t3-page);text-transform:uppercase;letter-spacing:1.8px;margin-top:3px}
 
-/* STATS */
-.hero-stats{display:flex;gap:48px;animation:fadeUp .8s .4s ease both;padding-top:32px;border-top:1px solid var(--b1);flex-wrap:wrap;justify-content:center}
-.h-stat-num{font-size:28px;font-weight:700;color:var(--acc);letter-spacing:-1px;font-family:'JetBrains Mono',monospace}
-.h-stat-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+/* ── PROBLEM/SOLUTION/RESULT ── */
+#land-psr{position:relative;z-index:5;padding:100px 60px;background:var(--s-page);border-top:1px solid var(--border-page);border-bottom:1px solid var(--border-page)}
+.psr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;max-width:1100px;margin:56px auto 0}
+.psr-card{padding:48px 40px;position:relative;background:var(--s-page);transition:all .35s}
+.psr-card:first-child{border-radius:20px 0 0 20px;border:1px solid var(--border-page)}
+.psr-card:last-child{border-radius:0 20px 20px 0;border:1px solid var(--border-page);border-left:none}
+.psr-card:nth-child(2){border-top:1px solid var(--border-page);border-bottom:1px solid var(--border-page);background:rgba(124,58,237,0.06)}
+.psr-card:hover{background:rgba(124,58,237,0.05);transform:translateY(-4px);z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.psr-num{font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:3px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.psr-num::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(124,58,237,0.4),transparent)}
+.psr-icon{font-size:42px;margin-bottom:18px;display:block;animation:float 4s ease-in-out infinite}
+.psr-card:nth-child(1) .psr-icon{animation-delay:0s}
+.psr-card:nth-child(2) .psr-icon{animation-delay:1.3s}
+.psr-card:nth-child(3) .psr-icon{animation-delay:2.6s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.psr-title{font-size:26px;font-weight:700;color:var(--t-page);letter-spacing:-.5px;margin-bottom:14px;line-height:1.2}
+.psr-body{font-size:15px;color:var(--t2-page);line-height:1.75;font-weight:300}
+.psr-body strong{color:var(--t-page);font-weight:600}
 
-/* INTERACTIVE DEMO SECTION */
-#land-demo{position:relative;z-index:5;padding:80px 48px;background:linear-gradient(to bottom,transparent,rgba(7,11,20,0.97));border-top:1px solid var(--b1)}
-.demo-inner{max-width:960px;margin:0 auto}
-.demo-tabs{display:flex;gap:4px;padding:4px;background:var(--s1);border-radius:12px;border:1px solid var(--b1);margin-bottom:28px;width:fit-content}
-.demo-tab{padding:9px 20px;border-radius:9px;border:none;background:transparent;color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
-.demo-tab.active{background:var(--s3);color:var(--t1);border:1px solid var(--b2)}
-.demo-tab:hover:not(.active){color:var(--t1)}
-.demo-screen{background:var(--s1);border-radius:16px;border:1px solid var(--b2);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.6)}
-.demo-topbar{height:42px;background:var(--s2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;padding:0 14px}
+/* ── SECTION UTILS ── */
+.section-eyebrow{font-size:11px;color:#7c3aed;text-transform:uppercase;letter-spacing:2.5px;font-weight:700;text-align:center;font-family:'JetBrains Mono',monospace}
+.section-title{font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-2.5px;text-align:center;margin-top:12px;margin-bottom:14px;color:var(--t-page);line-height:1.0}
+.section-sub{font-size:16px;color:var(--t2-page);text-align:center;max-width:520px;margin:0 auto;line-height:1.65;font-weight:300}
+
+/* ── DEMO SECTION ── */
+#land-demo{position:relative;z-index:5;padding:100px 60px;background:var(--bg-page);border-top:1px solid var(--border-page)}
+.demo-inner{max-width:1000px;margin:0 auto}
+.demo-tabs{display:flex;gap:4px;padding:4px;background:var(--s2-page);border-radius:12px;border:1px solid var(--border-page);margin:36px 0 24px;width:fit-content}
+.demo-tab{padding:9px 22px;border-radius:9px;border:none;background:transparent;color:var(--t2-page);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.demo-tab.active{background:rgba(124,58,237,0.25);color:#c4b5fd;border:1px solid rgba(124,58,237,0.3)}
+.demo-screen{background:var(--s-page);border-radius:18px;border:1px solid var(--border-page);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5)}
+.demo-topbar{height:40px;background:var(--s2-page);border-bottom:1px solid var(--border-page);display:flex;align-items:center;gap:8px;padding:0 14px}
 .demo-dot{width:10px;height:10px;border-radius:50%}
-.demo-cols{display:flex;height:320px;overflow:hidden}
-.demo-col{flex:1;border-right:1px solid var(--b1);padding:10px 8px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.demo-cols{display:flex;height:300px;overflow:hidden}
+.demo-col{flex:1;border-right:1px solid var(--border-page);padding:10px 8px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
 .demo-col:last-child{border-right:none}
-.demo-col-hdr{font-size:9px;font-weight:700;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:4px;text-align:center}
-.demo-arg{border-radius:7px;border:1px solid var(--b1);background:var(--s2);padding:8px 10px;font-size:11px;color:var(--t2);line-height:1.4;cursor:pointer;transition:all .2s}
-.demo-arg:hover{border-color:var(--acc);color:var(--t1);background:rgba(0,212,255,0.04)}
-.demo-arg.highlighted{border-color:rgba(0,229,160,0.4);background:rgba(0,229,160,0.05)}
-.demo-arg.dropped-demo{border-color:rgba(251,191,36,0.4);opacity:.5;text-decoration:line-through}
-.demo-arg strong{color:var(--t1);font-weight:600}
-.demo-arg .cite{font-size:9px;color:var(--acc);font-family:'JetBrains Mono',monospace;margin-top:3px}
-.demo-tooltip{font-size:10px;color:var(--grn);margin-top:4px;display:none}
+.demo-col-hdr{font-size:9px;font-weight:700;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:5px;text-align:center}
+.demo-arg{border-radius:7px;border:1px solid var(--border-page);background:var(--s2-page);padding:8px 10px;font-size:11px;color:var(--t2-page);line-height:1.4;cursor:pointer;transition:all .25s}
+.demo-arg:hover{border-color:rgba(124,58,237,0.5);color:var(--t-page);background:rgba(124,58,237,0.07)}
+.demo-arg.highlighted{border-color:rgba(74,222,128,.45);background:rgba(74,222,128,.06)}
+.demo-arg.dropped-demo{opacity:.45;text-decoration:line-through}
+.demo-arg strong{color:var(--t-page);font-weight:600}
+.demo-arg .cite{font-size:9px;color:#7c3aed;font-family:'JetBrains Mono',monospace;margin-top:3px}
+.demo-tooltip{font-size:9px;color:#4ade80;margin-top:4px;display:none;font-family:'JetBrains Mono',monospace}
 .demo-arg:hover .demo-tooltip{display:block}
 
-/* FEATURES */
-#land-features{position:relative;z-index:5;padding:80px 48px;background:rgba(7,11,20,0.97)}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:40px auto 0}
-.feat-card{padding:28px;border-radius:16px;border:1px solid var(--b1);background:rgba(7,11,20,0.8);backdrop-filter:blur(20px);transition:all .25s;position:relative;overflow:hidden;cursor:default}
-.feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,var(--acc3),transparent 60%);opacity:0;transition:opacity .3s}
-.feat-card:hover{border-color:var(--b2);transform:translateY(-3px)}
+/* ── FEATURES PAGE & GRID ── */
+#page-features{background:var(--bg-page)}
+.feat-hero{padding:80px 60px 60px;text-align:center;background:var(--bg-page)}
+.feat-grid-wrap{padding:0 60px 100px;background:var(--bg-page);max-width:1100px;margin:0 auto}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:768px){.feat-grid{grid-template-columns:1fr 1fr}}
+.feat-card{padding:32px;border-radius:18px;border:1px solid var(--border-page);background:var(--card-page);transition:all .35s;position:relative;overflow:hidden;cursor:default}
+.feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(124,58,237,0.08),transparent 65%);opacity:0;transition:opacity .35s}
+.feat-card:hover{border-color:rgba(124,58,237,0.4);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,0.35)}
 .feat-card:hover::before{opacity:1}
-.feat-icon{font-size:24px;margin-bottom:14px;display:block}
-.feat-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:8px;letter-spacing:-.2px}
-.feat-desc{font-size:13px;color:var(--t2);line-height:1.65}
+.feat-icon{font-size:28px;margin-bottom:18px;display:block}
+.feat-title{font-size:17px;font-weight:700;color:var(--t-page);margin-bottom:10px;letter-spacing:-.3px}
+.feat-desc{font-size:13px;color:var(--t2-page);line-height:1.75}
 
-/* CTA SECTION */
-#land-cta{position:relative;z-index:5;padding:100px 48px;background:rgba(7,11,20,0.97);text-align:center;border-top:1px solid var(--b1)}
-.cta-box{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px}
-.cta-h{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-2px;line-height:1.1}
-.cta-h span{background:linear-gradient(90deg,var(--acc),#4facfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cta-sub{font-size:16px;color:var(--t2);line-height:1.6;max-width:440px}
+/* ── ABOUT PAGE ── */
+#page-about{background:var(--bg-page)}
+.about-hero{padding:100px 60px 80px;text-align:center;background:var(--bg-page);position:relative;overflow:hidden}
+.about-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.12) 0%,transparent 70%);pointer-events:none}
+.about-story{max-width:760px;margin:0 auto;padding:60px;position:relative;z-index:1}
+.about-story-p{font-size:17px;color:var(--t2-page);line-height:1.9;margin-bottom:24px;font-weight:300}
+.about-story-p strong{color:var(--t-page);font-weight:600}
+.about-quote-block{border-left:3px solid #7c3aed;padding:20px 28px;margin:40px 0;background:rgba(124,58,237,0.05);border-radius:0 12px 12px 0}
+.about-quote-block p{font-size:20px;font-style:italic;color:var(--t-page);line-height:1.6;font-weight:300}
+.about-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+.about-chip{padding:8px 18px;border-radius:100px;border:1px solid var(--border-page);background:var(--card-page);font-size:13px;color:#a78bfa;font-weight:500}
+.about-team{padding:60px;background:var(--s-page);border-top:1px solid var(--border-page)}
+.about-team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:40px auto 0}
+.team-card{padding:28px;border-radius:16px;border:1px solid var(--border-page);background:var(--card-page);transition:all .25s}
+.team-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-3px)}
+.team-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+.team-name{font-size:16px;font-weight:700;color:var(--t-page);margin-bottom:4px}
+.team-role{font-size:12px;color:#7c3aed;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+.team-bio{font-size:13px;color:var(--t2-page);line-height:1.65}
+
+/* ── PSR SECTION IN HOME ── */
+#land-psr2{position:relative;z-index:5;padding:100px 60px;background:var(--bg-page);border-top:1px solid var(--border-page)}
+.psr2-inner{max-width:1100px;margin:0 auto}
+.psr2-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:80px;opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+.psr2-row.visible{opacity:1;transform:translateY(0)}
+.psr2-row:nth-child(even){direction:rtl}
+.psr2-row:nth-child(even)>*{direction:ltr}
+.psr2-text{}
+.psr2-badge{font-size:10px;font-weight:800;color:#7c3aed;letter-spacing:3px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.psr2-badge::after{content:'';width:40px;height:1px;background:rgba(124,58,237,0.4)}
+.psr2-title{font-size:clamp(26px,3vw,40px);font-weight:700;color:var(--t-page);letter-spacing:-1px;line-height:1.15;margin-bottom:16px}
+.psr2-desc{font-size:16px;color:var(--t2-page);line-height:1.8;font-weight:300}
+.psr2-visual{border-radius:20px;border:1px solid var(--border-page);background:var(--card-page);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;position:relative}
+.psr2-visual::before{content:'';position:absolute;top:-30px;right:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);pointer-events:none}
+
+/* ── CTA ── */
+#land-cta{position:relative;z-index:5;padding:120px 60px;text-align:center;border-top:1px solid var(--border-page);overflow:hidden;background:var(--s-page)}
+#land-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.14) 0%,transparent 70%);pointer-events:none}
+.cta-box{max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;position:relative;z-index:1}
+.cta-h{font-size:clamp(38px,5.5vw,72px);font-weight:800;letter-spacing:-3px;line-height:.98;color:var(--t-page)}
+.cta-h span{background:linear-gradient(135deg,#a78bfa,#818cf8,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:17px;color:var(--t2-page);max-width:420px;line-height:1.65;font-weight:300}
 .cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 
-/* FOOTER */
-#land-footer{position:relative;z-index:5;padding:32px 48px;background:rgba(2,3,10,0.98);border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.footer-logo{font-size:13px;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:8px}
+/* ── FOOTER ── */
+#land-footer{position:relative;z-index:5;padding:28px 48px;background:var(--bg-page);border-top:1px solid var(--border-page);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-logo{font-size:13px;font-weight:600;color:var(--t3-page);display:flex;align-items:center;gap:8px}
 .footer-links{display:flex;gap:24px}
-.footer-link{font-size:12px;color:var(--t3);text-decoration:none;transition:color .2s}
-.footer-link:hover{color:var(--t2)}
-.footer-copy{font-size:12px;color:var(--t3)}
+.footer-link{font-size:12px;color:var(--t3-page);text-decoration:none;transition:color .2s;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;padding:0}
+.footer-link:hover{color:var(--t2-page)}
+.footer-copy{font-size:12px;color:var(--t3-page)}
 
-.section-eyebrow{font-size:11px;color:var(--acc);text-transform:uppercase;letter-spacing:2px;font-weight:600;text-align:center}
-.section-title{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-1.5px;text-align:center;margin-top:10px;margin-bottom:8px}
-.section-sub{font-size:15px;color:var(--t2);text-align:center;max-width:480px;margin:0 auto;line-height:1.6}
+/* ── SCROLL REVEAL ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+/* ── LIGHT MODE OVERRIDES ── */
+:root.light .demo-arg{background:rgba(255,255,255,0.9);color:rgba(60,40,120,0.8)}
+:root.light .demo-screen{background:#f0ecff}
+:root.light .feat-card{background:#fff;border-color:rgba(124,58,237,0.15)}
+:root.light #land-hero::before{background:radial-gradient(ellipse,rgba(124,58,237,0.1) 0%,transparent 70%)}
+:root.light .hero-h{color:#1a0a3a}
 
 /* ── PROFILE PANEL ── */
 #profile-panel{position:fixed;top:0;right:0;bottom:0;width:360px;background:var(--s1);border-left:1px solid var(--b2);z-index:997;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:-20px 0 60px rgba(0,0,0,0.5)}
@@ -542,120 +629,290 @@ body.app-open{overflow:hidden}
 </style>
 </head>
 <body>
-<!-- LANDING -->
+<!-- LANDING (multi-page SPA) -->
 <div id="landing">
   <canvas id="globe-canvas"></canvas>
   <div class="land-noise"></div>
   <div class="land-grid"></div>
 
+  <!-- NAV -->
   <nav id="land-nav">
-    <div class="ln-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-      <div class="ln-logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+    <div class="ln-logo" onclick="showPage('home')">
+      <div class="ln-logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       Flowboard
     </div>
     <div class="ln-links">
-      <button class="ln-link" onclick="document.getElementById('land-demo').scrollIntoView({behavior:'smooth'})">How it works</button>
-      <button class="ln-link" onclick="document.getElementById('land-features').scrollIntoView({behavior:'smooth'})">Features</button>
-      <button class="ln-link" onclick="openJoin('policy')">Policy</button>
-      <button class="ln-link" onclick="openJoin('ld')">LD</button>
+      <button class="ln-link active" id="nav-home" onclick="showPage('home')">Home</button>
+      <button class="ln-link" id="nav-features" onclick="showPage('features')">Features</button>
+      <button class="ln-link" id="nav-about" onclick="showPage('about')">About</button>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
+      <button class="ln-theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark">🌙</button>
       <button class="ln-signin" id="ln-signin-btn" onclick="doGoogle()">Sign In</button>
-      <button class="ln-cta" onclick="openJoin('policy')">Start Flowing →</button>
+      <button class="ln-cta" onclick="openJoin('policy')">Get Started →</button>
     </div>
   </nav>
 
-  <div id="land-hero">
-    <div class="hero-eyebrow"><div class="hero-live-dot"></div>Live multiplayer · Policy & LD · Real-time sync</div>
-    <h1 class="hero-h">
-      Flow rounds.<br>
-      <span class="line2">Win arguments.</span>
-    </h1>
-    <p class="hero-sub">The first debate platform built for speed — shared flows, live speech docs, card search, and real-time sync across your whole team.</p>
-    <div class="hero-btns">
-      <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
-      <button class="h-btn-ld" onclick="openJoin('ld')">Lincoln-Douglas</button>
-      <button class="h-btn-google" onclick="doGoogle()">
-        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Sign in with Google
-      </button>
-    </div>
-    <div class="hero-stats">
-      <div><div class="h-stat-num" id="hs-rooms">—</div><div class="h-stat-lbl">Active Rooms</div></div>
-      <div><div class="h-stat-num" id="hs-args">—</div><div class="h-stat-lbl">Args Flowed</div></div>
-      <div><div class="h-stat-num">25k+</div><div class="h-stat-lbl">Cards Indexed</div></div>
-      <div><div class="h-stat-num">2</div><div class="h-stat-lbl">Events</div></div>
-    </div>
-  </div>
+  <!-- ═══ HOME PAGE ═══ -->
+  <div class="page active" id="page-home">
 
-  <!-- INTERACTIVE DEMO -->
-  <div id="land-demo">
-    <div class="demo-inner">
-      <div class="section-eyebrow">See it in action</div>
-      <div class="section-title" style="margin-bottom:6px">Flow like you're in round</div>
-      <div class="section-sub" style="margin-bottom:28px">Click the arguments below to see how Flowboard works</div>
-      <div class="demo-tabs">
-        <button class="demo-tab active" onclick="switchDemo('policy',this)">Policy</button>
-        <button class="demo-tab" onclick="switchDemo('ld',this)">LD</button>
-      </div>
-      <div class="demo-screen" id="demo-screen">
-        <div class="demo-topbar">
-          <div class="demo-dot" style="background:#f87171"></div>
-          <div class="demo-dot" style="background:#fbbf24"></div>
-          <div class="demo-dot" style="background:#4ade80"></div>
-          <span style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-left:8px">Flowboard · Demo · OCTAS26</span>
-          <span style="margin-left:auto;font-size:10px;color:var(--grn);font-family:'JetBrains Mono',monospace">● live</span>
-        </div>
-        <div class="demo-cols" id="demo-cols"></div>
-      </div>
-      <p style="text-align:center;font-size:12px;color:var(--t3);margin-top:14px">↑ Hover or click any argument card above. This is a real preview of the interface.</p>
-    </div>
-  </div>
-
-  <!-- FEATURES -->
-  <div id="land-features">
-    <div class="section-eyebrow">Built for the round</div>
-    <div class="section-title">Everything you need to win</div>
-    <div class="section-sub">Purpose-built for competitive policy and LD. No bloat, no learning curve.</div>
-    <div class="feat-grid">
-      <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change instantly. Firebase-powered sub-second latency from any device worldwide.</div></div>
-      <div class="feat-card"><span class="feat-icon">📄</span><div class="feat-title">Flow Sheets</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Each flow starts at the right speech automatically.</div></div>
-      <div class="feat-card"><span class="feat-icon">🔍</span><div class="feat-title">Card Search</div><div class="feat-desc">25,000+ indexed cards from HSPolicy 25-26 with full formatting — bold, underline, highlights preserved exactly.</div></div>
-      <div class="feat-card"><span class="feat-icon">↩</span><div class="feat-title">Respond System</div><div class="feat-desc">Click respond on any arg and a linked response box opens in the next speech column automatically.</div></div>
-      <div class="feat-card"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any arg to pull it into your speech instantly.</div></div>
-      <div class="feat-card"><span class="feat-icon">⊠</span><div class="feat-title">Kick Positions</div><div class="feat-desc">Kick an entire flow (Cap K, Politics DA) with one click. Crosses out the whole sheet for both partners.</div></div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div id="land-cta">
-    <div class="cta-box">
-      <div class="cta-h">Ready to flow?<br><span>Start your first room.</span></div>
-      <div class="cta-sub">Free forever. No account required. Share a room code and your partner is in within seconds.</div>
-      <div class="cta-btns">
+    <!-- HERO -->
+    <div id="land-hero">
+      <div class="hero-badge"><div class="hero-live-dot"></div>Live multiplayer · Policy & LD · Real-time sync</div>
+      <h1 class="hero-h">
+        Flow rounds.<br>
+        <span class="grad">Win arguments.</span>
+      </h1>
+      <p class="hero-sub">The first debate flowing platform built for speed — shared flows, live speech docs, card search, and real-time sync for your whole team.</p>
+      <div class="hero-btns">
         <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
+        <button class="h-btn-ld" onclick="openJoin('ld')">Lincoln-Douglas</button>
         <button class="h-btn-google" onclick="doGoogle()">
           <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Sign in with Google
         </button>
       </div>
+      <div class="hero-stats">
+        <div><div class="h-stat-num" id="hs-rooms">—</div><div class="h-stat-lbl">Active Rooms</div></div>
+        <div><div class="h-stat-num" id="hs-args">—</div><div class="h-stat-lbl">Args Flowed</div></div>
+        <div><div class="h-stat-num">25k+</div><div class="h-stat-lbl">Cards Indexed</div></div>
+        <div><div class="h-stat-num">2</div><div class="h-stat-lbl">Events</div></div>
+      </div>
     </div>
-  </div>
 
-  <!-- FOOTER -->
-  <div id="land-footer">
-    <div class="footer-logo">
-      <div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-      Flowboard
+    <!-- PROBLEM / SOLUTION / RESULT -->
+    <div id="land-psr">
+      <div class="section-eyebrow reveal">The problem with flowing</div>
+      <div class="section-title reveal reveal-d1">Why debate teams lose track</div>
+      <div class="psr-grid">
+        <div class="psr-card reveal">
+          <div class="psr-num">Problem</div>
+          <span class="psr-icon">😤</span>
+          <div class="psr-title">Paper flows are chaos</div>
+          <div class="psr-body">Scribbled notes, illegible handwriting, <strong>no sync with your partner</strong>. You're flying blind when your partner extends an arg you dropped three speeches ago.</div>
+        </div>
+        <div class="psr-card reveal reveal-d1">
+          <div class="psr-num">Solution</div>
+          <span class="psr-icon">⚡</span>
+          <div class="psr-title">Live collaborative flows</div>
+          <div class="psr-body">One shared flow per position. Both partners see every arg, every extension, every kick — <strong>in real time, from any device</strong>, the moment it's typed.</div>
+        </div>
+        <div class="psr-card reveal reveal-d2">
+          <div class="psr-num">Result</div>
+          <span class="psr-icon">🏆</span>
+          <div class="psr-title">You stop dropping args</div>
+          <div class="psr-body">The respond button takes you to the right speech. The speech doc auto-inserts what you extend. <strong>Your 2AR is tighter</strong> because your flow actually works.</div>
+        </div>
+      </div>
     </div>
-    <div class="footer-links">
-      <a class="footer-link" href="#" onclick="openJoin('policy');return false">Policy</a>
-      <a class="footer-link" href="#" onclick="openJoin('ld');return false">LD</a>
-      <a class="footer-link" href="#land-features" onclick="document.getElementById('land-features').scrollIntoView({behavior:'smooth'});return false">Features</a>
+
+    <!-- PROBLEM / SOLUTION / RESULT — detailed rows -->
+    <div id="land-psr2">
+      <div class="psr2-inner">
+        <div class="section-eyebrow">How it actually works</div>
+        <div class="section-title" style="margin-bottom:0">Built for how you debate</div>
+
+        <!-- Row 1 -->
+        <div class="psr2-row">
+          <div class="psr2-text">
+            <div class="psr2-badge">01 · Flow Sheets</div>
+            <div class="psr2-title">One sheet per position, starting at the right speech</div>
+            <div class="psr2-desc">Add a "Politics DA" flow and it opens at the 1NC. Add an "Advantage 1" and it opens at 1AC. No wasted columns, no confusion about which speech you're on. Each position is its own sheet in the left sidebar.</div>
+          </div>
+          <div class="psr2-visual">
+            <div style="font-size:10px;color:#7c3aed;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:12px;font-weight:700">FLOWS</div>
+            <div id="psr-flow-anim" style="display:flex;flex-direction:column;gap:6px"></div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="psr2-row" style="margin-top:60px">
+          <div class="psr2-text">
+            <div class="psr2-badge">02 · Respond System</div>
+            <div class="psr2-title">Click respond, get a linked box in the next speech</div>
+            <div class="psr2-desc">Every argument has a ↩ respond button. Click it on a 1AC arg and a response card appears in the 1NC. The flow auto-scrolls and focuses it. No copy-paste, no confusion — just flow.</div>
+          </div>
+          <div class="psr2-visual">
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="flex:1">
+                <div style="font-size:9px;color:#4facfe;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;margin-bottom:8px">1AC</div>
+                <div class="demo-arg highlighted" style="cursor:default"><strong>Naval capacity is low</strong><div class="cite">Kesler 25</div></div>
+              </div>
+              <div style="color:#7c3aed;font-size:20px;padding-top:22px;flex-shrink:0">→</div>
+              <div style="flex:1">
+                <div style="font-size:9px;color:#f87171;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;margin-bottom:8px">1NC</div>
+                <div class="demo-arg" style="cursor:default;border-color:rgba(96,165,250,0.4);border-left:3px solid rgba(96,165,250,0.5)">Response…<div class="cite" style="color:#4ade80">↩ linked response</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="psr2-row" style="margin-top:60px">
+          <div class="psr2-text">
+            <div class="psr2-badge">03 · Speech Doc</div>
+            <div class="psr2-title">Build your speech live from the flow</div>
+            <div class="psr2-desc">Open the speech panel in Flow Access mode and click any argument to pull it into your speech instantly. Dropped args auto-insert "The neg dropped: [arg]". Your 2AR writes itself.</div>
+          </div>
+          <div class="psr2-visual">
+            <div style="font-size:10px;color:#7c3aed;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:12px;font-weight:700">SPEECH DOC</div>
+            <div style="font-size:12px;color:var(--t2-page);line-height:1.9">
+              <div style="border-left:3px solid #7c3aed;padding:4px 10px;margin-bottom:6px;background:rgba(124,58,237,0.06);border-radius:0 5px 5px 0;font-size:11px">1AC: Naval capacity is structurally low — Kesler 25</div>
+              <div style="border-left:3px solid #4ade80;padding:4px 10px;margin-bottom:6px;background:rgba(74,222,128,0.05);border-radius:0 5px 5px 0;font-size:11px">2AC: Extend the Kesler evidence — they dropped the internal link</div>
+              <div style="border-left:3px solid #fbbf24;padding:4px 10px;background:rgba(251,191,36,0.05);border-radius:0 5px 5px 0;font-size:11px;color:#fbbf24">The neg team dropped: DA uniqueness turn</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="footer-copy">© 2026 Flowboard</div>
-  </div>
-</div>
+
+    <!-- INTERACTIVE DEMO -->
+    <div id="land-demo">
+      <div class="demo-inner">
+        <div class="section-eyebrow reveal">See it in action</div>
+        <div class="section-title reveal reveal-d1">Flow like you're in round</div>
+        <div class="section-sub reveal reveal-d2">Click the argument cards below — this is the real interface</div>
+        <div class="demo-tabs">
+          <button class="demo-tab active" onclick="switchDemo('policy',this)">Policy</button>
+          <button class="demo-tab" onclick="switchDemo('ld',this)">LD</button>
+        </div>
+        <div class="demo-screen" id="demo-screen">
+          <div class="demo-topbar">
+            <div class="demo-dot" style="background:#f87171"></div>
+            <div class="demo-dot" style="background:#fbbf24"></div>
+            <div class="demo-dot" style="background:#4ade80"></div>
+            <span style="font-size:11px;color:var(--t3-page);font-family:'JetBrains Mono',monospace;margin-left:10px">Flowboard · OCTAS26 · Politics DA</span>
+            <span style="margin-left:auto;font-size:10px;color:#4ade80;font-family:'JetBrains Mono',monospace">● 2 online</span>
+          </div>
+          <div class="demo-cols" id="demo-cols"></div>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--t3-page);margin-top:14px;font-family:'JetBrains Mono',monospace">↑ Click any argument to extend, drop, or respond to it</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div id="land-cta">
+      <div class="cta-box">
+        <div class="section-eyebrow">Start today</div>
+        <div class="cta-h">Ready to<br><span>flow?</span></div>
+        <div class="cta-sub">Free forever. No account required. Share a room code and your partner joins in seconds.</div>
+        <div class="cta-btns">
+          <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
+          <button class="h-btn-ld" onclick="openJoin('ld')">Start LD Room</button>
+          <button class="h-btn-google" onclick="doGoogle()">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Sign in with Google
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="land-footer">
+      <div class="footer-logo">
+        <div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        Flowboard
+      </div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('features')">Features</button>
+        <button class="footer-link" onclick="showPage('about')">About</button>
+        <button class="footer-link" onclick="openJoin('policy')">Policy</button>
+        <button class="footer-link" onclick="openJoin('ld')">LD</button>
+      </div>
+      <div class="footer-copy">© 2026 Flowboard · Built for debaters, by debaters</div>
+    </div>
+  </div><!-- end page-home -->
+
+  <!-- ═══ FEATURES PAGE ═══ -->
+  <div class="page" id="page-features">
+    <div class="feat-hero">
+      <div class="section-eyebrow">Everything you need</div>
+      <div class="section-title">Built for the round</div>
+      <div class="section-sub">Every feature in Flowboard was designed around a specific debate moment. Here's what you get.</div>
+    </div>
+    <div class="feat-grid-wrap">
+      <div class="feat-grid">
+        <div class="feat-card reveal"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change the moment it's typed. Firebase-powered sub-second latency from any device, anywhere in the world.</div></div>
+        <div class="feat-card reveal reveal-d1"><span class="feat-icon">📋</span><div class="feat-title">Flow Sheets per Position</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Add a "Politics DA" and it opens at 1NC. Add "Advantage 1" and it opens at 1AC.</div></div>
+        <div class="feat-card reveal reveal-d2"><span class="feat-icon">↩</span><div class="feat-title">Respond System</div><div class="feat-desc">Click ↩ on any arg and a linked response card appears in the next speech column. The flow scrolls and focuses it automatically.</div></div>
+        <div class="feat-card reveal"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any argument to pull it into your speech. Dropped args insert "The [side] dropped:" automatically.</div></div>
+        <div class="feat-card reveal reveal-d1"><span class="feat-icon">🔍</span><div class="feat-title">Evidence Search</div><div class="feat-desc">Search open-source debate evidence from OpenEv and OpenCaselist. Upload your HSPolicy 25-26 cards and search them natively inside the flow.</div></div>
+        <div class="feat-card reveal reveal-d2"><span class="feat-icon">↑</span><div class="feat-title">Extend to Speech</div><div class="feat-desc">Click ↑ on any argument and choose which speech to extend it to. A copy is created in the target speech, marked EXT, with your notes intact.</div></div>
+        <div class="feat-card reveal"><span class="feat-icon">⊠</span><div class="feat-title">Kick Entire Flows</div><div class="feat-desc">Kick a position (Cap K, Politics DA) with one click from the sidebar. The entire flow sheet is crossed out for both partners instantly.</div></div>
+        <div class="feat-card reveal reveal-d1"><span class="feat-icon">⇄</span><div class="feat-title">Cross-Apply Arguments</div><div class="feat-desc">Link arguments across speeches and flows. Cross-apply badges show connections and clicking them scrolls to the linked argument instantly.</div></div>
+        <div class="feat-card reveal reveal-d2"><span class="feat-icon">👁</span><div class="feat-title">Spectator Mode</div><div class="feat-desc">Room creator controls who can edit. Spectators see the full flow live but can't make changes. Toggle editor/spectator access from the presence row.</div></div>
+        <div class="feat-card reveal"><span class="feat-icon">↩</span><div class="feat-title">Undo / Redo</div><div class="feat-desc">Full undo/redo history with Ctrl+Z and Ctrl+Shift+Z. Every add, delete, and status change is undoable without leaving the flow.</div></div>
+        <div class="feat-card reveal reveal-d1"><span class="feat-icon">🏠</span><div class="feat-title">Persistent Rooms</div><div class="feat-desc">Room codes are permanent. Join OCTAS2026 today and in a month — same room, same flows, same args. Nothing disappears.</div></div>
+        <div class="feat-card reveal reveal-d2"><span class="feat-icon">👤</span><div class="feat-title">Google Sign-In + Profiles</div><div class="feat-desc">Sign in with Google to save your room history. Your recent rooms appear in your profile panel with one-click rejoin.</div></div>
+      </div>
+    </div>
+    <div id="land-footer" style="position:static">
+      <div class="footer-logo"><div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>Flowboard</div>
+      <div class="footer-links"><button class="footer-link" onclick="showPage('home')">Home</button><button class="footer-link" onclick="showPage('about')">About</button></div>
+      <div class="footer-copy">© 2026 Flowboard</div>
+    </div>
+  </div><!-- end page-features -->
+
+  <!-- ═══ ABOUT PAGE ═══ -->
+  <div class="page" id="page-about">
+    <div class="about-hero">
+      <div class="section-eyebrow">Our story</div>
+      <div class="section-title">Built by debaters,<br>for debaters</div>
+      <div class="section-sub">Flowboard was born from the frustration of losing rounds because of a dropped argument on a messy paper flow.</div>
+    </div>
+    <div style="max-width:860px;margin:0 auto;padding:0 60px">
+      <div class="about-story-p reveal">
+        <strong>Every policy debater knows the feeling.</strong> You're in the 2AR, you know the neg dropped the agriculture solvency extension in the 1NR, but your paper flow is three pages of scribble and your partner is pointing at a different column. You go for it anyway. The judge doesn't buy it because you can't explain where it was extended.
+      </div>
+      <div class="about-quote-block reveal reveal-d1">
+        <p>"The flow is the round. If you can't read it, you've already lost."</p>
+      </div>
+      <div class="about-story-p reveal reveal-d1">
+        Flowboard is the platform we wished existed when we were prepping for tournaments. Real-time shared flows, a speech doc that builds itself from what you click, and a card search that actually works. No account required, no setup, no friction — just open a room, share the code, and flow.
+      </div>
+      <div class="about-story-p reveal reveal-d2">
+        The <strong>respond system</strong> was the first thing we built. Nothing is more frustrating than trying to track which NC arg you're responding to in the 2AC. Now you click ↩, a box appears in the right column, and it's linked. The <strong>kick feature</strong> came from watching neg teams forget they read the cap K in the 1NC. The <strong>speech doc</strong> came from watching 2ARs that got lost because the debater was reading off paper instead of the flow.
+      </div>
+      <div class="about-chips reveal reveal-d3" style="margin-bottom:60px">
+        <span class="about-chip">Policy Debate</span>
+        <span class="about-chip">Lincoln-Douglas</span>
+        <span class="about-chip">Open Source</span>
+        <span class="about-chip">Free Forever</span>
+        <span class="about-chip">Firebase Realtime</span>
+        <span class="about-chip">NSDA Ready</span>
+      </div>
+    </div>
+    <div class="about-team">
+      <div class="section-eyebrow" style="text-align:left;padding:0 60px">The team</div>
+      <div class="about-team-grid" style="padding:0 60px">
+        <div class="team-card reveal">
+          <div class="team-avatar">🧠</div>
+          <div class="team-name">Shreyas</div>
+          <div class="team-role">Founder · Policy</div>
+          <div class="team-bio">Policy debater, computational pathology researcher. Built Flowboard to stop losing rounds to illegible paper flows. Competes nationally, auto-qualified for OSDA States 2026.</div>
+        </div>
+        <div class="team-card reveal reveal-d1">
+          <div class="team-avatar">⚡</div>
+          <div class="team-name">Open Source</div>
+          <div class="team-role">Built on Firebase + Open Evidence</div>
+          <div class="team-bio">Flowboard uses Firebase Realtime Database for sub-second sync, and indexes open-source debate evidence from OpenEv and OpenCaselist for card search.</div>
+        </div>
+        <div class="team-card reveal reveal-d2">
+          <div class="team-avatar">🎯</div>
+          <div class="team-name">Free Forever</div>
+          <div class="team-role">No paywalls, no signup required</div>
+          <div class="team-bio">No subscription, no per-seat pricing, no account required to start flowing. Sign in with Google to save your room history. Everything else is free.</div>
+        </div>
+      </div>
+    </div>
+    <div id="land-footer" style="position:static;margin-top:0">
+      <div class="footer-logo"><div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>Flowboard</div>
+      <div class="footer-links"><button class="footer-link" onclick="showPage('home')">Home</button><button class="footer-link" onclick="showPage('features')">Features</button></div>
+      <div class="footer-copy">© 2026 Flowboard</div>
+    </div>
+  </div><!-- end page-about -->
+
+</div><!-- end #landing -->
 
 <!-- PROFILE PANEL OVERLAY -->
 <div class="pp-overlay" id="pp-overlay" onclick="closeProfilePanel()"></div>
@@ -1249,6 +1506,69 @@ window.openJoinWithCode=function(code,evt){
   openJoin(evt||'policy');
   setTimeout(()=>{document.getElementById('jm-code').value=code;},100);
 };
+
+// ── PAGE ROUTING ─────────────────────────────────────────────────────────
+let currentPage='home';
+window.showPage=function(page){
+  currentPage=page;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(el){el.classList.add('active');el.scrollTop=0;window.scrollTo(0,0);}
+  document.querySelectorAll('.ln-link').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nav-'+page);
+  if(nb)nb.classList.add('active');
+  // Show/hide globe based on page
+  const globe=document.getElementById('globe-canvas');
+  const noise=document.querySelector('.land-noise');
+  const grid=document.querySelector('.land-grid');
+  const show=page==='home';
+  if(globe)globe.classList.toggle('hidden',!show);
+  if(noise)noise.style.display=show?'block':'none';
+  if(grid)grid.style.display=show?'block':'none';
+  setTimeout(initReveal,50);
+};
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────
+let isDark=true;
+window.toggleTheme=function(){
+  isDark=!isDark;
+  document.documentElement.className=isDark?'dark':'light';
+  document.getElementById('theme-btn').textContent=isDark?'🌙':'☀️';
+};
+document.documentElement.className='dark';
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.classList.add('visible');}});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal,.psr2-row,.how-item').forEach(el=>{
+    // Reset and re-observe
+    obs.observe(el);
+  });
+}
+initReveal();
+
+// ── PSR FLOW ANIMATION ───────────────────────────────────────────────────
+function initPSRFlowAnim(){
+  const el=document.getElementById('psr-flow-anim');if(!el)return;
+  const flows=[
+    {name:'Politics DA',color:'#fb923c',speech:'1NC'},
+    {name:'Cap Kritik',color:'#c084fc',speech:'1NC'},
+    {name:'Advantage 1',color:'#4ade80',speech:'1AC'},
+    {name:'Solvency',color:'#60a5fa',speech:'1AC'},
+    {name:'T — Substantially',color:'#fbbf24',speech:'1NC'},
+  ];
+  el.innerHTML='';
+  flows.forEach((f,i)=>{
+    const div=document.createElement('div');
+    div.style.cssText=`display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;border:1px solid rgba(120,80,255,0.15);background:rgba(10,8,32,0.6);opacity:0;transform:translateX(-16px);transition:all .4s ease ${i*0.08}s`;
+    div.innerHTML=`<div style="width:8px;height:8px;border-radius:50%;background:${f.color};flex-shrink:0"></div><div style="font-size:12px;color:#e8e4ff;flex:1">${f.name}</div><div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:${f.color};font-weight:700">${f.speech}</div>`;
+    el.appendChild(div);
+    setTimeout(()=>{div.style.opacity='1';div.style.transform='translateX(0)'},300+i*120);
+  });
+}
+setTimeout(initPSRFlowAnim,400);
 
 // ── DEMO SECTION ──────────────────────────────────────────────────────────
 const DEMO_DATA={
