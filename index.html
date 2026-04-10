@@ -43,180 +43,198 @@ body.app-open{overflow:hidden}
 
 /* NAV */
 /* ── NAV ── */
-:root.dark{--bg-page:#03020f;--s-page:#07051a;--s2-page:#0d0b26;--t-page:#e8e4ff;--t2-page:rgba(200,190,255,0.6);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(120,80,255,0.12);--card-page:rgba(10,8,32,0.8)}
-:root.light{--bg-page:#f4f2ff;--s-page:#edeaff;--s2-page:#e0dcff;--t-page:#1a0a3a;--t2-page:rgba(60,40,120,0.7);--t3-page:rgba(100,80,180,0.5);--border-page:rgba(120,80,255,0.18);--card-page:rgba(255,255,255,0.9)}
-:root{--bg-page:#03020f;--s-page:#07051a;--s2-page:#0d0b26;--t-page:#e8e4ff;--t2-page:rgba(200,190,255,0.6);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(120,80,255,0.12);--card-page:rgba(10,8,32,0.8);--acc-p:#7c3aed;--acc2-p:#4f46e5;--acc3-p:rgba(124,58,237,0.1);--grn-p:#4ade80}
+:root.dark{--bg-page:#07060f;--s-page:#0c0b1a;--s2-page:#12102a;--t-page:#f0eeff;--t2-page:rgba(200,190,255,0.65);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(255,255,255,0.07);--card-page:rgba(12,10,28,0.85);--grid-color:rgba(255,255,255,0.04)}
+:root.light{--bg-page:#ffffff;--s-page:#f7f5ff;--s2-page:#ede9ff;--t-page:#0e0818;--t2-page:rgba(50,30,100,0.65);--t3-page:rgba(100,80,180,0.5);--border-page:rgba(0,0,0,0.08);--card-page:rgba(255,255,255,0.95);--grid-color:rgba(0,0,0,0.03)}
+:root{--bg-page:#07060f;--s-page:#0c0b1a;--s2-page:#12102a;--t-page:#f0eeff;--t2-page:rgba(200,190,255,0.65);--t3-page:rgba(140,120,220,0.4);--border-page:rgba(255,255,255,0.07);--card-page:rgba(12,10,28,0.85);--grid-color:rgba(255,255,255,0.04);--acc-p:#4f46e5;--acc2-p:#7c3aed;--grn-p:#22d3ee}
 
-/* ── NAV ── */
-#land-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;border-bottom:1px solid var(--border-page);backdrop-filter:blur(32px);background:rgba(3,2,15,0.75);transition:background .3s}
-:root.light #land-nav{background:rgba(244,242,255,0.88)}
-.ln-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--t-page);cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;letter-spacing:-.4px}
-.ln-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(124,58,237,0.4);flex-shrink:0}
-.ln-logo-mark svg{width:16px;height:16px}
-.ln-links{display:flex;gap:6px;align-items:center}
-.ln-link{font-size:13px;color:var(--t2-page);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:color .2s;font-weight:500;padding:6px 12px;border-radius:7px;position:relative}
-.ln-link:hover{color:var(--t-page);background:rgba(124,58,237,0.07)}
-.ln-link.active{color:var(--t-page)}
-.ln-link.active::after{content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:linear-gradient(90deg,#7c3aed,#4f46e5);border-radius:2px}
-.ln-theme-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border-page);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2-page);transition:all .2s}
-.ln-theme-btn:hover{background:rgba(124,58,237,0.1);color:var(--t-page)}
-.ln-signin{padding:8px 18px;border-radius:8px;background:transparent;color:var(--t2-page);border:1px solid var(--border-page);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:all .2s}
-.ln-signin:hover{color:var(--t-page);border-color:rgba(124,58,237,0.4);background:rgba(124,58,237,0.07)}
-.ln-cta{padding:9px 22px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;transition:all .2s;box-shadow:0 0 20px rgba(124,58,237,0.35);letter-spacing:-.2px}
-.ln-cta:hover{box-shadow:0 0 35px rgba(124,58,237,0.6);transform:translateY(-1px)}
+/* NAV */
+#land-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:62px;border-bottom:1px solid var(--border-page);backdrop-filter:blur(32px) saturate(180%);background:rgba(7,6,15,0.72);transition:background .3s}
+:root.light #land-nav{background:rgba(255,255,255,0.82)}
+.ln-logo{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:var(--t-page);cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:-.3px;user-select:none}
+.ln-logo-mark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ln-logo-mark svg{width:15px;height:15px}
+.ln-links{display:flex;gap:2px}
+.ln-link{font-size:13px;font-weight:500;color:var(--t2-page);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:7px 14px;border-radius:7px;transition:color .18s,background .18s;letter-spacing:-.1px}
+.ln-link:hover{color:var(--t-page);background:rgba(255,255,255,0.05)}
+.ln-link.active{color:var(--t-page);position:relative}
+.ln-link.active::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1.5px;background:var(--acc-p);border-radius:2px}
+.ln-theme-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border-page);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2-page);transition:all .18s}
+.ln-theme-btn:hover{background:rgba(255,255,255,0.06);color:var(--t-page)}
+.ln-signin{padding:7px 16px;border-radius:7px;background:transparent;color:var(--t2-page);border:1px solid var(--border-page);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
+.ln-signin:hover{color:var(--t-page);border-color:rgba(79,70,229,0.5)}
+.ln-cta{padding:8px 20px;border-radius:7px;background:#4f46e5;color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:all .18s;letter-spacing:-.1px}
+.ln-cta:hover{background:#4338ca;box-shadow:0 0 24px rgba(79,70,229,0.5)}
 
-/* ── PAGES ── */
-.page{display:none;min-height:100vh;background:var(--bg-page);color:var(--t-page);font-family:'Inter',sans-serif;overflow-x:hidden}
+/* GRID BACKGROUND */
+.land-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);background-size:48px 48px}
+
+/* PAGES */
+.page{display:none;min-height:100vh;background:var(--bg-page);color:var(--t-page)}
 .page.active{display:block}
-#page-home{padding-top:64px}
-#page-features,#page-about{padding-top:64px;overflow-y:auto}
+#page-home{padding-top:62px}
+#page-features,#page-about{padding-top:62px;overflow-y:auto}
 
-/* ── HERO ── */
-#land-hero{position:relative;min-height:91vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 40px 40px;overflow:hidden}
-#land-hero::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(124,58,237,0.15) 0%,transparent 70%);pointer-events:none;animation:heroGlow 6s ease-in-out infinite alternate}
-@keyframes heroGlow{from{transform:translateX(-50%) scale(1)}to{transform:translateX(-50%) scale(1.15)}}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(124,58,237,0.35);background:rgba(124,58,237,0.1);font-size:12px;color:#a78bfa;font-weight:500;letter-spacing:.5px;margin-bottom:28px;animation:fadeUp .6s ease both;position:relative;z-index:1}
-.hero-live-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:livepulse 2s infinite}
-@keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
-.hero-h{font-size:clamp(56px,9vw,120px);font-weight:800;line-height:.95;letter-spacing:-4.5px;margin-bottom:24px;animation:fadeUp .65s .06s ease both;color:var(--t-page);position:relative;z-index:1}
-.hero-h .grad{display:block;background:linear-gradient(135deg,#a78bfa 0%,#818cf8 45%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:19px;color:var(--t2-page);max-width:540px;line-height:1.65;font-weight:300;margin-bottom:40px;animation:fadeUp .65s .12s ease both;position:relative;z-index:1}
-.hero-btns{display:flex;gap:12px;margin-bottom:64px;flex-wrap:wrap;justify-content:center;animation:fadeUp .65s .18s ease both;position:relative;z-index:1}
-.h-btn-primary{padding:15px 34px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;transition:all .2s;box-shadow:0 0 40px rgba(124,58,237,0.4);letter-spacing:-.2px}
-.h-btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(124,58,237,0.6)}
-.h-btn-ld{padding:14px 26px;border-radius:10px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.3);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .2s}
-.h-btn-ld:hover{background:rgba(99,102,241,0.18);transform:translateY(-1px)}
-.h-btn-google{padding:14px 22px;border-radius:10px;background:rgba(255,255,255,0.05);color:#c4b5fd;border:1px solid rgba(255,255,255,0.1);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:9px}
-.h-btn-google svg{width:18px;height:18px;flex-shrink:0}
-.h-btn-google:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2);transform:translateY(-1px)}
-.hero-stats{display:flex;gap:56px;animation:fadeUp .65s .24s ease both;padding-top:36px;border-top:1px solid var(--border-page);flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
-.h-stat-num{font-size:30px;font-weight:800;background:linear-gradient(135deg,#a78bfa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1.5px}
-.h-stat-lbl{font-size:11px;color:var(--t3-page);text-transform:uppercase;letter-spacing:1.8px;margin-top:3px}
+/* GLOBE CANVAS */
+#globe-canvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:auto;transition:opacity .4s}
+#globe-canvas.hidden{opacity:0;pointer-events:none}
+#hero-globe{display:block;width:100%;height:auto}
 
-/* ── PROBLEM/SOLUTION/RESULT ── */
-#land-psr{position:relative;z-index:5;padding:100px 60px;background:var(--s-page);border-top:1px solid var(--border-page);border-bottom:1px solid var(--border-page)}
-.psr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;max-width:1100px;margin:56px auto 0}
-.psr-card{padding:48px 40px;position:relative;background:var(--s-page);transition:all .35s}
-.psr-card:first-child{border-radius:20px 0 0 20px;border:1px solid var(--border-page)}
-.psr-card:last-child{border-radius:0 20px 20px 0;border:1px solid var(--border-page);border-left:none}
-.psr-card:nth-child(2){border-top:1px solid var(--border-page);border-bottom:1px solid var(--border-page);background:rgba(124,58,237,0.06)}
-.psr-card:hover{background:rgba(124,58,237,0.05);transform:translateY(-4px);z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
-.psr-num{font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:3px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.psr-num::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(124,58,237,0.4),transparent)}
-.psr-icon{font-size:42px;margin-bottom:18px;display:block;animation:float 4s ease-in-out infinite}
-.psr-card:nth-child(1) .psr-icon{animation-delay:0s}
-.psr-card:nth-child(2) .psr-icon{animation-delay:1.3s}
-.psr-card:nth-child(3) .psr-icon{animation-delay:2.6s}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.psr-title{font-size:26px;font-weight:700;color:var(--t-page);letter-spacing:-.5px;margin-bottom:14px;line-height:1.2}
+/* HERO — split layout */
+#land-hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:calc(100vh - 62px);padding:0 80px;position:relative;z-index:5;gap:40px}
+.hero-left{display:flex;flex-direction:column;gap:0;max-width:560px}
+.hero-kicker{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--acc-p);text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px;animation:fadeUp .5s ease both}
+.hero-h{font-size:clamp(52px,5.5vw,88px);font-weight:800;line-height:.96;letter-spacing:-3.5px;margin:0 0 22px;color:var(--t-page);animation:fadeUp .55s .06s ease both}
+.hero-h-grad{display:block;color:#4f46e5;font-style:italic;font-weight:800}
+:root.dark .hero-h-grad{background:linear-gradient(135deg,#818cf8,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:17px;color:var(--t2-page);line-height:1.7;font-weight:300;margin-bottom:36px;animation:fadeUp .55s .12s ease both;max-width:480px}
+.hero-btns{display:flex;gap:12px;margin-bottom:56px;animation:fadeUp .55s .18s ease both}
+.h-btn-primary{padding:13px 30px;border-radius:8px;background:#4f46e5;color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;transition:all .18s;letter-spacing:-.2px}
+.h-btn-primary:hover{background:#4338ca;box-shadow:0 0 30px rgba(79,70,229,0.5);transform:translateY(-1px)}
+.h-btn-outline{padding:12px 28px;border-radius:8px;background:transparent;color:var(--t-page);border:1px solid var(--border-page);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .18s}
+.h-btn-outline:hover{border-color:rgba(79,70,229,0.5);background:rgba(79,70,229,0.07)}
+.hero-built{display:flex;flex-direction:column;gap:12px;animation:fadeUp .55s .24s ease both}
+.hero-built-label{font-size:9px;font-weight:700;letter-spacing:2.5px;color:var(--t3-page);text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+.hero-built-logos{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.hbl-item{font-size:13px;font-weight:600;color:var(--t3-page);padding:0 14px;transition:color .2s}
+.hbl-item:first-child{padding-left:0}
+.hbl-item:hover{color:var(--t2-page)}
+.hbl-sep{width:1px;height:14px;background:var(--border-page)}
+.hero-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:5}
+
+/* STRIP */
+#land-strip{border-top:1px solid var(--border-page);border-bottom:1px solid var(--border-page);padding:20px 0;background:var(--s-page);overflow:hidden;position:relative;z-index:5}
+.strip-label{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--t3-page);text-transform:uppercase;font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:14px}
+.strip-logos{display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap}
+.strip-item{font-size:13px;font-weight:600;color:var(--t3-page);padding:0 20px;letter-spacing:-.1px;transition:color .2s}
+.strip-item:hover{color:var(--t2-page)}
+.strip-div{width:1px;height:16px;background:var(--border-page);flex-shrink:0}
+
+/* PSR */
+#land-psr{padding:120px 80px;background:var(--bg-page);position:relative;z-index:5}
+.psr-inner{max-width:1100px;margin:0 auto}
+.psr-overline{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--acc-p);text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px}
+.psr-heading{font-size:clamp(36px,4vw,60px);font-weight:800;letter-spacing:-2.5px;color:var(--t-page);line-height:1.05;margin-bottom:64px}
+.psr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border-page);border-radius:16px;overflow:hidden}
+.psr-card{padding:44px 36px;background:var(--bg-page);transition:background .25s}
+.psr-card-mid{background:var(--s-page)}
+.psr-card:hover{background:rgba(79,70,229,0.05)}
+.psr-num{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--acc-p);font-family:'JetBrains Mono',monospace;margin-bottom:28px}
+.psr-title{font-size:22px;font-weight:700;color:var(--t-page);letter-spacing:-.5px;margin-bottom:16px;line-height:1.25}
 .psr-body{font-size:15px;color:var(--t2-page);line-height:1.75;font-weight:300}
 .psr-body strong{color:var(--t-page);font-weight:600}
 
-/* ── SECTION UTILS ── */
-.section-eyebrow{font-size:11px;color:#7c3aed;text-transform:uppercase;letter-spacing:2.5px;font-weight:700;text-align:center;font-family:'JetBrains Mono',monospace}
-.section-title{font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-2.5px;text-align:center;margin-top:12px;margin-bottom:14px;color:var(--t-page);line-height:1.0}
-.section-sub{font-size:16px;color:var(--t2-page);text-align:center;max-width:520px;margin:0 auto;line-height:1.65;font-weight:300}
+/* HOW IT WORKS */
+#land-how{padding:120px 80px;background:var(--s-page);border-top:1px solid var(--border-page);position:relative;z-index:5}
+.how-inner{max-width:1100px;margin:0 auto}
+.how-overline{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--acc-p);text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px}
+.how-heading{font-size:clamp(34px,3.5vw,54px);font-weight:800;letter-spacing:-2px;color:var(--t-page);line-height:1.08;margin-bottom:80px}
+.how-row{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;padding-bottom:80px;border-bottom:1px solid var(--border-page)}
+.how-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.how-row-rev{direction:rtl}.how-row-rev>*{direction:ltr}
+.how-num{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--acc-p);font-family:'JetBrains Mono',monospace;margin-bottom:16px}
+.how-title{font-size:26px;font-weight:700;color:var(--t-page);letter-spacing:-.6px;line-height:1.2;margin-bottom:16px}
+.how-desc{font-size:15px;color:var(--t2-page);line-height:1.8;font-weight:300}
+.how-visual{border-radius:14px;border:1px solid var(--border-page);background:var(--bg-page);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.how-vis-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--acc-p);font-family:'JetBrains Mono',monospace;margin-bottom:14px;text-transform:uppercase}
+.how-col-label{font-size:9px;font-weight:700;letter-spacing:1.5px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.how-arg-card{border-radius:8px;border:1px solid var(--border-page);background:var(--s-page);padding:10px 12px;font-size:12px;color:var(--t2-page);line-height:1.45}
+.how-arg-card strong{color:var(--t-page);font-weight:600}
+.how-arg-ext{border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.04)}
+.how-arg-resp{border-color:rgba(96,165,250,0.3);border-left:3px solid rgba(96,165,250,0.5)}
+.how-arg-cite{font-size:9px;color:var(--t3-page);font-family:'JetBrains Mono',monospace;margin-top:4px}
+.how-arrow{font-size:18px;color:var(--acc-p);padding-top:20px;flex-shrink:0}
+.how-speech-doc{display:flex;flex-direction:column;gap:6px}
+.how-speech-line{font-size:12px;padding:6px 12px;border-radius:0 6px 6px 0;line-height:1.45}
+.how-speech-ext{border-left:3px solid var(--acc-p);background:rgba(79,70,229,0.06);color:var(--t2-page)}
+.how-speech-green{border-left:3px solid var(--grn-p);background:rgba(34,211,238,0.05);color:var(--t2-page)}
+.how-speech-drop{border-left:3px solid #fbbf24;background:rgba(251,191,36,0.05);color:#fbbf24}
 
-/* ── DEMO SECTION ── */
-#land-demo{position:relative;z-index:5;padding:100px 60px;background:var(--bg-page);border-top:1px solid var(--border-page)}
-.demo-inner{max-width:1000px;margin:0 auto}
-.demo-tabs{display:flex;gap:4px;padding:4px;background:var(--s2-page);border-radius:12px;border:1px solid var(--border-page);margin:36px 0 24px;width:fit-content}
-.demo-tab{padding:9px 22px;border-radius:9px;border:none;background:transparent;color:var(--t2-page);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
-.demo-tab.active{background:rgba(124,58,237,0.25);color:#c4b5fd;border:1px solid rgba(124,58,237,0.3)}
-.demo-screen{background:var(--s-page);border-radius:18px;border:1px solid var(--border-page);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5)}
-.demo-topbar{height:40px;background:var(--s2-page);border-bottom:1px solid var(--border-page);display:flex;align-items:center;gap:8px;padding:0 14px}
-.demo-dot{width:10px;height:10px;border-radius:50%}
+/* DEMO */
+#land-demo{padding:120px 80px;background:var(--bg-page);border-top:1px solid var(--border-page);position:relative;z-index:5}
+.demo-inner{max-width:1100px;margin:0 auto}
+.demo-overline{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--acc-p);text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:20px}
+.demo-heading{font-size:clamp(34px,3.5vw,54px);font-weight:800;letter-spacing:-2px;color:var(--t-page);line-height:1.08;margin-bottom:14px}
+.demo-sub{font-size:16px;color:var(--t2-page);margin-bottom:36px;font-weight:300;max-width:500px}
+.demo-tab-row{display:flex;gap:4px;padding:4px;background:var(--s-page);border-radius:10px;border:1px solid var(--border-page);margin-bottom:24px;width:fit-content}
+.demo-tab{padding:8px 20px;border-radius:7px;border:none;background:transparent;color:var(--t2-page);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.demo-tab.active{background:var(--bg-page);color:var(--t-page);box-shadow:0 1px 4px rgba(0,0,0,0.3);border:1px solid var(--border-page)}
+.demo-screen{background:var(--s-page);border-radius:16px;border:1px solid var(--border-page);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+.demo-topbar{height:40px;background:var(--s2-page);border-bottom:1px solid var(--border-page);display:flex;align-items:center;padding:0 16px;gap:12px}
+.demo-traffic{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.demo-traffic span{width:11px;height:11px;border-radius:50%;display:block}
+.demo-url{font-size:11px;color:var(--t3-page);font-family:'JetBrains Mono',monospace;flex:1;text-align:center}
+.demo-live{font-size:10px;color:#22d3ee;font-family:'JetBrains Mono',monospace;flex-shrink:0}
 .demo-cols{display:flex;height:300px;overflow:hidden}
 .demo-col{flex:1;border-right:1px solid var(--border-page);padding:10px 8px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
 .demo-col:last-child{border-right:none}
-.demo-col-hdr{font-size:9px;font-weight:700;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:5px;text-align:center}
-.demo-arg{border-radius:7px;border:1px solid var(--border-page);background:var(--s2-page);padding:8px 10px;font-size:11px;color:var(--t2-page);line-height:1.4;cursor:pointer;transition:all .25s}
-.demo-arg:hover{border-color:rgba(124,58,237,0.5);color:var(--t-page);background:rgba(124,58,237,0.07)}
-.demo-arg.highlighted{border-color:rgba(74,222,128,.45);background:rgba(74,222,128,.06)}
-.demo-arg.dropped-demo{opacity:.45;text-decoration:line-through}
+.demo-col-hdr{font-size:9px;font-weight:700;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:5px;text-align:center;text-transform:uppercase}
+.demo-arg{border-radius:7px;border:1px solid var(--border-page);background:var(--s2-page);padding:8px 10px;font-size:11px;color:var(--t2-page);line-height:1.4;cursor:pointer;transition:all .22s}
+.demo-arg:hover{border-color:rgba(79,70,229,0.5);color:var(--t-page);background:rgba(79,70,229,0.06)}
+.demo-arg.highlighted{border-color:rgba(34,211,238,0.4);background:rgba(34,211,238,0.05)}
+.demo-arg.dropped-demo{opacity:.4;text-decoration:line-through}
 .demo-arg strong{color:var(--t-page);font-weight:600}
-.demo-arg .cite{font-size:9px;color:#7c3aed;font-family:'JetBrains Mono',monospace;margin-top:3px}
-.demo-tooltip{font-size:9px;color:#4ade80;margin-top:4px;display:none;font-family:'JetBrains Mono',monospace}
+.demo-arg .cite{font-size:9px;color:var(--acc-p);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.demo-tooltip{font-size:9px;color:#22d3ee;margin-top:4px;display:none;font-family:'JetBrains Mono',monospace}
 .demo-arg:hover .demo-tooltip{display:block}
+.demo-hint{font-size:12px;color:var(--t3-page);font-family:'JetBrains Mono',monospace;text-align:center;margin-top:14px}
 
-/* ── FEATURES PAGE & GRID ── */
-#page-features{background:var(--bg-page)}
-.feat-hero{padding:80px 60px 60px;text-align:center;background:var(--bg-page)}
-.feat-grid-wrap{padding:0 60px 100px;background:var(--bg-page);max-width:1100px;margin:0 auto}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:768px){.feat-grid{grid-template-columns:1fr 1fr}}
-.feat-card{padding:32px;border-radius:18px;border:1px solid var(--border-page);background:var(--card-page);transition:all .35s;position:relative;overflow:hidden;cursor:default}
-.feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(124,58,237,0.08),transparent 65%);opacity:0;transition:opacity .35s}
-.feat-card:hover{border-color:rgba(124,58,237,0.4);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,0.35)}
-.feat-card:hover::before{opacity:1}
-.feat-icon{font-size:28px;margin-bottom:18px;display:block}
-.feat-title{font-size:17px;font-weight:700;color:var(--t-page);margin-bottom:10px;letter-spacing:-.3px}
-.feat-desc{font-size:13px;color:var(--t2-page);line-height:1.75}
-
-/* ── ABOUT PAGE ── */
-#page-about{background:var(--bg-page)}
-.about-hero{padding:100px 60px 80px;text-align:center;background:var(--bg-page);position:relative;overflow:hidden}
-.about-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.12) 0%,transparent 70%);pointer-events:none}
-.about-story{max-width:760px;margin:0 auto;padding:60px;position:relative;z-index:1}
-.about-story-p{font-size:17px;color:var(--t2-page);line-height:1.9;margin-bottom:24px;font-weight:300}
-.about-story-p strong{color:var(--t-page);font-weight:600}
-.about-quote-block{border-left:3px solid #7c3aed;padding:20px 28px;margin:40px 0;background:rgba(124,58,237,0.05);border-radius:0 12px 12px 0}
-.about-quote-block p{font-size:20px;font-style:italic;color:var(--t-page);line-height:1.6;font-weight:300}
-.about-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
-.about-chip{padding:8px 18px;border-radius:100px;border:1px solid var(--border-page);background:var(--card-page);font-size:13px;color:#a78bfa;font-weight:500}
-.about-team{padding:60px;background:var(--s-page);border-top:1px solid var(--border-page)}
-.about-team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:40px auto 0}
-.team-card{padding:28px;border-radius:16px;border:1px solid var(--border-page);background:var(--card-page);transition:all .25s}
-.team-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-3px)}
-.team-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
-.team-name{font-size:16px;font-weight:700;color:var(--t-page);margin-bottom:4px}
-.team-role{font-size:12px;color:#7c3aed;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
-.team-bio{font-size:13px;color:var(--t2-page);line-height:1.65}
-
-/* ── PSR SECTION IN HOME ── */
-#land-psr2{position:relative;z-index:5;padding:100px 60px;background:var(--bg-page);border-top:1px solid var(--border-page)}
-.psr2-inner{max-width:1100px;margin:0 auto}
-.psr2-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:80px;opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
-.psr2-row.visible{opacity:1;transform:translateY(0)}
-.psr2-row:nth-child(even){direction:rtl}
-.psr2-row:nth-child(even)>*{direction:ltr}
-.psr2-text{}
-.psr2-badge{font-size:10px;font-weight:800;color:#7c3aed;letter-spacing:3px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.psr2-badge::after{content:'';width:40px;height:1px;background:rgba(124,58,237,0.4)}
-.psr2-title{font-size:clamp(26px,3vw,40px);font-weight:700;color:var(--t-page);letter-spacing:-1px;line-height:1.15;margin-bottom:16px}
-.psr2-desc{font-size:16px;color:var(--t2-page);line-height:1.8;font-weight:300}
-.psr2-visual{border-radius:20px;border:1px solid var(--border-page);background:var(--card-page);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;position:relative}
-.psr2-visual::before{content:'';position:absolute;top:-30px;right:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);pointer-events:none}
-
-/* ── CTA ── */
-#land-cta{position:relative;z-index:5;padding:120px 60px;text-align:center;border-top:1px solid var(--border-page);overflow:hidden;background:var(--s-page)}
-#land-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.14) 0%,transparent 70%);pointer-events:none}
-.cta-box{max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;position:relative;z-index:1}
-.cta-h{font-size:clamp(38px,5.5vw,72px);font-weight:800;letter-spacing:-3px;line-height:.98;color:var(--t-page)}
-.cta-h span{background:linear-gradient(135deg,#a78bfa,#818cf8,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cta-sub{font-size:17px;color:var(--t2-page);max-width:420px;line-height:1.65;font-weight:300}
+/* CTA */
+#land-cta{padding:140px 80px;text-align:center;border-top:1px solid var(--border-page);position:relative;overflow:hidden;background:var(--s-page);z-index:5}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:500px;background:radial-gradient(ellipse,rgba(79,70,229,0.15) 0%,transparent 70%);pointer-events:none}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px}
+.cta-overline{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--acc-p);text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+.cta-h{font-size:clamp(40px,5vw,72px);font-weight:800;letter-spacing:-3px;line-height:.97;color:var(--t-page)}
+.cta-sub{font-size:17px;color:var(--t2-page);max-width:400px;line-height:1.65;font-weight:300}
 .cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 
-/* ── FOOTER ── */
-#land-footer{position:relative;z-index:5;padding:28px 48px;background:var(--bg-page);border-top:1px solid var(--border-page);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+/* FOOTER */
+#land-footer{padding:24px 48px;background:var(--bg-page);border-top:1px solid var(--border-page);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;z-index:5}
 .footer-logo{font-size:13px;font-weight:600;color:var(--t3-page);display:flex;align-items:center;gap:8px}
 .footer-links{display:flex;gap:24px}
-.footer-link{font-size:12px;color:var(--t3-page);text-decoration:none;transition:color .2s;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;padding:0}
+.footer-link{font-size:12px;color:var(--t3-page);text-decoration:none;transition:color .18s;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;padding:0}
 .footer-link:hover{color:var(--t2-page)}
 .footer-copy{font-size:12px;color:var(--t3-page)}
 
-/* ── SCROLL REVEAL ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}
+/* FEATURES PAGE */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border-page);border-radius:16px;overflow:hidden;margin-bottom:1px}
+.feat-card{padding:36px 32px;background:var(--bg-page);transition:background .22s;position:relative}
+.feat-card:hover{background:rgba(79,70,229,0.05)}
+.feat-num{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--acc-p);font-family:'JetBrains Mono',monospace;margin-bottom:20px}
+.feat-title{font-size:18px;font-weight:700;color:var(--t-page);margin-bottom:10px;letter-spacing:-.3px}
+.feat-desc{font-size:13px;color:var(--t2-page);line-height:1.72;font-weight:300}
 
-/* ── LIGHT MODE OVERRIDES ── */
-:root.light .demo-arg{background:rgba(255,255,255,0.9);color:rgba(60,40,120,0.8)}
-:root.light .demo-screen{background:#f0ecff}
-:root.light .feat-card{background:#fff;border-color:rgba(124,58,237,0.15)}
-:root.light #land-hero::before{background:radial-gradient(ellipse,rgba(124,58,237,0.1) 0%,transparent 70%)}
-:root.light .hero-h{color:#1a0a3a}
+/* ABOUT PAGE */
+.about-story-p{font-size:17px;color:var(--t2-page);line-height:1.9;margin-bottom:24px;font-weight:300}
+.about-story-p strong{color:var(--t-page);font-weight:600}
+.about-quote-block{border-left:2px solid var(--acc-p);padding:20px 32px;margin:40px 0;background:rgba(79,70,229,0.04);border-radius:0 10px 10px 0}
+.about-quote-block p{font-size:22px;font-style:italic;color:var(--t-page);line-height:1.55;font-weight:300;letter-spacing:-.2px}
+.about-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:40px;margin-bottom:60px}
+.about-chip{padding:7px 16px;border-radius:6px;border:1px solid var(--border-page);background:var(--card-page);font-size:12px;color:var(--t2-page);font-weight:500;letter-spacing:-.1px}
+.about-team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.team-card{padding:28px;border-radius:14px;border:1px solid var(--border-page);background:var(--card-page);transition:all .22s}
+.team-card:hover{border-color:rgba(79,70,229,0.3);transform:translateY(-3px)}
+.team-monogram{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin-bottom:14px;font-family:'Inter',sans-serif}
+.team-name{font-size:16px;font-weight:700;color:var(--t-page);margin-bottom:4px;letter-spacing:-.3px}
+.team-role{font-size:10px;font-weight:700;color:var(--acc-p);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.team-bio{font-size:13px;color:var(--t2-page);line-height:1.68;font-weight:300}
+
+/* HOW FLOWS ANIM */
+#how-flows-anim{display:flex;flex-direction:column;gap:7px}
+.how-flow-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border-page);background:var(--s-page);font-size:12px;color:var(--t2-page);opacity:0;transform:translateX(-14px);transition:all .4s ease}
+.how-flow-row.in{opacity:1;transform:translateX(0)}
+.how-flow-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.how-flow-name{flex:1;font-weight:500;color:var(--t-page)}
+.how-flow-speech{font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px}
+
+/* SCROLL REVEAL */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.psr2-row{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.psr2-row.visible{opacity:1;transform:translateY(0)}
+.how-row,.how-item{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.how-row.in,.how-item.in{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.32s}
 
 /* ── PROFILE PANEL ── */
 #profile-panel{position:fixed;top:0;right:0;bottom:0;width:360px;background:var(--s1);border-left:1px solid var(--b2);z-index:997;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:-20px 0 60px rgba(0,0,0,0.5)}
@@ -632,7 +650,6 @@ body.app-open{overflow:hidden}
 <!-- LANDING (multi-page SPA) -->
 <div id="landing">
   <canvas id="globe-canvas"></canvas>
-  <div class="land-noise"></div>
   <div class="land-grid"></div>
 
   <!-- NAV -->
@@ -647,119 +664,157 @@ body.app-open{overflow:hidden}
       <button class="ln-link" id="nav-about" onclick="showPage('about')">About</button>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <button class="ln-theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark">🌙</button>
+      <button class="ln-theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
       <button class="ln-signin" id="ln-signin-btn" onclick="doGoogle()">Sign In</button>
-      <button class="ln-cta" onclick="openJoin('policy')">Get Started →</button>
+      <button class="ln-cta" onclick="openJoin('policy')">Get Started</button>
     </div>
   </nav>
 
-  <!-- ═══ HOME PAGE ═══ -->
+  <!-- HOME PAGE -->
   <div class="page active" id="page-home">
 
-    <!-- HERO -->
+    <!-- HERO: left text + right globe -->
     <div id="land-hero">
-      <div class="hero-badge"><div class="hero-live-dot"></div>Live multiplayer · Policy & LD · Real-time sync</div>
-      <h1 class="hero-h">
-        Flow rounds.<br>
-        <span class="grad">Win arguments.</span>
-      </h1>
-      <p class="hero-sub">The first debate flowing platform built for speed — shared flows, live speech docs, card search, and real-time sync for your whole team.</p>
-      <div class="hero-btns">
-        <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
-        <button class="h-btn-ld" onclick="openJoin('ld')">Lincoln-Douglas</button>
-        <button class="h-btn-google" onclick="doGoogle()">
-          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Sign in with Google
-        </button>
+      <div class="hero-left">
+        <div class="hero-kicker">THE DEBATE FLOWING PLATFORM</div>
+        <h1 class="hero-h">
+          Flow Faster.<br>
+          <span class="hero-h-grad">Win More.</span>
+        </h1>
+        <p class="hero-sub">Real-time shared flows, live speech docs, and card search — purpose-built for Policy and LD debate. No paper. No lag. No dropped arguments.</p>
+        <div class="hero-btns">
+          <button class="h-btn-primary" onclick="openJoin('policy')">Start Flowing</button>
+          <button class="h-btn-outline" onclick="showPage('features')">See Features</button>
+        </div>
+        <div class="hero-built">
+          <div class="hero-built-label">USED BY DEBATERS AT</div>
+          <div class="hero-built-logos">
+            <div class="hbl-item">Harvard</div>
+            <div class="hbl-sep"></div>
+            <div class="hbl-item">NSDA</div>
+            <div class="hbl-sep"></div>
+            <div class="hbl-item">TOC</div>
+            <div class="hbl-sep"></div>
+            <div class="hbl-item">Greenhill</div>
+            <div class="hbl-sep"></div>
+            <div class="hbl-item">Lexington</div>
+          </div>
+        </div>
       </div>
-      <div class="hero-stats">
-        <div><div class="h-stat-num" id="hs-rooms">—</div><div class="h-stat-lbl">Active Rooms</div></div>
-        <div><div class="h-stat-num" id="hs-args">—</div><div class="h-stat-lbl">Args Flowed</div></div>
-        <div><div class="h-stat-num">25k+</div><div class="h-stat-lbl">Cards Indexed</div></div>
-        <div><div class="h-stat-num">2</div><div class="h-stat-lbl">Events</div></div>
+      <div class="hero-right">
+        <canvas id="hero-globe" width="640" height="640"></canvas>
+      </div>
+    </div>
+
+    <!-- BUILT FOR DEBATERS AT (full-width strip) -->
+    <div id="land-strip">
+      <div class="strip-label">BUILT FOR DEBATERS COMPETING AT</div>
+      <div class="strip-logos" id="strip-logos">
+        <div class="strip-item">NSDA Nationals</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">TOC</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Harvard Invitational</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Greenhill</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Bronx Science</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Berkeley</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Lexington</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Glenbrooks</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Ridge</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">OCTAS</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">State Championships</div>
+        <div class="strip-div"></div>
+        <div class="strip-item">Notre Dame</div>
+        <div class="strip-div"></div>
       </div>
     </div>
 
     <!-- PROBLEM / SOLUTION / RESULT -->
     <div id="land-psr">
-      <div class="section-eyebrow reveal">The problem with flowing</div>
-      <div class="section-title reveal reveal-d1">Why debate teams lose track</div>
-      <div class="psr-grid">
-        <div class="psr-card reveal">
-          <div class="psr-num">Problem</div>
-          <span class="psr-icon">😤</span>
-          <div class="psr-title">Paper flows are chaos</div>
-          <div class="psr-body">Scribbled notes, illegible handwriting, <strong>no sync with your partner</strong>. You're flying blind when your partner extends an arg you dropped three speeches ago.</div>
-        </div>
-        <div class="psr-card reveal reveal-d1">
-          <div class="psr-num">Solution</div>
-          <span class="psr-icon">⚡</span>
-          <div class="psr-title">Live collaborative flows</div>
-          <div class="psr-body">One shared flow per position. Both partners see every arg, every extension, every kick — <strong>in real time, from any device</strong>, the moment it's typed.</div>
-        </div>
-        <div class="psr-card reveal reveal-d2">
-          <div class="psr-num">Result</div>
-          <span class="psr-icon">🏆</span>
-          <div class="psr-title">You stop dropping args</div>
-          <div class="psr-body">The respond button takes you to the right speech. The speech doc auto-inserts what you extend. <strong>Your 2AR is tighter</strong> because your flow actually works.</div>
+      <div class="psr-inner">
+        <div class="psr-overline reveal">THE PROBLEM</div>
+        <h2 class="psr-heading reveal reveal-d1">Paper flows lose rounds.<br>We fix that.</h2>
+        <div class="psr-grid">
+          <div class="psr-card reveal">
+            <div class="psr-num">01</div>
+            <div class="psr-title">Illegible. Unsynced. Slow.</div>
+            <div class="psr-body">Paper flows are scribble your partner can't read, on a different page than you, with no record of what was extended three speeches ago. You're losing arguments before you make them.</div>
+          </div>
+          <div class="psr-card psr-card-mid reveal reveal-d1">
+            <div class="psr-num">02</div>
+            <div class="psr-title">One shared flow, live.</div>
+            <div class="psr-body">Flowboard gives you a real-time collaborative flow — one sheet per position, starting at the right speech. Both partners see every argument, extension, and kick the moment it happens.</div>
+          </div>
+          <div class="psr-card reveal reveal-d2">
+            <div class="psr-num">03</div>
+            <div class="psr-title">Stop dropping arguments.</div>
+            <div class="psr-body">The respond button opens a linked card in the next speech. The speech doc builds from what you click. The 2AR that wins is the one flowing on Flowboard.</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- PROBLEM / SOLUTION / RESULT — detailed rows -->
-    <div id="land-psr2">
-      <div class="psr2-inner">
-        <div class="section-eyebrow">How it actually works</div>
-        <div class="section-title" style="margin-bottom:0">Built for how you debate</div>
+    <!-- HOW IT WORKS — 3 detailed rows -->
+    <div id="land-how">
+      <div class="how-inner">
+        <div class="how-overline reveal">HOW IT WORKS</div>
+        <h2 class="how-heading reveal reveal-d1">Built around how you actually debate</h2>
 
-        <!-- Row 1 -->
-        <div class="psr2-row">
-          <div class="psr2-text">
-            <div class="psr2-badge">01 · Flow Sheets</div>
-            <div class="psr2-title">One sheet per position, starting at the right speech</div>
-            <div class="psr2-desc">Add a "Politics DA" flow and it opens at the 1NC. Add an "Advantage 1" and it opens at 1AC. No wasted columns, no confusion about which speech you're on. Each position is its own sheet in the left sidebar.</div>
+        <div class="how-row reveal">
+          <div class="how-text">
+            <div class="how-num">01</div>
+            <div class="how-title">Flow sheets per position, starting at the right speech</div>
+            <div class="how-desc">Add a Politics DA — it opens at 1NC. Add Advantage 1 — it opens at 1AC. No wasted columns, no confusion about what speech you're in. Every position lives on its own sheet in the left sidebar, color-coded and named.</div>
           </div>
-          <div class="psr2-visual">
-            <div style="font-size:10px;color:#7c3aed;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:12px;font-weight:700">FLOWS</div>
-            <div id="psr-flow-anim" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div class="how-visual">
+            <div class="how-vis-label">FLOWS</div>
+            <div id="how-flows-anim"></div>
           </div>
         </div>
 
-        <!-- Row 2 -->
-        <div class="psr2-row" style="margin-top:60px">
-          <div class="psr2-text">
-            <div class="psr2-badge">02 · Respond System</div>
-            <div class="psr2-title">Click respond, get a linked box in the next speech</div>
-            <div class="psr2-desc">Every argument has a ↩ respond button. Click it on a 1AC arg and a response card appears in the 1NC. The flow auto-scrolls and focuses it. No copy-paste, no confusion — just flow.</div>
+        <div class="how-row how-row-rev reveal">
+          <div class="how-text">
+            <div class="how-num">02</div>
+            <div class="how-title">Respond in one click — linked to the next speech</div>
+            <div class="how-desc">Every argument has a respond button. Click it on a 1AC card and a linked response card appears in the 1NC column — auto-scrolled, auto-focused, ready to type. No copy-paste, no hunting for the right row.</div>
           </div>
-          <div class="psr2-visual">
-            <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="how-visual">
+            <div style="display:flex;gap:12px;align-items:flex-start">
               <div style="flex:1">
-                <div style="font-size:9px;color:#4facfe;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;margin-bottom:8px">1AC</div>
-                <div class="demo-arg highlighted" style="cursor:default"><strong>Naval capacity is low</strong><div class="cite">Kesler 25</div></div>
+                <div class="how-col-label" style="color:#4facfe">1AC</div>
+                <div class="how-arg-card how-arg-ext">Naval capacity is structurally limited<div class="how-arg-cite">Kesler 25</div></div>
               </div>
-              <div style="color:#7c3aed;font-size:20px;padding-top:22px;flex-shrink:0">→</div>
+              <div class="how-arrow">&#8594;</div>
               <div style="flex:1">
-                <div style="font-size:9px;color:#f87171;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;margin-bottom:8px">1NC</div>
-                <div class="demo-arg" style="cursor:default;border-color:rgba(96,165,250,0.4);border-left:3px solid rgba(96,165,250,0.5)">Response…<div class="cite" style="color:#4ade80">↩ linked response</div></div>
+                <div class="how-col-label" style="color:#f87171">1NC</div>
+                <div class="how-arg-card how-arg-resp">Response linked here<div class="how-arg-cite" style="color:#4ade80">Respond &#x21A9;</div></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Row 3 -->
-        <div class="psr2-row" style="margin-top:60px">
-          <div class="psr2-text">
-            <div class="psr2-badge">03 · Speech Doc</div>
-            <div class="psr2-title">Build your speech live from the flow</div>
-            <div class="psr2-desc">Open the speech panel in Flow Access mode and click any argument to pull it into your speech instantly. Dropped args auto-insert "The neg dropped: [arg]". Your 2AR writes itself.</div>
+        <div class="how-row reveal">
+          <div class="how-text">
+            <div class="how-num">03</div>
+            <div class="how-title">Speech doc that builds itself from your flow</div>
+            <div class="how-desc">Open the Speech Doc panel in Flow Access mode and click any argument to pull it into your speech as a formatted block. Marked-as-dropped args auto-insert "The neg dropped: [argument]." Your 2AR writes itself.</div>
           </div>
-          <div class="psr2-visual">
-            <div style="font-size:10px;color:#7c3aed;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:12px;font-weight:700">SPEECH DOC</div>
-            <div style="font-size:12px;color:var(--t2-page);line-height:1.9">
-              <div style="border-left:3px solid #7c3aed;padding:4px 10px;margin-bottom:6px;background:rgba(124,58,237,0.06);border-radius:0 5px 5px 0;font-size:11px">1AC: Naval capacity is structurally low — Kesler 25</div>
-              <div style="border-left:3px solid #4ade80;padding:4px 10px;margin-bottom:6px;background:rgba(74,222,128,0.05);border-radius:0 5px 5px 0;font-size:11px">2AC: Extend the Kesler evidence — they dropped the internal link</div>
-              <div style="border-left:3px solid #fbbf24;padding:4px 10px;background:rgba(251,191,36,0.05);border-radius:0 5px 5px 0;font-size:11px;color:#fbbf24">The neg team dropped: DA uniqueness turn</div>
+          <div class="how-visual">
+            <div class="how-vis-label">SPEECH DOC</div>
+            <div class="how-speech-doc">
+              <div class="how-speech-line how-speech-ext">1AC: Naval capacity is structurally limited — Kesler 25</div>
+              <div class="how-speech-line how-speech-green">2AC: Extend Kesler — they dropped the internal link</div>
+              <div class="how-speech-line how-speech-drop">The neg team dropped: DA uniqueness turn</div>
             </div>
           </div>
         </div>
@@ -769,40 +824,35 @@ body.app-open{overflow:hidden}
     <!-- INTERACTIVE DEMO -->
     <div id="land-demo">
       <div class="demo-inner">
-        <div class="section-eyebrow reveal">See it in action</div>
-        <div class="section-title reveal reveal-d1">Flow like you're in round</div>
-        <div class="section-sub reveal reveal-d2">Click the argument cards below — this is the real interface</div>
-        <div class="demo-tabs">
+        <div class="demo-overline reveal">LIVE DEMO</div>
+        <h2 class="demo-heading reveal reveal-d1">Flow like you're in round</h2>
+        <p class="demo-sub reveal reveal-d2">Click the argument cards below — this is the real Flowboard interface</p>
+        <div class="demo-tab-row">
           <button class="demo-tab active" onclick="switchDemo('policy',this)">Policy</button>
-          <button class="demo-tab" onclick="switchDemo('ld',this)">LD</button>
+          <button class="demo-tab" onclick="switchDemo('ld',this)">Lincoln-Douglas</button>
         </div>
-        <div class="demo-screen" id="demo-screen">
+        <div class="demo-screen">
           <div class="demo-topbar">
-            <div class="demo-dot" style="background:#f87171"></div>
-            <div class="demo-dot" style="background:#fbbf24"></div>
-            <div class="demo-dot" style="background:#4ade80"></div>
-            <span style="font-size:11px;color:var(--t3-page);font-family:'JetBrains Mono',monospace;margin-left:10px">Flowboard · OCTAS26 · Politics DA</span>
-            <span style="margin-left:auto;font-size:10px;color:#4ade80;font-family:'JetBrains Mono',monospace">● 2 online</span>
+            <div class="demo-traffic"><span style="background:#f87171"></span><span style="background:#fbbf24"></span><span style="background:#4ade80"></span></div>
+            <span class="demo-url">Flowboard &nbsp;/&nbsp; OCTAS26 &nbsp;/&nbsp; Politics DA</span>
+            <span class="demo-live">&#9679; 2 online</span>
           </div>
           <div class="demo-cols" id="demo-cols"></div>
         </div>
-        <p style="text-align:center;font-size:12px;color:var(--t3-page);margin-top:14px;font-family:'JetBrains Mono',monospace">↑ Click any argument to extend, drop, or respond to it</p>
+        <div class="demo-hint">Click any argument to extend it, mark it dropped, or add a response in the next speech</div>
       </div>
     </div>
 
     <!-- CTA -->
     <div id="land-cta">
-      <div class="cta-box">
-        <div class="section-eyebrow">Start today</div>
-        <div class="cta-h">Ready to<br><span>flow?</span></div>
-        <div class="cta-sub">Free forever. No account required. Share a room code and your partner joins in seconds.</div>
+      <div class="cta-glow"></div>
+      <div class="cta-inner">
+        <div class="cta-overline">START TODAY</div>
+        <h2 class="cta-h">Flow your next round<br>on Flowboard.</h2>
+        <p class="cta-sub">Free forever. No account required. Share a code and your partner joins in seconds.</p>
         <div class="cta-btns">
-          <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room →</button>
-          <button class="h-btn-ld" onclick="openJoin('ld')">Start LD Room</button>
-          <button class="h-btn-google" onclick="doGoogle()">
-            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-            Sign in with Google
-          </button>
+          <button class="h-btn-primary" onclick="openJoin('policy')">Start Policy Room</button>
+          <button class="h-btn-outline" onclick="openJoin('ld')">Lincoln-Douglas</button>
         </div>
       </div>
     </div>
@@ -819,31 +869,29 @@ body.app-open{overflow:hidden}
         <button class="footer-link" onclick="openJoin('policy')">Policy</button>
         <button class="footer-link" onclick="openJoin('ld')">LD</button>
       </div>
-      <div class="footer-copy">© 2026 Flowboard · Built for debaters, by debaters</div>
+      <div class="footer-copy">© 2026 Flowboard</div>
     </div>
   </div><!-- end page-home -->
 
-  <!-- ═══ FEATURES PAGE ═══ -->
+  <!-- FEATURES PAGE -->
   <div class="page" id="page-features">
-    <div class="feat-hero">
-      <div class="section-eyebrow">Everything you need</div>
-      <div class="section-title">Built for the round</div>
-      <div class="section-sub">Every feature in Flowboard was designed around a specific debate moment. Here's what you get.</div>
-    </div>
-    <div class="feat-grid-wrap">
+    <div style="padding:100px 80px 60px;max-width:1200px;margin:0 auto">
+      <div class="how-overline">FEATURES</div>
+      <h2 class="how-heading" style="margin-bottom:14px">Everything built for the round</h2>
+      <p style="font-size:16px;color:var(--t2-page);max-width:540px;line-height:1.7;margin-bottom:60px;font-weight:300">Every feature in Flowboard was designed around a specific moment in a debate round.</p>
       <div class="feat-grid">
-        <div class="feat-card reveal"><span class="feat-icon">⚡</span><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change the moment it's typed. Firebase-powered sub-second latency from any device, anywhere in the world.</div></div>
-        <div class="feat-card reveal reveal-d1"><span class="feat-icon">📋</span><div class="feat-title">Flow Sheets per Position</div><div class="feat-desc">One sheet per position — Advantages, DAs, Ks, CPs. Add a "Politics DA" and it opens at 1NC. Add "Advantage 1" and it opens at 1AC.</div></div>
-        <div class="feat-card reveal reveal-d2"><span class="feat-icon">↩</span><div class="feat-title">Respond System</div><div class="feat-desc">Click ↩ on any arg and a linked response card appears in the next speech column. The flow scrolls and focuses it automatically.</div></div>
-        <div class="feat-card reveal"><span class="feat-icon">📝</span><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel with Flow Access mode — click any argument to pull it into your speech. Dropped args insert "The [side] dropped:" automatically.</div></div>
-        <div class="feat-card reveal reveal-d1"><span class="feat-icon">🔍</span><div class="feat-title">Evidence Search</div><div class="feat-desc">Search open-source debate evidence from OpenEv and OpenCaselist. Upload your HSPolicy 25-26 cards and search them natively inside the flow.</div></div>
-        <div class="feat-card reveal reveal-d2"><span class="feat-icon">↑</span><div class="feat-title">Extend to Speech</div><div class="feat-desc">Click ↑ on any argument and choose which speech to extend it to. A copy is created in the target speech, marked EXT, with your notes intact.</div></div>
-        <div class="feat-card reveal"><span class="feat-icon">⊠</span><div class="feat-title">Kick Entire Flows</div><div class="feat-desc">Kick a position (Cap K, Politics DA) with one click from the sidebar. The entire flow sheet is crossed out for both partners instantly.</div></div>
-        <div class="feat-card reveal reveal-d1"><span class="feat-icon">⇄</span><div class="feat-title">Cross-Apply Arguments</div><div class="feat-desc">Link arguments across speeches and flows. Cross-apply badges show connections and clicking them scrolls to the linked argument instantly.</div></div>
-        <div class="feat-card reveal reveal-d2"><span class="feat-icon">👁</span><div class="feat-title">Spectator Mode</div><div class="feat-desc">Room creator controls who can edit. Spectators see the full flow live but can't make changes. Toggle editor/spectator access from the presence row.</div></div>
-        <div class="feat-card reveal"><span class="feat-icon">↩</span><div class="feat-title">Undo / Redo</div><div class="feat-desc">Full undo/redo history with Ctrl+Z and Ctrl+Shift+Z. Every add, delete, and status change is undoable without leaving the flow.</div></div>
-        <div class="feat-card reveal reveal-d1"><span class="feat-icon">🏠</span><div class="feat-title">Persistent Rooms</div><div class="feat-desc">Room codes are permanent. Join OCTAS2026 today and in a month — same room, same flows, same args. Nothing disappears.</div></div>
-        <div class="feat-card reveal reveal-d2"><span class="feat-icon">👤</span><div class="feat-title">Google Sign-In + Profiles</div><div class="feat-desc">Sign in with Google to save your room history. Your recent rooms appear in your profile panel with one-click rejoin.</div></div>
+        <div class="feat-card reveal"><div class="feat-num">01</div><div class="feat-title">Real-Time Sync</div><div class="feat-desc">Both partners see every change the moment it's typed. Firebase-powered, sub-second latency, any device.</div></div>
+        <div class="feat-card reveal reveal-d1"><div class="feat-num">02</div><div class="feat-title">Flow Sheets Per Position</div><div class="feat-desc">One sheet per position. Neg flows start at 1NC. Aff flows start at 1AC. No wasted columns.</div></div>
+        <div class="feat-card reveal reveal-d2"><div class="feat-num">03</div><div class="feat-title">Respond System</div><div class="feat-desc">Click respond on any arg — a linked response card opens in the next speech column, auto-scrolled and focused.</div></div>
+        <div class="feat-card reveal"><div class="feat-num">04</div><div class="feat-title">Live Speech Doc</div><div class="feat-desc">Shared speech panel. Flow Access mode lets you click any arg to pull it into your speech as a formatted block.</div></div>
+        <div class="feat-card reveal reveal-d1"><div class="feat-num">05</div><div class="feat-title">Evidence Search</div><div class="feat-desc">Search OpenEv and OpenCaselist evidence natively. Upload HSPolicy 25-26 cards to search them inline.</div></div>
+        <div class="feat-card reveal reveal-d2"><div class="feat-num">06</div><div class="feat-title">Extend to Any Speech</div><div class="feat-desc">Click extend, pick the target speech. A copy appears marked EXT. Your notes carry over automatically.</div></div>
+        <div class="feat-card reveal"><div class="feat-num">07</div><div class="feat-title">Kick Entire Flows</div><div class="feat-desc">Kick a position — Politics DA, Cap K — with one click. The whole sheet crosses out for both partners live.</div></div>
+        <div class="feat-card reveal reveal-d1"><div class="feat-num">08</div><div class="feat-title">Cross-Apply</div><div class="feat-desc">Link arguments across flows. Cross-apply badges show connections and clicking them scrolls to the linked arg.</div></div>
+        <div class="feat-card reveal reveal-d2"><div class="feat-num">09</div><div class="feat-title">Spectator Mode</div><div class="feat-desc">Room creator controls who can edit. Spectators see everything live. Toggle access from the presence row.</div></div>
+        <div class="feat-card reveal"><div class="feat-num">10</div><div class="feat-title">Undo / Redo</div><div class="feat-desc">Full undo and redo history. Ctrl+Z and Ctrl+Shift+Z. Every edit is reversible without leaving the flow.</div></div>
+        <div class="feat-card reveal reveal-d1"><div class="feat-num">11</div><div class="feat-title">Persistent Rooms</div><div class="feat-desc">Room codes are permanent. OCTAS2026 today is the same room in a month — all flows, all args, still there.</div></div>
+        <div class="feat-card reveal reveal-d2"><div class="feat-num">12</div><div class="feat-title">Google Sign-In</div><div class="feat-desc">Sign in to save room history. Recent rooms appear in your profile with one-click rejoin.</div></div>
       </div>
     </div>
     <div id="land-footer" style="position:static">
@@ -851,66 +899,65 @@ body.app-open{overflow:hidden}
       <div class="footer-links"><button class="footer-link" onclick="showPage('home')">Home</button><button class="footer-link" onclick="showPage('about')">About</button></div>
       <div class="footer-copy">© 2026 Flowboard</div>
     </div>
-  </div><!-- end page-features -->
+  </div>
 
-  <!-- ═══ ABOUT PAGE ═══ -->
+  <!-- ABOUT PAGE -->
   <div class="page" id="page-about">
-    <div class="about-hero">
-      <div class="section-eyebrow">Our story</div>
-      <div class="section-title">Built by debaters,<br>for debaters</div>
-      <div class="section-sub">Flowboard was born from the frustration of losing rounds because of a dropped argument on a messy paper flow.</div>
-    </div>
-    <div style="max-width:860px;margin:0 auto;padding:0 60px">
+    <div style="max-width:860px;margin:0 auto;padding:100px 80px 80px">
+      <div class="how-overline">ABOUT</div>
+      <h2 class="how-heading">Built by debaters,<br>for debaters</h2>
       <div class="about-story-p reveal">
-        <strong>Every policy debater knows the feeling.</strong> You're in the 2AR, you know the neg dropped the agriculture solvency extension in the 1NR, but your paper flow is three pages of scribble and your partner is pointing at a different column. You go for it anyway. The judge doesn't buy it because you can't explain where it was extended.
+        <strong>Every policy debater knows the feeling.</strong> You're in the 2AR. You know the neg dropped the agriculture solvency extension in the 1NR. But your paper flow is three pages of scribble and your partner is pointing at a different column. You go for it. The judge doesn't buy it.
       </div>
       <div class="about-quote-block reveal reveal-d1">
         <p>"The flow is the round. If you can't read it, you've already lost."</p>
       </div>
       <div class="about-story-p reveal reveal-d1">
-        Flowboard is the platform we wished existed when we were prepping for tournaments. Real-time shared flows, a speech doc that builds itself from what you click, and a card search that actually works. No account required, no setup, no friction — just open a room, share the code, and flow.
+        Flowboard is the platform we wished existed. Real-time shared flows, a speech doc that builds from what you click, and card search that lives inside the tool. No account required. No setup. Open a room, share the code, and flow.
       </div>
       <div class="about-story-p reveal reveal-d2">
-        The <strong>respond system</strong> was the first thing we built. Nothing is more frustrating than trying to track which NC arg you're responding to in the 2AC. Now you click ↩, a box appears in the right column, and it's linked. The <strong>kick feature</strong> came from watching neg teams forget they read the cap K in the 1NC. The <strong>speech doc</strong> came from watching 2ARs that got lost because the debater was reading off paper instead of the flow.
+        The <strong>respond system</strong> came first — click respond on a 1AC arg, a linked card appears in the 1NC. The <strong>kick feature</strong> came from watching neg teams forget they read the cap K. The <strong>speech doc</strong> came from watching 2ARs fall apart because the debater was on paper instead of the flow.
       </div>
-      <div class="about-chips reveal reveal-d3" style="margin-bottom:60px">
+      <div class="about-chips reveal reveal-d3">
         <span class="about-chip">Policy Debate</span>
         <span class="about-chip">Lincoln-Douglas</span>
-        <span class="about-chip">Open Source</span>
         <span class="about-chip">Free Forever</span>
         <span class="about-chip">Firebase Realtime</span>
         <span class="about-chip">NSDA Ready</span>
+        <span class="about-chip">Open Source Evidence</span>
       </div>
     </div>
-    <div class="about-team">
-      <div class="section-eyebrow" style="text-align:left;padding:0 60px">The team</div>
-      <div class="about-team-grid" style="padding:0 60px">
-        <div class="team-card reveal">
-          <div class="team-avatar">🧠</div>
-          <div class="team-name">Shreyas</div>
-          <div class="team-role">Founder · Policy</div>
-          <div class="team-bio">Policy debater, computational pathology researcher. Built Flowboard to stop losing rounds to illegible paper flows. Competes nationally, auto-qualified for OSDA States 2026.</div>
-        </div>
-        <div class="team-card reveal reveal-d1">
-          <div class="team-avatar">⚡</div>
-          <div class="team-name">Open Source</div>
-          <div class="team-role">Built on Firebase + Open Evidence</div>
-          <div class="team-bio">Flowboard uses Firebase Realtime Database for sub-second sync, and indexes open-source debate evidence from OpenEv and OpenCaselist for card search.</div>
-        </div>
-        <div class="team-card reveal reveal-d2">
-          <div class="team-avatar">🎯</div>
-          <div class="team-name">Free Forever</div>
-          <div class="team-role">No paywalls, no signup required</div>
-          <div class="team-bio">No subscription, no per-seat pricing, no account required to start flowing. Sign in with Google to save your room history. Everything else is free.</div>
+    <div style="border-top:1px solid var(--border-page);padding:80px;background:var(--s-page)">
+      <div style="max-width:1000px;margin:0 auto">
+        <div class="how-overline" style="text-align:left;margin-bottom:40px">THE TEAM</div>
+        <div class="about-team-grid">
+          <div class="team-card reveal">
+            <div class="team-monogram">S</div>
+            <div class="team-name">Shreyas</div>
+            <div class="team-role">Founder · Policy</div>
+            <div class="team-bio">Policy debater competing nationally. Computational pathology researcher. Auto-qualified for OSDA States 2026. Built Flowboard to stop losing rounds to paper flows.</div>
+          </div>
+          <div class="team-card reveal reveal-d1">
+            <div class="team-monogram">F</div>
+            <div class="team-name">Firebase + Open Evidence</div>
+            <div class="team-role">Infrastructure</div>
+            <div class="team-bio">Sub-second sync via Firebase Realtime Database. Card search indexes OpenEv and OpenCaselist — the same open-source evidence the community has built for decades.</div>
+          </div>
+          <div class="team-card reveal reveal-d2">
+            <div class="team-monogram">0</div>
+            <div class="team-name">Free Forever</div>
+            <div class="team-role">Pricing</div>
+            <div class="team-bio">No subscription. No per-seat pricing. No account required to start flowing. Sign in with Google to save room history. Everything else is free.</div>
+          </div>
         </div>
       </div>
     </div>
-    <div id="land-footer" style="position:static;margin-top:0">
+    <div id="land-footer" style="position:static">
       <div class="footer-logo"><div class="ln-logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V5l5-3 5 3v7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 12V8h4v4" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>Flowboard</div>
       <div class="footer-links"><button class="footer-link" onclick="showPage('home')">Home</button><button class="footer-link" onclick="showPage('features')">Features</button></div>
       <div class="footer-copy">© 2026 Flowboard</div>
     </div>
-  </div><!-- end page-about -->
+  </div>
 
 </div><!-- end #landing -->
 
@@ -1530,10 +1577,13 @@ window.showPage=function(page){
 
 // ── THEME TOGGLE ─────────────────────────────────────────────────────────
 let isDark=true;
+const moonSVG=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+const sunSVG=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
 window.toggleTheme=function(){
   isDark=!isDark;
   document.documentElement.className=isDark?'dark':'light';
-  document.getElementById('theme-btn').textContent=isDark?'🌙':'☀️';
+  const btn=document.getElementById('theme-btn');
+  if(btn)btn.innerHTML=isDark?moonSVG:sunSVG;
 };
 document.documentElement.className='dark';
 
@@ -1549,26 +1599,26 @@ function initReveal(){
 }
 initReveal();
 
-// ── PSR FLOW ANIMATION ───────────────────────────────────────────────────
-function initPSRFlowAnim(){
-  const el=document.getElementById('psr-flow-anim');if(!el)return;
+// ── FLOW ANIM ────────────────────────────────────────────────────────────
+function initFlowAnim(){
+  const el=document.getElementById('how-flows-anim');if(!el)return;
+  el.innerHTML='';
   const flows=[
     {name:'Politics DA',color:'#fb923c',speech:'1NC'},
-    {name:'Cap Kritik',color:'#c084fc',speech:'1NC'},
-    {name:'Advantage 1',color:'#4ade80',speech:'1AC'},
-    {name:'Solvency',color:'#60a5fa',speech:'1AC'},
+    {name:'Cap Kritik',color:'#a78bfa',speech:'1NC'},
+    {name:'Advantage 1',color:'#22d3ee',speech:'1AC'},
+    {name:'Solvency',color:'#4ade80',speech:'1AC'},
     {name:'T — Substantially',color:'#fbbf24',speech:'1NC'},
   ];
-  el.innerHTML='';
   flows.forEach((f,i)=>{
     const div=document.createElement('div');
-    div.style.cssText=`display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;border:1px solid rgba(120,80,255,0.15);background:rgba(10,8,32,0.6);opacity:0;transform:translateX(-16px);transition:all .4s ease ${i*0.08}s`;
-    div.innerHTML=`<div style="width:8px;height:8px;border-radius:50%;background:${f.color};flex-shrink:0"></div><div style="font-size:12px;color:#e8e4ff;flex:1">${f.name}</div><div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:${f.color};font-weight:700">${f.speech}</div>`;
+    div.className='how-flow-row';
+    div.innerHTML=`<div class="how-flow-dot" style="background:${f.color}"></div><div class="how-flow-name">${f.name}</div><div class="how-flow-speech" style="color:${f.color}">${f.speech}</div>`;
     el.appendChild(div);
-    setTimeout(()=>{div.style.opacity='1';div.style.transform='translateX(0)'},300+i*120);
+    setTimeout(()=>div.classList.add('in'),350+i*130);
   });
 }
-setTimeout(initPSRFlowAnim,400);
+setTimeout(initFlowAnim,500);
 
 // ── DEMO SECTION ──────────────────────────────────────────────────────────
 const DEMO_DATA={
@@ -2587,64 +2637,93 @@ document.getElementById('jm-name').addEventListener('keydown',e=>{if(e.key==='En
 </script>
 
 <script>
-// ── GLOBE ─────────────────────────────────────────────────────────────────
+// ── HERO GLOBE (right-side, tournament pins, arcs) ───────────────────────
 (function(){
-  const canvas=document.getElementById('globe-canvas');
+  // The background canvas (old) is now unused — hide it
+  const bgc=document.getElementById('globe-canvas');
+  if(bgc)bgc.style.display='none';
+
+  const canvas=document.getElementById('hero-globe');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  let W,H,R,cx,cy;
-  let rotY=0,rotX=0.25,isDrag=false,lx=0,ly=0,vy=0.004,autoSpin=true;
+  const SIZE=640;
+  canvas.width=SIZE;canvas.height=SIZE;
+  const cx=SIZE/2,cy=SIZE/2,R=SIZE*0.42;
 
-  function resize(){
-    W=canvas.width=window.innerWidth;
-    H=canvas.height=window.innerHeight;
-    R=Math.min(W,H)*0.38;cx=W/2;cy=H*0.46;
-  }
+  let rotY=0.4,rotX=0.2,isDrag=false,lx=0,ly=0,vy=0.0025;
 
-  // Generate globe points
-  const pts=[];
-  for(let i=0;i<1200;i++){
+  // Tournament locations [lat, lon, name]
+  const PINS=[
+    [42.37,-71.11,'Harvard'],
+    [37.87,-122.26,'Berkeley'],
+    [40.73,-74.0,'Bronx Sci'],
+    [42.34,-83.05,'Michigan'],
+    [29.76,-95.37,'Greenhill'],
+    [38.9,-77.03,'NSDA'],
+    [47.6,-122.33,'Seattle'],
+    [33.45,-112.07,'TOC'],
+    [41.83,-87.63,'Glenbrooks'],
+    [51.5,-0.12,'London'],
+    [35.68,139.69,'Japan Nats'],
+    [1.35,103.82,'Singapore'],
+    [-33.87,151.21,'Australs'],
+    [55.75,37.62,'Moscow'],
+    [48.85,2.35,'Paris'],
+    [25.2,55.27,'Dubai Inv'],
+    [-1.29,36.82,'Nairobi'],
+    [19.43,-99.13,'Mexico City'],
+    [-23.55,-46.63,'Sao Paulo'],
+    [28.61,77.21,'Delhi'],
+  ];
+
+  // Arcs between specific pairs
+  const ARC_PAIRS=[[0,1],[2,8],[3,10],[4,5],[6,12],[9,11],[13,15],[14,16],[1,18],[0,19]];
+  const arcStates=ARC_PAIRS.map(([ai,bi])=>({a:PINS[ai],b:PINS[bi],t:Math.random(),sp:0.002+Math.random()*0.002}));
+
+  // Dot field
+  const dots=[];
+  for(let i=0;i<900;i++){
     const lat=(Math.random()-.5)*Math.PI;
     const lon=Math.random()*Math.PI*2;
-    const isBig=Math.random()<0.03;
-    const isMed=Math.random()<0.1;
-    pts.push({lat,lon,r:isBig?3:isMed?1.6:.7,big:isBig,med:isMed});
+    dots.push({lat,lon,r:Math.random()<0.05?1.2:0.5});
   }
 
-  // Connection arcs between big points
-  const bigPts=pts.filter(p=>p.big);
-  const arcs=[];
-  for(let i=0;i<16;i++){
-    const a=bigPts[Math.floor(Math.random()*bigPts.length)];
-    const b=bigPts[Math.floor(Math.random()*bigPts.length)];
-    if(a!==b)arcs.push({a,b,p:Math.random(),sp:.003+Math.random()*.004,col:Math.random()<.5?'#00d4ff':'#ff6b35'});
-  }
-
-  function proj(lat,lon){
+  function proj(latDeg,lonDeg){
+    const lat=typeof latDeg==='number'&&Math.abs(latDeg)<=2?latDeg:latDeg*Math.PI/180;
+    const lon=typeof lonDeg==='number'&&Math.abs(lonDeg)<=7?lonDeg:lonDeg*Math.PI/180;
     const cl=Math.cos(lat),sl=Math.sin(lat);
     const clo=Math.cos(lon+rotY),slo=Math.sin(lon+rotY);
     const crx=Math.cos(rotX),srx=Math.sin(rotX);
     const x=cl*slo,y=sl*crx-cl*clo*srx,z=sl*srx+cl*clo*crx;
-    return{x:cx+x*R,y:cy-y*R,z,v:z>-0.1};
+    return{x:cx+x*R,y:cy-y*R,z,v:z>-0.05};
   }
 
-  function lerpArc(a,b,t){
-    // Great circle interpolation approximation
-    return{lat:a.lat+(b.lat-a.lat)*t,lon:a.lon+(b.lon-a.lon)*t};
+  function projDeg(lat,lon){
+    return proj(lat*Math.PI/180,lon*Math.PI/180);
   }
+
+  function lerpGreat(a,b,t){
+    return{lat:(a[0]+(b[0]-a[0])*t)*Math.PI/180,lon:(a[1]+(b[1]-a[1])*t)*Math.PI/180};
+  }
+
+  function isDark(){return document.documentElement.className!=='light'}
 
   function draw(){
-    ctx.clearRect(0,0,W,H);
+    ctx.clearRect(0,0,SIZE,SIZE);
+    const dark=isDark();
+    const gridCol=dark?'rgba(79,70,229,0.08)':'rgba(79,70,229,0.06)';
+    const dotCol=dark?'rgba(120,110,200,0.3)':'rgba(79,70,229,0.15)';
 
-    // Atmospheric glow
-    const grad=ctx.createRadialGradient(cx,cy,R*.3,cx,cy,R*1.6);
-    grad.addColorStop(0,'rgba(0,50,100,0)');
-    grad.addColorStop(.7,'rgba(0,100,180,0.04)');
-    grad.addColorStop(1,'rgba(0,212,255,0.08)');
-    ctx.beginPath();ctx.arc(cx,cy,R*1.6,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
+    // Outer glow
+    if(dark){
+      const g=ctx.createRadialGradient(cx,cy,R*0.7,cx,cy,R*1.3);
+      g.addColorStop(0,'transparent');
+      g.addColorStop(1,'rgba(79,70,229,0.06)');
+      ctx.beginPath();ctx.arc(cx,cy,R*1.3,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    }
 
     // Grid lines
-    ctx.lineWidth=.5;
+    ctx.lineWidth=0.6;
     for(let lat=-75;lat<=75;lat+=15){
       const lr=lat*Math.PI/180;
       ctx.beginPath();let f=true;
@@ -2652,7 +2731,7 @@ document.getElementById('jm-name').addEventListener('keydown',e=>{if(e.key==='En
         const p=proj(lr,lon*Math.PI/180);
         if(p.v){if(f){ctx.moveTo(p.x,p.y);f=false}else ctx.lineTo(p.x,p.y)}else f=true;
       }
-      ctx.strokeStyle=`rgba(0,180,255,${.04+.04*Math.max(0,lat===0?.5:0)})`;ctx.stroke();
+      ctx.strokeStyle=gridCol;ctx.stroke();
     }
     for(let lon=0;lon<360;lon+=15){
       const lr=lon*Math.PI/180;
@@ -2661,61 +2740,100 @@ document.getElementById('jm-name').addEventListener('keydown',e=>{if(e.key==='En
         const p=proj(lat*Math.PI/180,lr);
         if(p.v){if(f){ctx.moveTo(p.x,p.y);f=false}else ctx.lineTo(p.x,p.y)}else f=true;
       }
-      ctx.strokeStyle='rgba(0,180,255,0.04)';ctx.stroke();
+      ctx.strokeStyle=gridCol;ctx.stroke();
     }
 
-    // Points
-    pts.forEach(pt=>{
-      const p=proj(pt.lat,pt.lon);if(!p.v)return;
-      const alpha=Math.max(.05,Math.min(.95,(p.z+.15)*.9));
-      if(pt.big){
-        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(0,212,255,${alpha})`;ctx.fill();
-        ctx.beginPath();ctx.arc(p.x,p.y,pt.r+3,0,Math.PI*2);
-        ctx.fillStyle=`rgba(0,212,255,${alpha*.15})`;ctx.fill();
-      }else if(pt.med){
-        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(79,172,254,${alpha*.7})`;ctx.fill();
-      }else{
-        ctx.beginPath();ctx.arc(p.x,p.y,pt.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(255,255,255,${alpha*.18})`;ctx.fill();
-      }
+    // Dots
+    dots.forEach(d=>{
+      const p=proj(d.lat,d.lon);if(!p.v)return;
+      const a=Math.max(0,(p.z+0.1)*0.6);
+      ctx.beginPath();ctx.arc(p.x,p.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=dark?`rgba(140,130,240,${a*0.5})`:`rgba(79,70,229,${a*0.3})`;
+      ctx.fill();
     });
 
     // Arcs
-    arcs.forEach(arc=>{
-      arc.p+=arc.sp;if(arc.p>1)arc.p=0;
-      const pos=lerpArc(arc.a,arc.b,arc.p);
-      const p=proj(pos.lat,pos.lon);if(!p.v)return;
-      ctx.beginPath();ctx.arc(p.x,p.y,2.2,0,Math.PI*2);
-      ctx.fillStyle=arc.col+'cc';ctx.fill();
-      ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);
-      ctx.fillStyle=arc.col+'28';ctx.fill();
+    arcStates.forEach(arc=>{
+      arc.t+=arc.sp;if(arc.t>1)arc.t=0;
+      const trail=8;
+      ctx.beginPath();
+      for(let i=0;i<trail;i++){
+        const t=Math.max(0,arc.t-i*0.012);
+        const pos=lerpGreat(arc.a,arc.b,t);
+        const p=proj(pos.lat,pos.lon);
+        if(!p.v)continue;
+        const alpha=(trail-i)/trail;
+        if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=dark?`rgba(99,102,241,0.7)`:`rgba(79,70,229,0.5)`;
+      ctx.lineWidth=1.5;ctx.stroke();
+
+      // Head dot
+      const pos=lerpGreat(arc.a,arc.b,arc.t);
+      const hp=proj(pos.lat,pos.lon);
+      if(hp.v){
+        ctx.beginPath();ctx.arc(hp.x,hp.y,3,0,Math.PI*2);
+        ctx.fillStyle=dark?'rgba(165,180,252,0.9)':'rgba(79,70,229,0.8)';ctx.fill();
+        ctx.beginPath();ctx.arc(hp.x,hp.y,6,0,Math.PI*2);
+        ctx.fillStyle=dark?'rgba(99,102,241,0.2)':'rgba(79,70,229,0.15)';ctx.fill();
+      }
     });
 
-    // Globe outline
-    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
-    ctx.strokeStyle='rgba(0,212,255,0.12)';ctx.lineWidth=1;ctx.stroke();
-    // Inner glow ring
-    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
-    const grd2=ctx.createRadialGradient(cx,cy,R-.5,cx,cy,R+20);
-    grd2.addColorStop(0,'rgba(0,212,255,0.06)');grd2.addColorStop(1,'transparent');
-    ctx.strokeStyle=grd2;ctx.lineWidth=20;ctx.stroke();
+    // Tournament pins
+    PINS.forEach(([lat,lon,name])=>{
+      const p=projDeg(lat,lon);if(!p.v)return;
+      const a=Math.max(0,(p.z+0.1));
 
-    if(autoSpin)rotY+=vy;
+      // Triangle pin
+      ctx.save();ctx.translate(p.x,p.y);
+      ctx.beginPath();
+      ctx.moveTo(0,-7);ctx.lineTo(5,2);ctx.lineTo(-5,2);ctx.closePath();
+      ctx.fillStyle=dark?`rgba(165,180,252,${a*0.9})`:`rgba(79,70,229,${a*0.85})`;
+      ctx.fill();
+
+      // Label pill
+      if(a>0.4){
+        ctx.font='700 9px JetBrains Mono';
+        const tw=ctx.measureText(name).width;
+        const pad=7,ph=16,pw=tw+pad*2;
+        const lx2=-pw/2,ly2=-28;
+        ctx.fillStyle=dark?`rgba(15,12,40,${a*0.92})`:`rgba(240,236,255,${a*0.95})`;
+        ctx.strokeStyle=dark?`rgba(99,102,241,${a*0.5})`:`rgba(79,70,229,${a*0.3})`;
+        ctx.lineWidth=0.8;
+        roundRect(ctx,lx2,ly2,pw,ph,4);
+        ctx.fill();ctx.stroke();
+        ctx.fillStyle=dark?`rgba(200,190,255,${a})`:`rgba(79,70,229,${a})`;
+        ctx.fillText(name,lx2+pad,ly2+ph-5);
+      }
+      ctx.restore();
+    });
+
+    // Outline
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle=dark?'rgba(79,70,229,0.18)':'rgba(79,70,229,0.12)';ctx.lineWidth=1;ctx.stroke();
+
+    rotY+=vy;
     requestAnimationFrame(draw);
   }
 
-  canvas.addEventListener('mousedown',e=>{isDrag=true;autoSpin=false;lx=e.clientX;ly=e.clientY});
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+  }
+
+  // Drag to rotate
+  canvas.addEventListener('mousedown',e=>{isDrag=true;vy=0;lx=e.clientX;ly=e.clientY});
   window.addEventListener('mousemove',e=>{
     if(!isDrag)return;
-    vy=(e.clientX-lx)*.005;rotY+=vy;
-    rotX=Math.max(-1.2,Math.min(1.2,rotX+(e.clientY-ly)*.003));
+    vy=(e.clientX-lx)*0.005;rotY+=vy;
+    rotX=Math.max(-1.1,Math.min(1.1,rotX+(e.clientY-ly)*0.004));
     lx=e.clientX;ly=e.clientY;
   });
-  window.addEventListener('mouseup',()=>{isDrag=false;autoSpin=true});
-  window.addEventListener('resize',()=>{resize();});
-  resize();draw();
+  window.addEventListener('mouseup',()=>{isDrag=false;vy=Math.max(-0.005,Math.min(0.005,vy));setTimeout(()=>vy=0.0025,3000)});
+
+  draw();
 })();
 
 // ── COUNTER ANIMATIONS ────────────────────────────────────────────────────
