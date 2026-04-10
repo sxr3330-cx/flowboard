@@ -2929,9 +2929,20 @@ window.setJoinEvt=function(evtType,btn){
   document.querySelectorAll('.jm-evt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 };
+window._doJoinPending=false;
 window.doJoin=function(){
-  // Will be overridden by module — show error if module not ready
-  alert('Loading… please try again in a moment.');
+  // Store intent and retry once module loads (max 3s)
+  window._doJoinPending=true;
+  let attempts=0;
+  const retry=setInterval(function(){
+    attempts++;
+    if(window._moduleDoJoin){
+      clearInterval(retry);
+      window._moduleDoJoin();
+    } else if(attempts>30){
+      clearInterval(retry);
+    }
+  },100);
 };
 </script>
 
@@ -4244,13 +4255,15 @@ window.doJoin=async function(){
   document.getElementById('jm-go').disabled=true;
   myName=name;
   rc=code;
-  evt=_joinEvt;
+  evt=_joinEvt||window._joinEvtPending||'policy';
   spList=SPEECHES[evt]||SPEECHES.policy;
   document.getElementById('join-modal').classList.remove('open');
   document.getElementById('jm-go').textContent='Join / Create Room →';
   document.getElementById('jm-go').disabled=false;
   initRoom();
 };
+// Register so the pre-module stub can call us
+window._moduleDoJoin=window.doJoin;
 
 // ── ROOM INIT ─────────────────────────────────────────────────────────────
 function initRoom(){
