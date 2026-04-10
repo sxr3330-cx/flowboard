@@ -993,7 +993,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 /* ── APP SHELL ─────────────────────────────────────────────────────────── */
 #app {
   display: none; position: fixed; inset: 0; z-index: 500;
-  background: #07060e; flex-direction: row;
+  background: #06050d; flex-direction: row;
   --aff:  #4facfe; --neg: #f87171; --orn: #fb923c; --grn: #4ade80; --ld: #a78bfa;
   --t1:   #eceaf5; --t2:  rgba(200,195,230,0.5); --t3: rgba(160,150,200,0.28);
   --s1:   rgba(255,255,255,0.03); --s2: rgba(255,255,255,0.05); --s3: rgba(255,255,255,0.08);
@@ -1003,6 +1003,13 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
   font-family: var(--font);
 }
 #app.open { display: flex }
+
+/* App star field */
+#app-stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.55;
+}
+#sidebar, #main, #speech-panel { position: relative; z-index: 1; }
 
 /* ── SIDEBAR ───────────────────────────────────────────────────────────── */
 #sidebar {
@@ -1103,12 +1110,12 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 .sb-btn:hover svg { opacity: 1 }
 
 /* ── MAIN + TOPBAR ─────────────────────────────────────────────────────── */
-#main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #07060e }
+#main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: transparent }
 #topbar {
   display: flex; align-items: center; gap: 4px;
   padding: 0 14px; height: 44px;
   border-bottom: 1px solid var(--b1);
-  background: #0b0a16; flex-shrink: 0;
+  background: rgba(11,10,22,0.92); flex-shrink: 0; backdrop-filter: blur(8px);
 }
 #sheet-title {
   background: transparent; border: none;
@@ -1139,8 +1146,8 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 
 /* Col header row */
 #col-headers {
-  background: #0b0a16; border-bottom: 1px solid var(--b1);
-  flex-shrink: 0; overflow-x: hidden;
+  background: rgba(11,10,22,0.88); border-bottom: 1px solid var(--b1);
+  flex-shrink: 0; overflow-x: hidden; backdrop-filter: blur(4px);
 }
 #chi { display: flex; min-width: max-content }
 .col-hdr-cell {
@@ -1175,6 +1182,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
   overflow-y: auto; overflow-x: hidden;
   height: 100%;
   padding-bottom: 40px;
+  background: rgba(6,5,13,0.7);
 }
 .col-wrap::-webkit-scrollbar { width: 3px }
 .col-wrap::-webkit-scrollbar-thumb { background: var(--b1); border-radius: 2px }
@@ -2914,6 +2922,7 @@ setTimeout(()=>{
 
 <!-- APP -->
 <div id="app">
+  <canvas id="app-stars"></canvas>
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sb-top">
@@ -3204,6 +3213,15 @@ let nextId=1;
 let undoStack=[];
 let redoStack=[];
 let speechOpen=false,speechMode='write',flowAccess=false;
+let suppressRender=false;
+let _writeTimer=null;
+function writeArg(id){
+  if(!args[id])return;
+  clearTimeout(_writeTimer);
+  _writeTimer=setTimeout(()=>{
+    update(ref(db,frk('args',id)),{text:args[id].text||'',cite:args[id].cite||''});
+  },300);
+}
 let extArgId=null,extTarget=null;
 let crossId=null;
 let cfFilter='all',cfDebounce=null,selCard=null;
@@ -3215,7 +3233,7 @@ let afmSide=null,afmType=null,afmStep=1;
 function rk(...p){return`rooms/${rc}/${p.join('/')}`}
 function frk(...p){return`rooms/${rc}/flows/${curFlow}/${p.join('/')}`}
 function uid(){return'a'+(nextId++)+'_'+Math.random().toString(36).slice(2,5)}
-function gcw(id){return colW[id]||300}
+function gcw(id){return colW[id]||400}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function setSS(s,l){document.getElementById('sdot').className='sdot '+s;document.getElementById('slbl').textContent=l}
@@ -4324,10 +4342,17 @@ window.switchFlow=function(id){
   colW={};
   // Subscribe to this flow's args
   onValue(ref(db,frk('args')),snap=>{
-    args=snap.val()||{};
+    const incoming=snap.val()||{};
+    // Merge: don't overwrite text being typed right now
+    Object.keys(incoming).forEach(k=>{
+      if(args[k]){
+        const el=document.querySelector(\`.arg-card[data-arg-id="${k}"] :focus\`);
+        if(el){incoming[k].text=args[k].text;incoming[k].cite=args[k].cite;}
+      }
+    });
+    args=incoming;
     nextId=Object.keys(args).reduce((mx,k)=>{const n=parseInt(k.replace(/^a/,''));return isNaN(n)?mx:Math.max(mx,n+1)},1);
-    renderCols();
-    updateStatusBar();
+    if(!suppressRender){renderCols();updateStatusBar();}
   });
 };
 
@@ -4423,32 +4448,54 @@ function buildArgCard(id,arg,sp){
   if(flows[curFlow]&&flows[curFlow].kicked)cls+=' kicked';
   card.className=cls;
   card.dataset.id=id;
+  card.dataset.argId=id;
 
-  // Text
+  // Inner wrapper for padding
+  const inner=document.createElement('div');
+  inner.className='ac-inner';
+
+  // ── TEXT ── never triggers re-render
   const textDiv=document.createElement('div');
   textDiv.className='arg-text';
   textDiv.contentEditable=canEdit()?'true':'false';
-  textDiv.spellcheck=true;
-  textDiv.textContent=arg.text||'';
+  textDiv.spellcheck=false;
+  textDiv.dataset.ph='Argument…';
+  // Set text without triggering input events
+  if(arg.text)textDiv.textContent=arg.text;
+
+  textDiv.addEventListener('focus',()=>{ suppressRender=true; });
+  textDiv.addEventListener('blur', ()=>{ suppressRender=false; });
   textDiv.addEventListener('input',()=>{
-    update(ref(db,frk('args',id)),{text:textDiv.innerText});args[id]={...args[id],text:textDiv.innerText};
+    if(!args[id])return;
+    args[id].text=textDiv.innerText;
+    writeArg(id); // debounced, NEVER calls renderCols
   });
   textDiv.addEventListener('keydown',e=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const next=addArg(sp.id,id);if(next)setTimeout(()=>next.querySelector('.arg-text')?.focus(),60);}
-    if(e.key==='Backspace'&&!textDiv.textContent){e.preventDefault();deleteArg(id);}
-    if(e.key==='Tab'){e.preventDefault();}
+    if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); addArg(sp.id,id); }
+    if(e.key==='Backspace'&&!textDiv.textContent.trim()){ e.preventDefault(); deleteArg(id); }
+    if(e.key==='Tab'&&!e.shiftKey){ e.preventDefault(); citeDiv.focus(); setCursorEnd(citeDiv); }
   });
-  card.appendChild(textDiv);
+  inner.appendChild(textDiv);
 
-  // Cite
+  // ── CITE ── same, never re-renders
   const citeDiv=document.createElement('div');
   citeDiv.className='arg-cite';
   citeDiv.contentEditable=canEdit()?'true':'false';
-  citeDiv.textContent=arg.cite||'';
+  if(arg.cite)citeDiv.textContent=arg.cite;
+
+  citeDiv.addEventListener('focus',()=>{ suppressRender=true; });
+  citeDiv.addEventListener('blur', ()=>{ suppressRender=false; });
   citeDiv.addEventListener('input',()=>{
-    update(ref(db,frk('args',id)),{cite:citeDiv.innerText});args[id]={...args[id],cite:citeDiv.innerText};
+    if(!args[id])return;
+    args[id].cite=citeDiv.innerText;
+    writeArg(id);
   });
-  card.appendChild(citeDiv);
+  citeDiv.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ e.preventDefault(); }
+    if(e.key==='Tab'&&!e.shiftKey){ e.preventDefault(); addArg(sp.id,id); }
+  });
+  inner.appendChild(citeDiv);
+  card.appendChild(inner);
 
   // Badges
   const badges=document.createElement('div');
@@ -4974,5 +5021,48 @@ document.addEventListener('keydown',e=>{
 
 // Expose openJoin globally for landing page buttons
 window.openJoin=window.openJoin;
+
+// ── APP STAR FIELD ────────────────────────────────────────────────────────
+(function(){
+  function initStars(canvasId){
+    const c=document.getElementById(canvasId);if(!c)return;
+    const ctx=c.getContext('2d');
+    let W,H,stars=[];
+    const N=280;
+    function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;spawn();}
+    function spawn(){
+      stars=[];
+      for(let i=0;i<N;i++){
+        stars.push({
+          x:Math.random()*W, y:Math.random()*H,
+          r:Math.random()<.06?1.4:Math.random()<.2?.7:.3,
+          a:Math.random()*.7+.1,
+          twinkleSpeed:Math.random()*.015+.004,
+          twinkleOffset:Math.random()*Math.PI*2,
+          color:Math.random()<.12?'rgba(167,139,250,':Math.random()<.12?'rgba(96,165,250,':'rgba(240,235,255,'
+        });
+      }
+    }
+    function draw(t){
+      ctx.clearRect(0,0,W,H);
+      stars.forEach(s=>{
+        const pulse=Math.sin(t*s.twinkleSpeed+s.twinkleOffset);
+        const alpha=s.a*(0.65+0.35*pulse);
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=s.color+alpha+')';
+        if(s.r>0.9){ctx.shadowBlur=6;ctx.shadowColor=s.color+'0.4)';}
+        ctx.fill();ctx.shadowBlur=0;
+      });
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize',resize,{passive:true});
+    resize();requestAnimationFrame(draw);
+  }
+  // Run for landing page stars + app stars
+  initStars('stars');
+  // App stars init after app opens
+  const _origInitRoom=initRoom;
+  initStars('app-stars');
+})();
 </script>
 </body>
