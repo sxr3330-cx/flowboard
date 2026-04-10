@@ -204,14 +204,52 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
   overflow: hidden;
 }
 
-/* Globe canvas in hero background */
-#globe-canvas {
-  position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
-  width: min(680px, 52vw); height: min(680px, 52vw);
-  pointer-events: auto; z-index: 0;
-  opacity: 0.7; transition: opacity .5s;
+/* Animated flow board background */
+.hero-bg-flow {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden; pointer-events: none;
 }
-#globe-canvas.hidden { opacity: 0; pointer-events: none }
+.hero-vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, var(--bg) 75%),
+              linear-gradient(to right, var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%),
+              linear-gradient(to bottom, var(--bg) 0%, transparent 15%, transparent 75%, var(--bg) 100%);
+}
+/* individual flow col in hero bg */
+.hbf-col {
+  position: absolute; top: 0; bottom: 0; width: 220px;
+  display: flex; flex-direction: column; padding: 60px 12px 0;
+  gap: 6px; border-right: 1px solid rgba(255,255,255,0.04);
+}
+.hbf-hdr {
+  font-size: 9px; font-family: var(--mono); letter-spacing: 1.5px;
+  text-transform: uppercase; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 4px;
+}
+.hbf-card {
+  border-radius: 5px; padding: 7px 9px;
+  background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.05);
+  opacity: 0; transform: translateY(6px);
+  animation: hbfFadeIn .4s ease forwards;
+}
+.hbf-card-text { height: 8px; border-radius: 3px; margin-bottom: 5px; background: rgba(255,255,255,0.12) }
+.hbf-card-cite { height: 6px; border-radius: 3px; width: 40%; background: rgba(255,255,255,0.06) }
+.hbf-card.ext { border-left: 2px solid rgba(74,222,128,0.4) }
+.hbf-card.drop { opacity: 0.3 !important }
+.hbf-card.cross { border-left: 2px solid rgba(251,146,60,0.35) }
+@keyframes hbfFadeIn {
+  to { opacity: 1; transform: translateY(0) }
+}
+/* pulse line connecting two cards */
+.hbf-link {
+  position: absolute; pointer-events: none;
+  border-top: 1px dashed rgba(109,92,231,0.25);
+  transform-origin: left center;
+  animation: hbfLinkFade 2s ease-in-out infinite;
+}
+@keyframes hbfLinkFade {
+  0%,100%{opacity:.15} 50%{opacity:.5}
+}
 
 .hero-content {
   position: relative; z-index: 5;
@@ -1169,15 +1207,7 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 }
 .respond-btn:hover { border-color: var(--b2); color: var(--t2); background: var(--s1) }
 
-/* ── STATUS BAR ────────────────────────────────────────────────────────── */
-#statusbar {
-  display: flex; align-items: center; gap: 16px;
-  padding: 0 16px; height: 32px; border-top: 1px solid var(--b1);
-  background: var(--topbar-bg); flex-shrink: 0;
-}
-.sbi { display: flex; align-items: center; gap: 5px }
-.sbd { width: 6px; height: 6px; border-radius: 50% }
-#statusbar span { font-size: 10.5px; color: var(--t3); font-family: var(--mono) }
+/* statusbar removed */
 
 /* ── SPEECH PANEL ───────────────────────────────────────────────────────── */
 #speech-panel {
@@ -1614,22 +1644,26 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
 
     <!-- HERO -->
     <section id="hero">
-      <canvas id="globe-canvas"></canvas>
+      <!-- Animated flow-board preview in background -->
+      <div class="hero-bg-flow" id="hero-bg-flow" aria-hidden="true"></div>
+      <!-- Gradient vignette to fade the board out at edges -->
+      <div class="hero-vignette"></div>
+
       <div class="hero-content">
         <div class="hero-kicker">
           <div class="hero-kicker-dot"></div>
-          Built for competitive debate
+          Policy · LD · Public Forum
         </div>
         <h1 class="hero-h1">
-          Your flow,<br>
-          <span class="hero-h1-line2">perfected.</span>
+          The debate<br>
+          <span class="hero-h1-line2">flow tool.</span>
         </h1>
         <p class="hero-sub">
-          Real-time shared flows, live speech docs, and card search — purpose-built for Policy, LD, and PF. Sub-second sync. No paper. No dropped args.
+          Real-time shared flows for both partners. Live speech doc, card search, cross-apply, and extend — all sub-second synced. No paper. No dropped args.
         </p>
         <div class="hero-btns">
           <button class="btn-primary" onclick="openJoin('policy')">Start Flowing</button>
-          <button class="btn-ghost"   onclick="showPage('features')">See Features</button>
+          <button class="btn-ghost"   onclick="showPage('features')">See Features →</button>
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
@@ -1641,12 +1675,8 @@ body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(1
             <div class="stat-lbl">Args Flowed</div>
           </div>
           <div class="hero-stat">
-            <div class="stat-num">25k+</div>
-            <div class="stat-lbl">Cards Indexed</div>
-          </div>
-          <div class="hero-stat">
             <div class="stat-num">3</div>
-            <div class="stat-lbl">Events Supported</div>
+            <div class="stat-lbl">Events</div>
           </div>
         </div>
       </div>
@@ -2825,18 +2855,14 @@ setTimeout(()=>{
       <div class="tb-sep"></div>
       <button class="tb-btn danger" onclick="if(confirm('Clear this flow?'))clearFlow()">Clear</button>
       <div style="margin-left:auto"></div>
+      <span id="topbar-stats" style="font-size:10.5px;color:var(--t3);font-family:var(--mono);margin-left:4px"></span>
       <button class="tb-btn" onclick="goHome()" title="Return to home" style="color:var(--t3)">⌂ Home</button>
     </div>
     <div id="flow-wrap">
       <div id="col-headers"><div id="chi"></div></div>
       <div id="flow-container"></div>
     </div>
-    <div id="statusbar">
-      <div class="sbi"><div class="sbd" style="background:var(--aff)"></div><span id="st-aff">AFF 0</span></div>
-      <div class="sbi"><div class="sbd" style="background:var(--neg)"></div><span id="st-neg">NEG 0</span></div>
-      <div class="sbi"><div class="sbd" style="background:var(--orn)"></div><span id="st-cross">0 cross-applies</span></div>
-      <div class="sbi"><div class="sbd" style="background:var(--grn)"></div><span id="st-ext">0 extended</span></div>
-    </div>
+
   </div>
 
   <!-- SPEECH PANEL -->
@@ -2865,7 +2891,7 @@ setTimeout(()=>{
 </div>
 
 <!-- ADD FLOW MODAL -->
-<div id="add-flow-modal">
+<div id="add-flow-modal" onclick="if(event.target===this)closeAddFlow()">
   <div class="modal-box" style="width:420px">
     <div class="modal-title" id="afm-title">Add Flow</div>
     <div class="modal-sub" id="afm-sub">What are you flowing?</div>
@@ -2898,7 +2924,7 @@ setTimeout(()=>{
 </div>
 
 <!-- EXTEND MODAL -->
-<div id="extend-modal">
+<div id="extend-modal" onclick="if(event.target===this)closeExtend()">
   <div class="modal-box" style="width:360px">
     <div class="modal-title">Extend to speech</div>
     <div class="modal-sub" id="em-preview" style="font-style:italic;color:var(--t2)"></div>
@@ -3616,7 +3642,103 @@ setTimeout(renderDemo,100);
 
 
 
-// ── HERO GLOBE ────────────────────────────────────────────────────────────
+// ── HERO BACKGROUND FLOW ANIMATION ──────────────────────────────────────
+(function(){
+  const container=document.getElementById('hero-bg-flow');
+  if(!container)return;
+
+  const COLS=[
+    {id:'1ac',label:'1AC',color:'rgba(79,172,254,0.55)',args:[
+      {w:85,ext:false,drop:false,cross:false},{w:72,ext:true,drop:false,cross:false},
+      {w:90,ext:false,drop:false,cross:true},{w:65,ext:false,drop:false,cross:false},
+      {w:78,ext:true,drop:false,cross:false},{w:55,ext:false,drop:false,cross:false},
+    ]},
+    {id:'1nc',label:'1NC',color:'rgba(248,113,113,0.55)',args:[
+      {w:80,ext:false,drop:false,cross:true},{w:70,ext:false,drop:true,cross:false},
+      {w:88,ext:false,drop:false,cross:false},{w:60,ext:false,drop:false,cross:true},
+      {w:75,ext:false,drop:false,cross:false},
+    ]},
+    {id:'2ac',label:'2AC',color:'rgba(79,172,254,0.55)',args:[
+      {w:82,ext:true,drop:false,cross:false},{w:68,ext:false,drop:false,cross:false},
+      {w:91,ext:false,drop:true,cross:false},{w:74,ext:true,drop:false,cross:false},
+      {w:58,ext:false,drop:false,cross:false},{w:83,ext:false,drop:false,cross:true},
+    ]},
+    {id:'2nc',label:'2NC',color:'rgba(248,113,113,0.55)',args:[
+      {w:77,ext:true,drop:false,cross:false},{w:66,ext:false,drop:true,cross:false},
+      {w:85,ext:false,drop:false,cross:false},{w:71,ext:true,drop:false,cross:false},
+    ]},
+    {id:'1nr',label:'1NR',color:'rgba(248,113,113,0.55)',args:[
+      {w:79,ext:false,drop:false,cross:true},{w:64,ext:true,drop:false,cross:false},
+      {w:87,ext:false,drop:false,cross:false},{w:73,ext:false,drop:true,cross:false},
+      {w:61,ext:true,drop:false,cross:false},
+    ]},
+    {id:'1ar',label:'1AR',color:'rgba(167,139,250,0.55)',args:[
+      {w:84,ext:false,drop:false,cross:false},{w:69,ext:true,drop:false,cross:true},
+      {w:93,ext:false,drop:false,cross:false},{w:76,ext:false,drop:true,cross:false},
+      {w:57,ext:true,drop:false,cross:false},{w:80,ext:false,drop:false,cross:false},
+    ]},
+    {id:'2nr',label:'2NR',color:'rgba(248,113,113,0.55)',args:[
+      {w:81,ext:true,drop:false,cross:false},{w:67,ext:false,drop:false,cross:true},
+      {w:89,ext:false,drop:false,cross:false},{w:72,ext:true,drop:false,cross:false},
+    ]},
+    {id:'2ar',label:'2AR',color:'rgba(167,139,250,0.55)',args:[
+      {w:78,ext:false,drop:false,cross:false},{w:65,ext:true,drop:false,cross:true},
+      {w:86,ext:false,drop:false,cross:false},{w:70,ext:false,drop:false,cross:false},
+      {w:59,ext:true,drop:false,cross:false},
+    ]},
+  ];
+
+  const W=container.offsetWidth||window.innerWidth;
+  const colW=Math.max(180, Math.floor(W/COLS.length));
+
+  COLS.forEach((col,ci)=>{
+    const colEl=document.createElement('div');
+    colEl.className='hbf-col';
+    colEl.style.left=(ci*colW)+'px';
+    colEl.style.width=colW+'px';
+
+    // Header
+    const hdr=document.createElement('div');
+    hdr.className='hbf-hdr';
+    hdr.style.color=col.color;
+    hdr.textContent=col.label;
+    colEl.appendChild(hdr);
+
+    col.args.forEach((arg,ai)=>{
+      const card=document.createElement('div');
+      let cls='hbf-card';
+      if(arg.ext)cls+=' ext';
+      if(arg.drop)cls+=' drop';
+      if(arg.cross)cls+=' cross';
+      card.className=cls;
+      card.style.animationDelay=(ci*80+ai*60)+'ms';
+
+      const t=document.createElement('div');
+      t.className='hbf-card-text';
+      t.style.width=arg.w+'%';
+      card.appendChild(t);
+
+      const c=document.createElement('div');
+      c.className='hbf-card-cite';
+      card.appendChild(c);
+
+      colEl.appendChild(card);
+    });
+
+    container.appendChild(colEl);
+  });
+
+  // Subtle drift animation — slowly shift the whole grid up
+  let offset=0;
+  function drift(){
+    offset+=0.12;
+    container.style.transform=`translateY(-${offset%60}px)`;
+    requestAnimationFrame(drift);
+  }
+  requestAnimationFrame(drift);
+})();
+
+// ── HERO GLOBE (disabled — replaced by flow animation) ────────────────────
 (function(){
   const canvas=document.getElementById('globe-canvas');
   if(!canvas)return;
@@ -3935,6 +4057,17 @@ function initRoom(){
   get(ref(db,rk('roles',myId))).then(s=>{
     if(!s.exists())set(ref(db,rk('roles',myId)),'editor');
   });
+
+  // Delegated flow access click — works regardless of when cards were rendered
+  document.getElementById('flow-container').addEventListener('click',e=>{
+    if(!flowAccess)return;
+    const card=e.target.closest('.arg-card[data-arg-id]');
+    if(!card)return;
+    const argId=card.dataset.argId;
+    const a=args[argId];
+    if(!a||!a.text)return;
+    flowAccessClick(argId,a);
+  });
 }
 
 window.goHome=function(){
@@ -4094,7 +4227,7 @@ function buildArgCard(id,arg,sp){
   textDiv.spellcheck=true;
   textDiv.textContent=arg.text||'';
   textDiv.addEventListener('input',()=>{
-    update(ref(db,frk('args',id)),{text:textDiv.textContent});
+    update(ref(db,frk('args',id)),{text:textDiv.innerText});args[id]={...args[id],text:textDiv.innerText};
   });
   textDiv.addEventListener('keydown',e=>{
     if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const next=addArg(sp.id,id);if(next)setTimeout(()=>next.querySelector('.arg-text')?.focus(),60);}
@@ -4109,14 +4242,29 @@ function buildArgCard(id,arg,sp){
   citeDiv.contentEditable=canEdit()?'true':'false';
   citeDiv.textContent=arg.cite||'';
   citeDiv.addEventListener('input',()=>{
-    update(ref(db,frk('args',id)),{cite:citeDiv.textContent});
+    update(ref(db,frk('args',id)),{cite:citeDiv.innerText});args[id]={...args[id],cite:citeDiv.innerText};
   });
   card.appendChild(citeDiv);
 
   // Badges
   const badges=document.createElement('div');
   badges.className='arg-badges';
-  if(arg.ext){const b=document.createElement('span');b.className='arg-badge badge-ext';b.textContent='EXT';b.onclick=e=>{e.stopPropagation();toggleExt(id);};badges.appendChild(b);}
+  if(arg.ext){
+    const b=document.createElement('span');b.className='arg-badge badge-ext';
+    const cite=arg.cite||'';const author=cite.split(' ')[0]||'';
+    b.textContent='EXT'+(author?' ('+author+')':'');
+    b.title='Extended — click to un-extend';
+    b.onclick=e=>{e.stopPropagation();arg.ext=false;update(ref(db,frk('args',id)),{ext:false});renderCols();};
+    badges.appendChild(b);
+  }
+  if(arg.extFrom){
+    const srcArg=args[arg.extFrom];
+    const b=document.createElement('span');b.className='arg-badge badge-ext';
+    b.style.opacity='.6';
+    b.textContent='↑ from '+(srcArg?.cite||'prev speech');
+    b.title='Extended from previous speech';
+    badges.appendChild(b);
+  }
   if(arg.dropped){const b=document.createElement('span');b.className='arg-badge badge-drop';b.textContent='DROPPED';b.onclick=e=>{e.stopPropagation();toggleDrop(id);};badges.appendChild(b);}
   if(arg.crossRefs&&arg.crossRefs.length){arg.crossRefs.forEach(cr=>{const b=document.createElement('span');b.className='arg-badge badge-cross';b.textContent='↔ '+cr.label;b.onclick=e=>{e.stopPropagation();scrollToCrossArg(cr);};badges.appendChild(b);});}
   if(badges.children.length)card.appendChild(badges);
@@ -4125,29 +4273,22 @@ function buildArgCard(id,arg,sp){
   if(canEdit()){
     const acts=document.createElement('div');acts.className='arg-actions';
     const mkBtn=(cls2,title,icon,fn)=>{const b=document.createElement('button');b.className='arg-act '+cls2;b.title=title;b.innerHTML=icon;b.onclick=e=>{e.stopPropagation();fn();};return b;};
-    acts.appendChild(mkBtn('ext-btn','Extend','↑',()=>toggleExt(id)));
-    acts.appendChild(mkBtn('','Drop/Restore','✗',()=>toggleDrop(id)));
+    // Extend → copies to next same-side speech and flags EXT
+    acts.appendChild(mkBtn('ext-btn','Extend to next speech','↑',()=>extendArg(id,sp)));
+    // Respond → blank card in next speech (any side)
+    const nextSpR=getNextSpeech(sp.id);
+    if(nextSpR)acts.appendChild(mkBtn('','Respond in '+nextSpR.l,'↩',()=>addResponseArg(id,sp.id,nextSpR.id)));
+    // Drop
+    acts.appendChild(mkBtn('','Drop / Restore','✗',()=>toggleDrop(id)));
+    // Cross-apply
     acts.appendChild(mkBtn('cross-btn','Cross-Apply','↔',()=>openCross(id)));
-    const nextSp=getNextSpeech(sp.id);
-    if(nextSp)acts.appendChild(mkBtn('','Respond','↩',()=>openExtendModal(id)));
+    // Delete
     acts.appendChild(mkBtn('del','Delete','🗑',()=>deleteArg(id)));
     card.appendChild(acts);
-
-    // Respond button below
-    const nextSp2=getNextSpeech(sp.id);
-    if(nextSp2){
-      const resp=document.createElement('button');
-      resp.className='respond-btn';
-      resp.innerHTML=`↩ Respond in ${nextSp2.l}`;
-      resp.onclick=e=>{e.stopPropagation();addResponseArg(id,sp.id,nextSp2.id);};
-      card.appendChild(resp);
-    }
   }
 
-  // Flow access click
-  if(flowAccess){
-    card.addEventListener('click',()=>flowAccessClick(id,arg));
-  }
+  // data attr for flow access delegation
+  card.dataset.argId=id;
 
   return card;
 }
@@ -4163,13 +4304,21 @@ function addArg(spId,afterId=null){
   const newArg={sp:spId,text:'',cite:'',order,ts:serverTimestamp()};
   args[id]=newArg;
   set(ref(db,frk('args',id)),newArg);
-  renderCols();
+  // Don't full re-render — just append card to avoid focus loss
+  const sp2=spList.find(s=>s.id===spId);
+  if(sp2){
+    const wrap=document.querySelector(`.col-wrap[data-sp="${spId}"]`);
+    if(wrap){
+      const addBtn=wrap.querySelector('.add-arg-btn');
+      const newCard=buildArgCard(id,newArg,sp2);
+      wrap.insertBefore(newCard,addBtn||null);
+    }
+  }
   updateStatusBar();
-  // Focus new card
   setTimeout(()=>{
     const card=document.querySelector(`.arg-card[data-id="${id}"] .arg-text`);
     if(card){card.focus();setCursorEnd(card);}
-  },60);
+  },30);
   return document.querySelector(`.arg-card[data-id="${id}"]`);
 }
 
@@ -4223,6 +4372,28 @@ function toggleDrop(id){
   a.dropped=val;if(val)a.ext=false;
   update(ref(db,frk('args',id)),{dropped:val,ext:false});
   renderCols();updateStatusBar();
+}
+
+// extendArg: copies arg to the next speech of the SAME side, marks source as EXT
+function extendArg(id,sp){
+  if(!canEdit())return;
+  const a=args[id];if(!a)return;
+  // Find next speech for same side
+  const curIdx=spList.findIndex(s=>s.id===sp.id);
+  const sameSide=spList.slice(curIdx+1).find(s=>s.side===sp.side);
+  if(!sameSide){toast('No next '+sp.side+' speech to extend to');return;}
+  pushUndo();
+  // Mark source as extended
+  a.ext=true;
+  update(ref(db,frk('args',id)),{ext:true});
+  // Create copy in dest speech
+  const newId=uid();
+  const newArg={sp:sameSide.id,text:a.text||'',cite:a.cite||'',order:Date.now(),
+    extFrom:id,extFromSpeech:sp.id,ts:serverTimestamp()};
+  args[newId]=newArg;
+  set(ref(db,frk('args',newId)),newArg);
+  renderCols();updateStatusBar();
+  toast('Extended → '+sameSide.l);
 }
 
 window.toggleKickFlow=function(fid){
@@ -4426,14 +4597,20 @@ window.toggleFlowAccess=function(){
 function flowAccessClick(id,arg){
   if(!arg.text)return;
   const ed=document.getElementById('speech-ed');
-  const line=document.createElement('p');
-  line.textContent=(arg.text||'')+(arg.cite?' ['+arg.cite+']':'');
+  const line=document.createElement('div');
+  line.style.cssText='padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:4px';
+  // Format: if extended, show "Extend (Author): text"
+  let label='';
+  if(arg.ext||arg.extFrom){
+    const author=arg.cite?arg.cite.split(' ')[0]:'';
+    label=`<span style="font-size:10px;font-family:var(--mono);color:var(--grn);letter-spacing:.5px;margin-right:6px">EXT${author?' ('+author+')':''}</span>`;
+  }
+  line.innerHTML=label+`<span style="font-size:13px;color:var(--t1)">${esc(arg.text)}</span>`
+    +(arg.cite?`<span style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-left:8px">${esc(arg.cite)}</span>`:'');
   ed.appendChild(line);
   ed.scrollTop=ed.scrollHeight;
-  // Highlight card
-  const card=document.querySelector(`.arg-card[data-id="${id}"]`);
+  const card=document.querySelector(`.arg-card[data-arg-id="${id}"]`);
   if(card){card.classList.add('fa-added');setTimeout(()=>card.classList.remove('fa-added'),1200);}
-  toast('Added to speech doc');
 }
 
 window.fmt=function(cmd){document.execCommand(cmd,false,null);};
@@ -4549,14 +4726,10 @@ function addArgFromCard(ev){
 // ── STATUS BAR ─────────────────────────────────────────────────────────────
 function updateStatusBar(){
   const vals=Object.values(args);
-  const aff=vals.filter(a=>{const sp=spList.find(s=>s.id===a.sp);return sp&&sp.side.includes('aff');}).length;
-  const neg=vals.filter(a=>{const sp=spList.find(s=>s.id===a.sp);return sp&&sp.side.includes('neg');}).length;
-  const cross=vals.filter(a=>a.crossRefs&&a.crossRefs.length).length;
+  const total=vals.length;
   const ext=vals.filter(a=>a.ext).length;
-  document.getElementById('st-aff').textContent='AFF '+aff;
-  document.getElementById('st-neg').textContent='NEG '+neg;
-  document.getElementById('st-cross').textContent=cross+' cross-applies';
-  document.getElementById('st-ext').textContent=ext+' extended';
+  const el=document.getElementById('topbar-stats');
+  if(el)el.textContent=total?`${total} args${ext?' · '+ext+' ext':''}`:'' ;
 }
 
 // ── PRESENCE ──────────────────────────────────────────────────────────────
