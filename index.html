@@ -113,6 +113,14 @@ body.in-app #cursor-ring { display: none !important }
 #app.open ~ #cursor { display: none }
 #app { cursor: default }
 
+/* Restore native cursor in all modals/overlays so it never disappears */
+#join-modal, #signin-modal, #add-flow-modal, #extend-modal,
+#cross-modal, #card-overlay, #preflow-overlay, #profile-panel,
+#pp-overlay, #account-page,
+.modal-overlay, .modal-box, .jm-box, .pf-box {
+  cursor: default;
+}
+
 /* ── PARTICLE CANVAS (full screen behind everything) ──────────────────── */
 #particle-canvas {
   position: fixed;
@@ -1185,6 +1193,109 @@ body.in-app #cursor-ring { display: none !important }
 }
 #app.open { display: flex }
 
+/* ── APP LIGHT MODE ─────────────────────────────────────────────────────── */
+#app.app-light {
+  background: #f5f4fa;
+  --t1:   #1a1830;
+  --t2:   rgba(50,45,90,0.6);
+  --t3:   rgba(80,70,130,0.38);
+  --s1:   rgba(0,0,0,0.04);
+  --s2:   rgba(0,0,0,0.07);
+  --s3:   rgba(0,0,0,0.11);
+  --b1:   rgba(0,0,0,0.09);
+  --b2:   rgba(0,0,0,0.15);
+  --b3:   rgba(0,0,0,0.22);
+  --acc:  #5b4dd4;
+  --rd:   #dc2626;
+  --aff:  #2563eb;
+  --neg:  #dc2626;
+  --grn:  #16a34a;
+  --orn:  #ea580c;
+  --ld:   #7c3aed;
+}
+#app.app-light #sidebar {
+  background: linear-gradient(180deg,#eceaf7 0%,#e8e6f3 100%);
+  border-right-color: rgba(0,0,0,0.1);
+}
+#app.app-light #topbar {
+  background: rgba(240,238,252,0.97);
+  border-bottom-color: rgba(0,0,0,0.09);
+}
+#app.app-light #topbar::after {
+  background: linear-gradient(90deg, transparent, rgba(91,77,212,0.25), rgba(91,77,212,0.12), transparent);
+}
+#app.app-light .col-wrap {
+  background: rgba(255,255,255,0.7);
+  border-right-color: rgba(0,0,0,0.08);
+}
+#app.app-light .col-wrap:hover { background: rgba(255,255,255,0.9) }
+#app.app-light .arg-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.09);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+#app.app-light .arg-card:hover {
+  border-color: rgba(91,77,212,0.3);
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(91,77,212,0.1);
+}
+#app.app-light .arg-card:focus-within {
+  border-color: rgba(91,77,212,0.5);
+  box-shadow: 0 0 0 3px rgba(91,77,212,0.1);
+}
+#app.app-light .arg-card.ext {
+  border-color: rgba(22,163,74,0.4);
+  background: rgba(22,163,74,0.04);
+  border-left: 2px solid rgba(22,163,74,0.7);
+}
+#app.app-light .arg-card.dropped { border-color: rgba(220,38,38,0.2) }
+#app.app-light .arg-card.cross-applied { border-left: 2px solid rgba(234,88,12,0.6) }
+#app.app-light .arg-text { color: #1a1830 }
+#app.app-light .arg-cite { color: rgba(91,77,212,0.75) }
+#app.app-light .arg-act {
+  background: #f0eef8;
+  border-color: rgba(0,0,0,0.1);
+  color: rgba(50,45,90,0.55);
+}
+#app.app-light .arg-act:hover { background: #e4e1f4; color: #1a1830 }
+#app.app-light #col-headers {
+  background: linear-gradient(180deg,#eeecf8 0%,#eae8f3 100%);
+  border-bottom-color: rgba(0,0,0,0.09);
+}
+#app.app-light .col-hdr-cell { border-right-color: rgba(0,0,0,0.07) }
+#app.app-light .col-hdr-resize:hover { background: rgba(91,77,212,0.2) }
+#app.app-light .add-arg-btn { color: rgba(80,70,130,0.45) }
+#app.app-light .add-arg-btn:hover { background: rgba(91,77,212,0.07); color: rgba(91,77,212,0.8) }
+#app.app-light .flow-tab { color: rgba(50,45,90,0.55) }
+#app.app-light .flow-tab:hover { background: rgba(0,0,0,0.05); color: #1a1830 }
+#app.app-light .flow-tab.active { background: rgba(91,77,212,0.1); color: #1a1830 }
+#app.app-light .tb-btn { color: rgba(50,45,90,0.55) }
+#app.app-light .tb-btn:hover { background: rgba(0,0,0,0.06); color: #1a1830 }
+#app.app-light .tb-btn.acc { background: rgba(37,99,235,0.08); color: rgba(37,99,235,0.85); border-color: rgba(37,99,235,0.16) }
+#app.app-light .tb-btn.purple { background: rgba(91,77,212,0.09); color: rgba(91,77,212,0.9); border-color: rgba(91,77,212,0.18) }
+#app.app-light .tb-btn.purple.active { background: rgba(91,77,212,0.16); color: #5b4dd4 }
+#app.app-light .tb-btn.danger { color: rgba(220,38,38,0.65) }
+#app.app-light .tb-btn.danger:hover { background: rgba(220,38,38,0.07) }
+#app.app-light #sheet-title { color: #1a1830 }
+#app.app-light .sb-btn { color: rgba(50,45,90,0.55) }
+#app.app-light .sb-btn:hover { background: rgba(0,0,0,0.06); color: #1a1830 }
+#app.app-light .slbl { color: rgba(80,70,130,0.5) }
+#app.app-light .room-pill { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: rgba(50,45,90,0.65) }
+#app.app-light .add-flow-btn { border-color: rgba(0,0,0,0.12); color: rgba(80,70,130,0.45) }
+#app.app-light .add-flow-btn:hover { border-color: rgba(91,77,212,0.4); color: #5b4dd4 }
+#app.app-light #speech-panel { background: #f0eef8; border-left-color: rgba(0,0,0,0.1) }
+#app.app-light .sp-title { color: rgba(80,70,130,0.5) }
+#app.app-light .sp-close { background: rgba(0,0,0,0.07); color: rgba(50,45,90,0.5) }
+#app.app-light .sp-close:hover { background: rgba(0,0,0,0.11); color: #1a1830 }
+#app.app-light .sp-modes { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.09) }
+#app.app-light .sp-mode { color: rgba(50,45,90,0.5) }
+#app.app-light .sp-mode.active { background: rgba(91,77,212,0.15); color: #1a1830 }
+#app.app-light #speech-ed { color: #1a1830 }
+#app.app-light .arg-drag-handle { color: rgba(80,70,130,0.45) }
+#app.app-light .arg-drag-handle:hover { background: rgba(0,0,0,0.06) }
+#app.app-light .drag-indicator-line { background: rgba(91,77,212,0.75) }
+#app.app-light #app-stars { opacity: 0 }
+
 #app-stars {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   opacity: 0.55;
@@ -1494,6 +1605,56 @@ body.in-app #cursor-ring { display: none !important }
   font-family: var(--font); font-size: 10.5px; cursor: pointer; transition: all .12s;
 }
 .respond-btn:hover { border-color: var(--b2); color: var(--t2); background: var(--s1) }
+
+/* Respond source highlight — permanent cyan left border on source card */
+.arg-card.respond-source {
+  border-color: rgba(34,211,238,0.6) !important;
+  border-left: 3px solid rgba(34,211,238,0.9) !important;
+  background: rgba(34,211,238,0.07) !important;
+}
+/* Respond target — permanent cyan highlight on response card */
+.arg-card.respond-target {
+  border-color: rgba(34,211,238,0.7) !important;
+  border-left: 3px solid rgba(34,211,238,0.9) !important;
+  background: rgba(34,211,238,0.10) !important;
+  box-shadow: 0 0 0 2px rgba(34,211,238,0.18) !important;
+}
+@keyframes respondPulse {
+  0%   { box-shadow: 0 0 0 6px rgba(34,211,238,0.35), 0 4px 28px rgba(34,211,238,0.25) }
+  60%  { box-shadow: 0 0 0 4px rgba(34,211,238,0.22), 0 4px 28px rgba(34,211,238,0.18) }
+  100% { box-shadow: 0 0 0 2px rgba(34,211,238,0.1),  0 2px 12px rgba(34,211,238,0.08) }
+}
+
+/* ── DRAG AND DROP ─────────────────────────────────────────────────────── */
+.arg-card[draggable="true"] { cursor: grab }
+.arg-card.dragging {
+  opacity: 0.35;
+  cursor: grabbing !important;
+  pointer-events: none;
+  transform: scale(0.97);
+  transition: opacity .1s, transform .1s;
+}
+/* Drag handle — visible on hover */
+.arg-drag-handle {
+  position: absolute; left: 5px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 28px; display: none;
+  align-items: center; justify-content: center;
+  cursor: grab; color: var(--t3); font-size: 11px;
+  z-index: 6; opacity: 0.5; border-radius: 3px;
+  transition: opacity .1s;
+}
+.arg-card:hover .arg-drag-handle { display: flex }
+.arg-drag-handle:hover { opacity: 1; background: var(--s2) }
+/* indent content when handle is visible */
+.arg-card:hover .ac-inner { padding-left: 22px }
+/* Drop indicator line (injected into body during drag) */
+.drag-indicator-line {
+  position: fixed; height: 2px;
+  background: rgba(109,92,231,0.85);
+  z-index: 9899; border-radius: 2px;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(109,92,231,0.5);
+}
 
 /* ── SPEECH PANEL (resizable) ───────────────────────────────────────────── */
 #speech-panel {
@@ -3759,6 +3920,10 @@ window.closeSignin=function(){
       <button class="tb-btn danger" onclick="if(confirm('Clear this flow?'))clearFlow()">Clear</button>
       <div style="margin-left:auto"></div>
       <span id="topbar-stats" style="font-size:10.5px;color:var(--t3);font-family:var(--mono);margin-left:4px"></span>
+      <button class="tb-btn" id="app-theme-btn" onclick="toggleAppTheme()" title="Toggle light/dark mode" style="display:flex;align-items:center;gap:5px">
+        <svg id="app-theme-icon" viewBox="0 0 14 14" fill="none" width="11" height="11"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.93 2.93l1.06 1.06M10.01 10.01l1.06 1.06M2.93 11.07l1.06-1.06M10.01 3.99l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span id="app-theme-lbl">Light</span>
+      </button>
       <button class="tb-btn" onclick="goHome()" title="Return to home" style="color:var(--t3);display:flex;align-items:center;gap:4px"><svg viewBox="0 0 14 14" fill="none" width="11" height="11"><path d="M1.5 7L7 2l5.5 5M3 6v5.5h3V9h2v2.5h3V6" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg> Home</button>
     </div>
     <div id="flow-wrap">
@@ -5317,6 +5482,7 @@ function initRoom(){
       if(syncing)return;syncing=true;
       ch.scrollLeft=fc.scrollLeft;
       syncing=false;
+      setTimeout(redrawAllArrows,10);
     },{passive:true});
     ch.addEventListener('scroll',()=>{
       if(syncing)return;syncing=true;
@@ -5446,7 +5612,11 @@ function renderCols(){
       .sort(([,a],[,b])=>(a.order||0)-(b.order||0));
 
     colArgs.forEach(([id,arg])=>{
-      wrap.appendChild(buildArgCard(id,arg,sp));
+      const card=buildArgCard(id,arg,sp);
+      // Restore persistent respond highlight classes
+      if(arg.hasResponse&&arg.responseId) card.classList.add('respond-source');
+      if(arg.respondTo&&args[arg.respondTo]) card.classList.add('respond-target');
+      wrap.appendChild(card);
     });
 
     // Add arg button — small, hidden until hover
@@ -5459,6 +5629,7 @@ function renderCols(){
       if(colArgs.length===0) addBtn.style.opacity='0.4';
       wrap.appendChild(addBtn);
     }
+
     fc.appendChild(wrap);
   });
 
@@ -5482,6 +5653,8 @@ function renderCols(){
       document.addEventListener('mouseup',onUp);
     });
   });
+  // Re-draw respond arrows after every render
+  setTimeout(redrawAllArrows,30);
 }
 
 // ── ARG CARD BUILDER ──────────────────────────────────────────────────────
@@ -5495,6 +5668,20 @@ function buildArgCard(id,arg,sp){
   card.className=cls;
   card.dataset.id=id;
   card.dataset.argId=id;
+
+  // Drag handle
+  if(canEdit()){
+    const handle=document.createElement('div');
+    handle.className='arg-drag-handle';
+    handle.title='Drag to reorder';
+    handle.innerHTML='⠿';
+    card.appendChild(handle);
+  }
+
+  // Draggable setup
+  if(canEdit()){
+    setupCardDrag(card,id,sp.id);
+  }
 
   // Inner wrapper for padding
   const inner=document.createElement('div');
@@ -5590,6 +5777,174 @@ function buildArgCard(id,arg,sp){
   return card;
 }
 
+// ── APP LIGHT MODE TOGGLE ────────────────────────────────────────────────
+let _appLight=false;
+window.toggleAppTheme=function(){
+  _appLight=!_appLight;
+  const app=document.getElementById('app');
+  app.classList.toggle('app-light',_appLight);
+  const lbl=document.getElementById('app-theme-lbl');
+  const icon=document.getElementById('app-theme-icon');
+  if(_appLight){
+    if(lbl)lbl.textContent='Dark';
+    if(icon)icon.innerHTML='<path d="M7 1.5A5.5 5.5 0 1 0 12.5 7 5.5 5.5 0 0 0 7 1.5zm0 9.5A4 4 0 1 1 11 7 4 4 0 0 1 7 11z" fill="currentColor"/><path d="M3 7A4 4 0 0 0 7 11V3A4 4 0 0 0 3 7z" fill="currentColor"/>';
+  } else {
+    if(lbl)lbl.textContent='Light';
+    if(icon)icon.innerHTML='<circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.93 2.93l1.06 1.06M10.01 10.01l1.06 1.06M2.93 11.07l1.06-1.06M10.01 3.99l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>';
+  }
+};
+
+// ── DRAG AND DROP (mouse-event based — avoids HTML5 drag API issues) ───────
+let _dnd={active:false,id:null,ghost:null,srcSpId:null,indicator:null};
+
+function setupCardDrag(card,id,spId){
+  // The drag handle triggers the whole thing
+  const handle=card.querySelector('.arg-drag-handle');
+  if(!handle)return;
+
+  handle.addEventListener('mousedown',e=>{
+    if(!canEdit())return;
+    e.preventDefault();e.stopPropagation();
+
+    const rect=card.getBoundingClientRect();
+
+    // Build ghost
+    const ghost=card.cloneNode(true);
+    ghost.style.cssText=`
+      position:fixed;left:${rect.left}px;top:${rect.top}px;
+      width:${rect.width}px;pointer-events:none;z-index:9900;
+      opacity:0.78;box-shadow:0 8px 32px rgba(0,0,0,0.45);
+      border-radius:10px;transform:scale(1.03);
+      transition:transform 0.1s;border:1.5px solid rgba(109,92,231,0.7);
+    `;
+    document.body.appendChild(ghost);
+
+    // Build drop indicator line
+    const ind=document.createElement('div');
+    ind.className='drag-indicator-line';
+    ind.style.cssText='position:fixed;left:0;right:0;height:2px;background:rgba(109,92,231,0.85);z-index:9899;border-radius:2px;pointer-events:none;display:none;box-shadow:0 0 6px rgba(109,92,231,0.5)';
+    document.body.appendChild(ind);
+
+    card.style.opacity='0.3';
+
+    _dnd={active:true,id,ghost,srcSpId:spId,indicator:ind,
+          offX:e.clientX-rect.left,offY:e.clientY-rect.top};
+
+    // Prevent text selection during drag
+    document.body.style.userSelect='none';
+  });
+}
+
+// Global mousemove — move ghost and show indicator
+document.addEventListener('mousemove',e=>{
+  if(!_dnd.active||!_dnd.ghost)return;
+  _dnd.ghost.style.left=(e.clientX-_dnd.offX)+'px';
+  _dnd.ghost.style.top=(e.clientY-_dnd.offY)+'px';
+
+  // Find what card we're over
+  _dnd.ghost.style.pointerEvents='none';
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  _dnd.ghost.style.pointerEvents='none';
+
+  const targetCard=el?.closest('.arg-card');
+  const targetCol=el?.closest('.col-wrap');
+
+  _dnd.indicator.style.display='none';
+  _dnd.overCard=null;
+  _dnd.overSide=null;
+  _dnd.overCol=null;
+
+  if(targetCard&&targetCard.dataset.id!==_dnd.id){
+    const r=targetCard.getBoundingClientRect();
+    const isTop=e.clientY<r.top+r.height/2;
+    _dnd.indicator.style.display='block';
+    _dnd.indicator.style.top=(isTop?r.top-1:r.bottom-1)+'px';
+    _dnd.indicator.style.left=r.left+'px';
+    _dnd.indicator.style.width=r.width+'px';
+    _dnd.overCard=targetCard.dataset.id;
+    _dnd.overSide=isTop?'top':'bottom';
+    _dnd.overCol=targetCol?.dataset?.sp;
+  } else if(targetCol&&!targetCard){
+    // Hovering empty space in a column — snap to bottom
+    _dnd.overCol=targetCol.dataset.sp;
+    _dnd.overCard=null;
+    _dnd.overSide='bottom';
+    // Show indicator at end of col
+    const colCards=[...targetCol.querySelectorAll('.arg-card')];
+    const lastCard=colCards[colCards.length-1];
+    if(lastCard){
+      const r=lastCard.getBoundingClientRect();
+      _dnd.indicator.style.display='block';
+      _dnd.indicator.style.top=(r.bottom+2)+'px';
+      _dnd.indicator.style.left=r.left+'px';
+      _dnd.indicator.style.width=r.width+'px';
+    } else {
+      // Empty column — show at top
+      const cr=targetCol.getBoundingClientRect();
+      _dnd.indicator.style.display='block';
+      _dnd.indicator.style.top=(cr.top+8)+'px';
+      _dnd.indicator.style.left=(cr.left+8)+'px';
+      _dnd.indicator.style.width=(cr.width-16)+'px';
+    }
+  }
+},{passive:true});
+
+// Global mouseup — commit or cancel
+document.addEventListener('mouseup',e=>{
+  if(!_dnd.active)return;
+  const {id,ghost,indicator,overCard,overSide,overCol}=_dnd;
+
+  // Clean up ghost + indicator
+  if(ghost&&ghost.parentNode)ghost.parentNode.removeChild(ghost);
+  if(indicator&&indicator.parentNode)indicator.parentNode.removeChild(indicator);
+  document.body.style.userSelect='';
+
+  // Restore source card opacity
+  const srcCard=document.querySelector(`.arg-card[data-id="${id}"]`);
+  if(srcCard)srcCard.style.opacity='';
+
+  _dnd={active:false,id:null,ghost:null,srcSpId:null,indicator:null};
+
+  if(!overCol||!args[id])return;
+
+  // Compute new order
+  const destSpId=overCol;
+  const destColArgs=Object.entries(args)
+    .filter(([k,a])=>a.sp===destSpId&&k!==id)
+    .sort(([,a],[,b])=>(a.order||0)-(b.order||0));
+
+  let newOrder;
+  if(overCard){
+    const idx=destColArgs.findIndex(([k])=>k===overCard);
+    if(overSide==='top'){
+      const prev=destColArgs[idx-1];
+      newOrder=prev
+        ?((prev[1].order||0)+(destColArgs[idx]?.[1].order||0))/2
+        :(destColArgs[idx]?.[1].order||Date.now())-500;
+    } else {
+      const next=destColArgs[idx+1];
+      newOrder=next
+        ?((destColArgs[idx]?.[1].order||0)+(next[1].order||0))/2
+        :(destColArgs[idx]?.[1].order||Date.now())+500;
+    }
+  } else {
+    // Drop at end of column
+    const maxOrder=destColArgs.length
+      ?Math.max(...destColArgs.map(([,a])=>a.order||0))
+      :Date.now()-100;
+    newOrder=maxOrder+500;
+  }
+
+  // Same position — nothing to do
+  if(args[id].sp===destSpId&&Math.abs((args[id].order||0)-newOrder)<1)return;
+
+  pushUndo();
+  args[id].sp=destSpId;
+  args[id].order=newOrder;
+  update(ref(db,frk('args',id)),{sp:destSpId,order:newOrder});
+  renderCols();updateStatusBar();
+});
+
 // ── ARG OPERATIONS ─────────────────────────────────────────────────────────
 function addArg(spId,afterId=null){
   if(!canEdit())return null;
@@ -5624,23 +5979,139 @@ function addResponseArg(srcId,srcSpId,destSpId){
   pushUndo();
   const id=uid();
   const srcArg=args[srcId];
-  const order=Date.now();
+
+  // ── ORDER STRATEGY ──────────────────────────────────────────────────────
+  // We want the response card to appear at the SAME ROW as the source card.
+  // Strategy: find source card's rank (0-based) in its column.
+  // Then look at the dest column sorted — insert AFTER the card at that same rank,
+  // using a midpoint between that card and the next, or +1000 if it's the last.
+  // We NEVER modify existing orders.
+
+  const srcColSorted=Object.entries(args)
+    .filter(([,a])=>a.sp===srcSpId)
+    .sort(([,a],[,b])=>(a.order||0)-(b.order||0));
+  const srcRank=srcColSorted.findIndex(([k])=>k===srcId); // 0-based
+
+  const destColSorted=Object.entries(args)
+    .filter(([,a])=>a.sp===destSpId)
+    .sort(([,a],[,b])=>(a.order||0)-(b.order||0));
+
+  let order;
+  if(destColSorted.length===0){
+    // Dest is empty — use source order directly
+    order=srcArg?.order??Date.now();
+  } else if(srcRank<=0){
+    // Source is first card — insert before everything in dest
+    order=(destColSorted[0][1].order||0)-1000;
+  } else {
+    // Insert after the card at (srcRank-1) in dest col
+    const afterIdx=Math.min(srcRank-1, destColSorted.length-1);
+    const afterOrder=destColSorted[afterIdx][1].order||0;
+    const beforeOrder=destColSorted[afterIdx+1]?.[1]?.order;
+    if(beforeOrder!=null){
+      order=(afterOrder+beforeOrder)/2;
+    } else {
+      order=afterOrder+1000;
+    }
+  }
+
   const newArg={sp:destSpId,text:'',cite:'',order,respondTo:srcId,ts:serverTimestamp()};
   args[id]=newArg;
   set(ref(db,frk('args',id)),newArg);
-  // Mark source as "has response"
-  update(ref(db,frk('args',srcId)),{hasResponse:true});
+  // Mark source as "has response" — store the response id too for arrow drawing
+  args[srcId].hasResponse=true;
+  args[srcId].responseId=id;
+  update(ref(db,frk('args',srcId)),{hasResponse:true,responseId:id});
   renderCols();
   updateStatusBar();
   setTimeout(()=>{
-    const card=document.querySelector(`.arg-card[data-id="${id}"] .arg-text`);
-    if(card){
-      const colEl=card.closest('.col-wrap');
-      if(colEl)colEl.scrollIntoView({behavior:'smooth',block:'nearest'});
-      card.focus();
+    // Permanent cyan border on source
+    const srcCard=document.querySelector(`.arg-card[data-id="${srcId}"]`);
+    if(srcCard) srcCard.classList.add('respond-source');
+
+    // Permanent cyan border + pulse on target
+    const targetCard=document.querySelector(`.arg-card[data-id="${id}"]`);
+    if(targetCard){
+      targetCard.classList.add('respond-target');
+      targetCard.scrollIntoView({behavior:'smooth',block:'nearest',inline:'nearest'});
     }
+
+    // Draw the arrow
+    drawRespondArrow(srcId,id);
+
+    // Focus the new card
+    const tf=document.querySelector(`.arg-card[data-id="${id}"] .arg-text`);
+    if(tf){tf.focus();}
   },80);
 }
+
+// ── RESPOND ARROWS ────────────────────────────────────────────────────────
+// SVG overlay that draws arrows from source cards to their response cards
+let _arrowSvg=null;
+function getArrowSvg(){
+  if(_arrowSvg)return _arrowSvg;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.id='respond-arrow-svg';
+  svg.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:450;overflow:visible';
+  // Arrow marker def
+  svg.innerHTML=`<defs>
+    <marker id="arrowhead-sm" markerWidth="5" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 5 2, 0 4" fill="rgba(34,211,238,0.65)"/>
+    </marker>
+  </defs>`;
+  document.getElementById('app').appendChild(svg);
+  _arrowSvg=svg;
+  return svg;
+}
+
+function drawRespondArrow(srcId,destId){
+  const svg=getArrowSvg();
+  // Remove old arrow for this src if exists
+  const old=svg.querySelector(`[data-src="${srcId}"]`);
+  if(old)old.remove();
+
+  const srcCard=document.querySelector(`.arg-card[data-id="${srcId}"]`);
+  const destCard=document.querySelector(`.arg-card[data-id="${destId}"]`);
+  if(!srcCard||!destCard)return;
+
+  const sr=srcCard.getBoundingClientRect();
+  const dr=destCard.getBoundingClientRect();
+
+  const x1=sr.right+3;
+  const y1=sr.top+sr.height/2;
+  const x2=dr.left-3;
+  const y2=dr.top+dr.height/2;
+
+  // Short horizontal gap — only draw if there's space
+  const gap=x2-x1;
+  if(gap<6)return;
+
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+  const bend=Math.min(20, gap*0.35);
+  path.setAttribute('d',`M${x1},${y1} C${x1+bend},${y1} ${x2-bend},${y2} ${x2},${y2}`);
+  path.setAttribute('stroke','rgba(34,211,238,0.55)');
+  path.setAttribute('stroke-width','1.5');
+  path.setAttribute('fill','none');
+  path.setAttribute('marker-end','url(#arrowhead-sm)');
+  path.setAttribute('data-src',srcId);
+  path.setAttribute('data-dest',destId);
+  svg.appendChild(path);
+}
+
+function redrawAllArrows(){
+  // Re-draw all arrows after any renderCols
+  const svg=_arrowSvg;
+  if(!svg)return;
+  // Remove all existing paths
+  svg.querySelectorAll('path').forEach(p=>p.remove());
+  // Re-draw from args that have responseId
+  Object.entries(args).forEach(([srcId,a])=>{
+    if(a.responseId&&args[a.responseId]){
+      drawRespondArrow(srcId,a.responseId);
+    }
+  });
+}
+
 
 function deleteArg(id){
   if(!canEdit())return;
