@@ -1381,8 +1381,51 @@ body.in-app #cursor-ring { display: none !important }
 .peer-dot {
   width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 700;
   color: #fff; display: flex; align-items: center; justify-content: center;
-  border: 2px solid #0b0a16;
+  border: 2px solid #0b0a16; position: relative; cursor: default;
+  transition: transform .15s, box-shadow .15s;
 }
+.peer-dot.is-editor { box-shadow: 0 0 0 2px rgba(74,222,128,0.7); }
+.peer-dot.is-spectator { opacity: 0.55; }
+.peer-dot.clickable { cursor: pointer; }
+.peer-dot.clickable:hover { transform: scale(1.2); }
+
+/* Host crown on my own dot */
+.sb-my-presence {
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 6px 6px;
+}
+.my-dot-wrap { position: relative; display: inline-flex; }
+.host-crown {
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; line-height: 1; pointer-events: none;
+  filter: drop-shadow(0 0 3px rgba(251,191,36,0.8));
+}
+.my-dot {
+  width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 700;
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(251,191,36,0.6);
+}
+.my-name-lbl { font-size: 11px; color: var(--t2); font-weight: 500; }
+
+/* Peer popover */
+.peer-popover {
+  position: fixed; z-index: 700;
+  background: #13111f; border: 1px solid rgba(109,92,231,0.3);
+  border-radius: 12px; padding: 12px 14px; min-width: 160px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  font-family: var(--font);
+}
+.peer-pop-name { font-size: 13px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
+.peer-pop-role { font-size: 10px; font-family: var(--mono); color: var(--t3); margin-bottom: 10px; letter-spacing: .5px; text-transform: uppercase; }
+.peer-pop-btn {
+  width: 100%; padding: 7px 10px; border-radius: 7px; border: 1px solid rgba(109,92,231,0.25);
+  background: rgba(109,92,231,0.1); color: rgba(160,140,255,0.9);
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .15s; text-align: left;
+}
+.peer-pop-btn:hover { background: rgba(109,92,231,0.2); border-color: rgba(109,92,231,0.5); color: #fff; }
+.peer-pop-btn.danger { border-color: rgba(248,113,113,0.2); background: rgba(248,113,113,0.07); color: rgba(248,113,113,0.8); }
+.peer-pop-btn.danger:hover { background: rgba(248,113,113,0.15); color: #f87171; }
 .sync-row { display: flex; align-items: center; gap: 5px; padding: 3px 6px 5px }
 .sdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0 }
 .sdot.sync { background: var(--grn); box-shadow: 0 0 5px var(--grn) }
@@ -3885,6 +3928,7 @@ window.closeSignin=function(){
     </button>
 
     <div class="sb-bottom">
+      <div class="sb-my-presence" id="sb-my-presence"></div>
       <div class="sb-presence" id="presence-row"></div>
       <div class="sync-row"><div class="sdot sync" id="sdot"></div><div class="slbl" id="slbl">connecting</div></div>
       <button class="sb-btn" onclick="toggleSpeech()">
@@ -5411,7 +5455,12 @@ function initRoom(){
   });
 
   // Listen to roles
-  onValue(ref(db,rk('roles')),snap=>{allRoles=snap.val()||{};myRole=allRoles[myId]||'editor';});
+  onValue(ref(db,rk('roles')),snap=>{
+    allRoles=snap.val()||{};
+    myRole=allRoles[myId]||'editor';
+    renderPresence();
+    renderCols(); // re-check canEdit() on all cards
+  });
 
   // Presence of others
   onValue(ref(db,rk('presence')),snap=>{
@@ -6946,18 +6995,84 @@ function updateStatusBar(){
 
 // ── PRESENCE ──────────────────────────────────────────────────────────────
 function renderPresence(){
+  // ── MY OWN ROW (crown if host) ──────────────────────────────────────────
+  const myRow=document.getElementById('sb-my-presence');
+  if(myRow){
+    const amHost=myRole==='editor';
+    const myPeer=peers[myId];
+    const col=myColor;
+    const initials=(myName||myPeer?.name||'Me')[0].toUpperCase();
+    myRow.innerHTML=`
+      <div class="my-dot-wrap">
+        ${amHost?'<span class="host-crown">👑</span>':''}
+        <div class="my-dot" style="background:${col}">${initials}</div>
+      </div>
+      <div class="my-name-lbl">${esc(myName||'You')} <span style="font-size:9px;color:${amHost?'var(--grn)':'var(--t3)'};font-family:var(--mono)">${amHost?'host':'spectator'}</span></div>`;
+  }
+
+  // ── PEERS ROW ────────────────────────────────────────────────────────────
   const row=document.getElementById('presence-row');
   if(!row)return;
   row.innerHTML='';
   Object.entries(peers).forEach(([id,p])=>{
     if(id===myId)return;
+    const peerRole=allRoles[id]||'spectator';
+    const isEditor=peerRole==='editor';
     const dot=document.createElement('div');
-    dot.className='peer-dot';
+    dot.className='peer-dot'+(isEditor?' is-editor':' is-spectator')+(myRole==='editor'?' clickable':'');
     dot.style.background=p.color||'#888';
-    dot.title=p.name||'Debater';
+    dot.title=(p.name||'Debater')+' · '+(isEditor?'editor':'spectator')+(myRole==='editor'?' · click to change role':'');
     dot.textContent=(p.name||'?')[0].toUpperCase();
+
+    // Only host can click to manage roles
+    if(myRole==='editor'){
+      dot.addEventListener('click',e=>{
+        e.stopPropagation();
+        openPeerPopover(id,p,peerRole,dot);
+      });
+    }
     row.appendChild(dot);
   });
+}
+
+let _popoverEl=null;
+function closePeerPopover(){
+  if(_popoverEl&&_popoverEl.parentNode)_popoverEl.parentNode.removeChild(_popoverEl);
+  _popoverEl=null;
+}
+
+function openPeerPopover(peerId,peer,currentRole,anchorEl){
+  closePeerPopover();
+  const pop=document.createElement('div');
+  pop.className='peer-popover';
+  const isEditor=currentRole==='editor';
+  pop.innerHTML=`
+    <div class="peer-pop-name">${esc(peer.name||'Debater')}</div>
+    <div class="peer-pop-role">${isEditor?'✦ Editor':'◎ Spectator'}</div>
+    ${isEditor
+      ? `<button class="peer-pop-btn danger" id="pop-role-btn">Make Spectator</button>`
+      : `<button class="peer-pop-btn" id="pop-role-btn">✓ Make Editor</button>`
+    }`;
+  document.body.appendChild(pop);
+  _popoverEl=pop;
+
+  // Position near the dot
+  const r=anchorEl.getBoundingClientRect();
+  pop.style.left=Math.min(r.right+8, window.innerWidth-180)+'px';
+  pop.style.top=Math.max(8,r.top-pop.offsetHeight/2)+'px';
+
+  pop.querySelector('#pop-role-btn').onclick=()=>{
+    const newRole=isEditor?'spectator':'editor';
+    set(ref(db,rk('roles',peerId)),newRole);
+    allRoles[peerId]=newRole;
+    if(newRole==='editor') toast((peer.name||'Debater')+' can now edit');
+    else toast((peer.name||'Debater')+' set to spectator');
+    closePeerPopover();
+    renderPresence();
+  };
+
+  // Close on outside click
+  setTimeout(()=>document.addEventListener('click',closePeerPopover,{once:true}),10);
 }
 
 // ── ACCESS CONTROL ────────────────────────────────────────────────────────
