@@ -1365,6 +1365,14 @@ body.in-app #cursor-ring { display: none !important }
 .flow-tab:hover .flow-kick-btn { opacity: 1 }
 .flow-kick-btn:hover { background: rgba(248,113,113,0.1); color: var(--rd) }
 
+.flow-tab-drag-handle {
+  font-size: 9px; color: var(--t3); cursor: grab; opacity: 0;
+  padding: 0 2px; transition: opacity .1s; flex-shrink: 0;
+  display: flex; align-items: center;
+}
+.flow-tab:hover .flow-tab-drag-handle { opacity: 0.5 }
+.flow-tab-drag-handle:hover { opacity: 1 !important }
+
 .add-flow-btn {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   margin: 6px 6px 0; padding: 8px; border-radius: 7px;
@@ -5466,26 +5474,58 @@ function initRoom(){
   onValue(ref(db,rk('presence')),snap=>{
     peers=snap.val()||{};
     renderPresence();
+
+    // ── AUTO HOST TRANSFER ───────────────────────────────────────────────
+    // If no editor is currently present, the person with the earliest join
+    // time (lowest ts) self-promotes. Each client checks independently but
+    // only the one whose myId matches the chosen candidate writes.
+    const presentIds=Object.keys(peers);
+    const presentEditors=presentIds.filter(id=>allRoles[id]==='editor');
+    if(presentEditors.length===0 && presentIds.length>0){
+      // Sort present users by join ts to pick a deterministic winner
+      const sorted=presentIds
+        .map(id=>({id,ts:peers[id]?.ts||0}))
+        .sort((a,b)=>a.ts-b.ts);
+      const promotee=sorted[0].id;
+      if(promotee===myId){
+        set(ref(db,rk('roles',myId)),'editor');
+        myRole='editor';
+        toast('You are now the host 👑');
+        renderPresence();
+        renderCols();
+      }
+    }
   });
 
   // Save room to profile
   if(me)saveRoomToProfile(rc,evt,'');
 
-  // Role assignment: first joiner (creator) gets editor, rest get spectator
+  // Role assignment: first joiner gets editor, rest get spectator.
+  // Also clean up stale editor roles from people no longer present.
   get(ref(db,rk('roles'))).then(snap=>{
     const existing=snap.val()||{};
-    const hasEditors=Object.values(existing).some(r=>r==='editor');
     const myCurrentRole=existing[myId];
-    if(!myCurrentRole){
-      // First person in room → editor, everyone else → spectator
-      const role=hasEditors?'spectator':'editor';
+
+    if(myCurrentRole){
+      // I already have a role (rejoining) — keep it
+      myRole=myCurrentRole;
+      if(myRole==='spectator') setTimeout(()=>toast('Spectator mode — ask the host to promote you'),800);
+      return;
+    }
+
+    // New join — check if there's an active (present) editor
+    get(ref(db,rk('presence'))).then(presSnap=>{
+      const presentNow=Object.keys(presSnap.val()||{});
+      const activeEditors=Object.entries(existing)
+        .filter(([id,r])=>r==='editor'&&presentNow.includes(id));
+      const hasActiveEditor=activeEditors.length>0;
+
+      const role=hasActiveEditor?'spectator':'editor';
       set(ref(db,rk('roles',myId)),role);
       myRole=role;
-      // Show spectator notice if needed
-      if(role==='spectator'){
-        setTimeout(()=>toast('Spectator mode — you can view but not edit'),800);
-      }
-    }
+      if(role==='spectator') setTimeout(()=>toast('Spectator mode — ask the host to promote you'),800);
+      else setTimeout(()=>toast('You are the host 👑'),600);
+    });
   });
 
   // Delegated flow access click — works regardless of when cards were rendered
@@ -5542,6 +5582,22 @@ function initRoom(){
 }
 
 window.goHome=function(){
+  // If I'm the editor/host, transfer to someone else before leaving
+  if(myRole==='editor'&&rc){
+    const others=Object.entries(peers).filter(([id])=>id!==myId);
+    if(others.length>0){
+      // Pick the person who joined earliest (lowest ts), or just first in list
+      const nextHost=others.sort(([,a],[,b])=>(a.ts||0)-(b.ts||0))[0];
+      set(ref(db,rk('roles',nextHost[0])),'editor');
+      toast('Host transferred to '+(nextHost[1].name||'next person'));
+    }
+    // Remove my own role so I don't block future joins
+    remove(ref(db,rk('roles',myId)));
+  } else if(rc){
+    // Non-host leaving — clean up role entry so re-join works correctly
+    remove(ref(db,rk('roles',myId)));
+  }
+
   document.getElementById('app').classList.remove('open');
   document.body.classList.remove('in-app');
   document.getElementById('landing').style.display='';
@@ -5554,6 +5610,8 @@ window.copyRoom=function(){
 };
 
 // ── FLOW TABS ──────────────────────────────────────────────────────────────
+let _tabDnd={active:false,id:null,ghost:null,indicator:null};
+
 function renderFlowTabs(){
   const el=document.getElementById('flow-tabs');
   if(!el)return;
@@ -5561,20 +5619,136 @@ function renderFlowTabs(){
   const sorted=Object.keys(flows)
     .filter(id=>flows[id]&&(flows[id].type||flows[id].name))
     .sort((a,b)=>(flows[a].order||0)-(flows[b].order||0));
-  sorted.forEach(id=>{
+  sorted.forEach((id,idx)=>{
     const f=flows[id];
     const ti=document.createElement('div');
     ti.className='flow-tab'+(id===curFlow?' active':'')+(f.kicked?' kicked':'');
     ti.dataset.id=id;
+    ti.dataset.order=f.order||idx;
     ti.innerHTML=`
+      <div class="flow-tab-drag-handle" title="Drag to reorder">⠿</div>
       <div class="flow-dot" style="background:${f.color||'#888'}"></div>
       <div class="flow-tab-lbl">${esc(f.name||'Flow')}</div>
       <div class="flow-tab-type">${f.type||''}</div>
-      <button class="flow-kick-btn" title="Kick/unkick" onclick="event.stopPropagation();toggleKickFlow('${id}')">${f.kicked?'↺':'✕'}</button>`;
+      <button class="flow-kick-btn" title="${f.kicked?'Unkick (restore)':'Kick · double-click to DELETE'}"
+        onclick="event.stopPropagation();handleKickBtn(event,'${id}')"
+      >${f.kicked?'↺':'⊘'}</button>`;
     ti.addEventListener('click',()=>switchFlow(id));
+    // Drag-to-reorder
+    setupTabDrag(ti,id,sorted);
     el.appendChild(ti);
   });
 }
+
+// Double-click = permanently delete the entire flow (tab + all args). Single click = kick/unkick.
+let _kickClickTimer={};
+window.handleKickBtn=function(e,fid){
+  e.stopPropagation();
+  if(!canEdit())return;
+  if(_kickClickTimer[fid]){
+    // Double-click — delete entirely
+    clearTimeout(_kickClickTimer[fid]);
+    delete _kickClickTimer[fid];
+    const name=flows[fid]?.name||'this flow';
+    if(confirm('Permanently delete "'+name+'" and all its arguments? This cannot be undone.')){
+      pushUndo();
+      // If this is the active flow, switch away first
+      if(curFlow===fid){
+        const other=Object.keys(flows).find(k=>k!==fid&&flows[k]);
+        if(other) switchFlow(other);
+        else { curFlow=null; renderEmptyState(); }
+      }
+      // Delete the entire flow node — removes tab AND all args
+      remove(ref(db,rk('flows',fid)));
+      delete flows[fid];
+      renderFlowTabs();
+      toast('"'+name+'" deleted');
+    }
+  } else {
+    _kickClickTimer[fid]=setTimeout(()=>{
+      delete _kickClickTimer[fid];
+      toggleKickFlow(fid);
+    },280);
+  }
+};
+
+function setupTabDrag(tabEl,id,sortedIds){
+  const handle=tabEl.querySelector('.flow-tab-drag-handle');
+  if(!handle)return;
+
+  handle.addEventListener('mousedown',e=>{
+    e.preventDefault();e.stopPropagation();
+    const rect=tabEl.getBoundingClientRect();
+
+    const ghost=tabEl.cloneNode(true);
+    ghost.style.cssText=`position:fixed;left:${rect.left}px;top:${rect.top}px;
+      width:${rect.width}px;opacity:0.75;z-index:9900;pointer-events:none;
+      border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.5);
+      border:1px solid rgba(109,92,231,0.5);background:var(--s2)`;
+    document.body.appendChild(ghost);
+
+    const ind=document.createElement('div');
+    ind.style.cssText='position:fixed;left:0;right:0;height:2px;background:rgba(109,92,231,0.8);z-index:9899;pointer-events:none;display:none;border-radius:2px';
+    document.body.appendChild(ind);
+
+    tabEl.style.opacity='0.3';
+    _tabDnd={active:true,id,ghost,indicator:ind,offY:e.clientY-rect.top};
+    document.body.style.userSelect='none';
+  });
+}
+
+document.addEventListener('mousemove',e=>{
+  if(!_tabDnd.active||!_tabDnd.ghost)return;
+  _tabDnd.ghost.style.top=(e.clientY-_tabDnd.offY)+'px';
+
+  _tabDnd.ghost.style.pointerEvents='none';
+  const under=document.elementFromPoint(e.clientX,e.clientY);
+  _tabDnd.ghost.style.pointerEvents='none';
+  const targetTab=under?.closest('.flow-tab');
+  _tabDnd.indicator.style.display='none';
+  _tabDnd.overId=null;_tabDnd.overSide=null;
+
+  if(targetTab&&targetTab.dataset.id!==_tabDnd.id){
+    const r=targetTab.getBoundingClientRect();
+    const isTop=e.clientY<r.top+r.height/2;
+    _tabDnd.indicator.style.display='block';
+    _tabDnd.indicator.style.top=(isTop?r.top-1:r.bottom-1)+'px';
+    _tabDnd.indicator.style.left=r.left+'px';
+    _tabDnd.indicator.style.width=r.width+'px';
+    _tabDnd.overId=targetTab.dataset.id;
+    _tabDnd.overSide=isTop?'top':'bottom';
+  }
+},{passive:true});
+
+document.addEventListener('mouseup',e=>{
+  if(!_tabDnd.active)return;
+  const {id,ghost,indicator,overId,overSide}=_tabDnd;
+  if(ghost&&ghost.parentNode)ghost.parentNode.removeChild(ghost);
+  if(indicator&&indicator.parentNode)indicator.parentNode.removeChild(indicator);
+  document.body.style.userSelect='';
+  const srcTab=document.querySelector(`.flow-tab[data-id="${id}"]`);
+  if(srcTab)srcTab.style.opacity='';
+  _tabDnd={active:false};
+
+  if(!overId||!flows[id]||!flows[overId])return;
+
+  // Reorder: compute new order for id relative to overId
+  const sorted=Object.keys(flows)
+    .filter(k=>flows[k])
+    .sort((a,b)=>(flows[a].order||0)-(flows[b].order||0));
+  const destIdx=sorted.indexOf(overId);
+  let newOrder;
+  if(overSide==='top'){
+    const prev=sorted[destIdx-1];
+    newOrder=prev?((flows[prev].order||0)+(flows[overId]?.order||0))/2:(flows[overId]?.order||0)-100;
+  } else {
+    const next=sorted[destIdx+1];
+    newOrder=next?((flows[overId]?.order||0)+(flows[next]?.order||0))/2:(flows[overId]?.order||0)+100;
+  }
+  update(ref(db,rk('flows',id)),{order:newOrder});
+  flows[id].order=newOrder;
+  renderFlowTabs();
+});
 
 function renderEmptyState(){
   const fc=document.getElementById('flow-container');
